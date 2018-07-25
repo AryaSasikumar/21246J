@@ -1,10 +1,18 @@
 #pragma config(Sensor, in1,    liftPot,        sensorPotentiometer)
+#pragma config(Sensor, in2,    clawPot,        sensorPotentiometer)
+#pragma config(Sensor, in3,    turnerPot,      sensorPotentiometer)
+#pragma config(Sensor, in4,    ballDetectorTop, sensorLineFollower)
+#pragma config(Sensor, in5,    ballDetectorBottom, sensorLineFollower)
+#pragma config(Sensor, in6,    tipGyro,        sensorGyro)
+#pragma config(Sensor, dgtl1,  flyWheelEncoder, sensorQuadEncoder)
+#pragma config(Sensor, dgtl3,  leftBaseEncoder, sensorQuadEncoder)
+#pragma config(Sensor, dgtl5,  rightBaseEncoder, sensorQuadEncoder)
 #pragma config(Motor,  port1,           ballIntake,    tmotorVex393TurboSpeed_HBridge, openLoop)
 #pragma config(Motor,  port2,           flyWheel,      tmotorVex393HighSpeed_MC29, openLoop)
-#pragma config(Motor,  port4,           leftFrontBase, tmotorVex393TurboSpeed_MC29, openLoop)
-#pragma config(Motor,  port5,           rightFrontBase, tmotorVex393TurboSpeed_MC29, openLoop)
-#pragma config(Motor,  port6,           rightMiddleBase, tmotorVex393TurboSpeed_MC29, openLoop)
-#pragma config(Motor,  port7,           leftMiddleBase, tmotorVex393TurboSpeed_MC29, openLoop)
+#pragma config(Motor,  port4,           leftFrontBase, tmotorVex393TurboSpeed_MC29, PIDControl, driveLeft, encoderPort, dgtl3)
+#pragma config(Motor,  port5,           rightFrontBase, tmotorVex393TurboSpeed_MC29, PIDControl, driveRight, encoderPort, dgtl5)
+#pragma config(Motor,  port6,           rightMiddleBase, tmotorVex393TurboSpeed_MC29, PIDControl, driveRight, encoderPort, dgtl5)
+#pragma config(Motor,  port7,           leftMiddleBase, tmotorVex393TurboSpeed_MC29, PIDControl, driveLeft, encoderPort, dgtl3)
 #pragma config(Motor,  port8,           lift,          tmotorVex393HighSpeed_MC29, openLoop)
 #pragma config(Motor,  port9,           capTurner,     tmotorVex393HighSpeed_MC29, openLoop)
 #pragma config(Motor,  port10,          capClaw,       tmotorVex393_HBridge, openLoop)
@@ -25,8 +33,10 @@
 //Main competition background code...do not modify!
 #include "Vex_Competition_Includes.c"
 
-#include "functions/buttonDefinitions.h" //Driver control functions
-#include "functions/driverControl.h" //Driver control functions
+#include "functions/userControl/buttonDefinitions.h"
+#include "functions/general/motorControlFunctions.h"
+#include "functions/userControl/driverControl.h"
+#include "functions/autonControl/autonomusFunctions.h"
 
 /*---------------------------------------------------------------------------*/
 /*                          Pre-Autonomous Functions                         */
@@ -40,18 +50,18 @@
 
 void pre_auton()
 {
-  // Set bStopTasksBetweenModes to false if you want to keep user created tasks
-  // running between Autonomous and Driver controlled modes. You will need to
-  // manage all user created tasks if set to false.
-  bStopTasksBetweenModes = true;
+	// Set bStopTasksBetweenModes to false if you want to keep user created tasks
+	// running between Autonomous and Driver controlled modes. You will need to
+	// manage all user created tasks if set to false.
+	bStopTasksBetweenModes = true;
 
 	// Set bDisplayCompetitionStatusOnLcd to false if you don't want the LCD
 	// used by the competition include file, for example, you might want
 	// to display your team name on the LCD in this function.
 	// bDisplayCompetitionStatusOnLcd = false;
 
-  // All activities that occur before the competition starts
-  // Example: clearing encoders, setting servo positions, ...
+	// All activities that occur before the competition starts
+	// Example: clearing encoders, setting servo positions, ...
 }
 
 /*---------------------------------------------------------------------------*/
@@ -64,14 +74,12 @@ void pre_auton()
 /*  You must modify the code to add your own robot specific commands here.   */
 /*---------------------------------------------------------------------------*/
 
+
+
 task autonomous()
 {
-  // ..........................................................................
-  // Insert user code here.
-  // ..........................................................................
-
-  // Remove this function call once you have "real" code.
-  AutonomousCodePlaceholderForTesting();
+	driveTime(right, 127, 2000, true, 40, 100);//driveTime(direction?,speed,time,stopWithBreaks?,breakSpeed,breakTime)
+	driveTime(forward, 127, 2000, true, 40, 100);//driveTime(direction?,speed,time,stopWithBreaks?,breakSpeed,breakTime)
 }
 
 /*---------------------------------------------------------------------------*/
@@ -86,14 +94,16 @@ task autonomous()
 
 task usercontrol()
 {
-  // User control code here, inside the loop
+	// User control code here, inside the loop
 
-  while (true)
-  {
-  	directionController(changeDirectionBtn);
-    baseController(Y_rightJoy, Y_leftJoy);
-
-    ballIntakeController(ballIntakeBtn, ballOuttakeBtn);
-    liftControl(liftUpBtn, liftDownBtn, liftSensor);
-  }
+	while (true)
+	{
+		directionController(changeDirectionBtn);
+		baseController(Y_rightJoy, Y_leftJoy);
+		liftControl(liftUpBtn, liftDownBtn, liftSensor);
+		ballIntakeController(currentIntake(1), currentOuttake(1));
+		capIntakeController(currentIntake(0), currentOuttake(0));
+		capRotateController(capRotateCWBtn, capRotateCCWBtn);
+		flyWheelController(flyWheelToggleBtn);
+	}
 }
