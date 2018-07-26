@@ -10,62 +10,36 @@ int strongHold = 20;
 int downHold = 20;
 int noHold = 0;
 
-//-----AUTO_DRIVE_TIME_FUNCTIONS-----//
-void driveTime(int dir, int speed, int time, bool stopWithBreaks, int breakSpeed, int breakTime)
+int breakSpeed = 127;
+int breakTime = 10;
+
+void stopWithBreaks(int dir, bool useBreaks)
 {
-	if(dir == 1)
+	if(useBreaks == true)
 	{
-		leftBase(speed);
-		rightBase(speed);
-		wait1Msec(time);
-		if(stopWithBreaks == true)
+		switch(dir)
 		{
+		case 1:
 			leftBase(-breakSpeed);
 			rightBase(-breakSpeed);
-			wait1Msec(breakTime);
-		}
-		leftBase(0);
-		rightBase(0);
-	}
-	else if(dir == 2)
-	{
-		leftBase(-speed);
-		rightBase(-speed);
-		wait1Msec(time);
-		if(stopWithBreaks == true)
-		{
+			break;
+		case 2:
 			leftBase(breakSpeed);
 			rightBase(breakSpeed);
-			wait1Msec(breakTime);
-		}
-		leftBase(0);
-		rightBase(0);
-	}
-	else if(dir == 3)
-	{
-		leftBase(-speed);
-		rightBase(speed);
-		wait1Msec(time);
-		if(stopWithBreaks == true)
-		{
-			leftBase(breakSpeed);
-			rightBase(-breakSpeed);
-			wait1Msec(breakTime);
-		}
-		leftBase(0);
-		rightBase(0);
-	}
-	else if(dir == 4)
-	{
-		leftBase(speed);
-		rightBase(-speed);
-		wait1Msec(time);
-		if(stopWithBreaks == true)
-		{
+			break;
+		case 3:
 			leftBase(-breakSpeed);
 			rightBase(breakSpeed);
-			wait1Msec(breakTime);
+			break;
+		case 4:
+			leftBase(breakSpeed);
+			rightBase(-breakSpeed);
+			break;
+		default:
+			leftBase(0);
+			rightBase(0);
 		}
+		wait1Msec(breakTime);
 		leftBase(0);
 		rightBase(0);
 	}
@@ -74,79 +48,108 @@ void driveTime(int dir, int speed, int time, bool stopWithBreaks, int breakSpeed
 		leftBase(0);
 		rightBase(0);
 	}
-	leftBase(0);
-	rightBase(0);
+}
+
+//-----AUTO_DRIVE_TIME_FUNCTIONS-----//
+void driveTime(int dir, int speed, int time, bool useBreaks)
+{
+	switch(dir)
+	{
+	case 1:
+		leftBase(speed);
+		rightBase(speed);
+		break;
+	case 2:
+		leftBase(-speed);
+		rightBase(-speed);
+		break;
+	case 3:
+		leftBase(speed);
+		rightBase(-speed);
+		break;
+	case 4:
+		leftBase(-speed);
+		rightBase(speed);
+		break;
+	default:
+		leftBase(0);
+		rightBase(0);
+	}
+	wait1Msec(time);
+	stopWithBreaks(dir,useBreaks);
 }
 //-----AUTO_DRIVE_TIME_FUNCTIONS-----//
 
 
 //-----AUTO_DRIVE_SENSOR_FUNCTIONS-----//
-void driveSensor(int dir, int speed, int measurement,int rightSensor, int leftSensor,bool stopWithBreaks, int breakSpeed, int breakTime)
+void driveSensor(int dir, int speed, int measurement, bool useBreaks, int timer)
 {
-	rightSensor = 0;
-	leftSensor = 0;
-	if(dir == 1)
+	clearTimer(T1);
+	rightBaseSensor = 0;
+	leftBaseSensor = 0;
+	switch(dir)
 	{
-		leftBase(speed);
-		rightBase(speed);
-
-		if(stopWithBreaks == true)
+	case 1:
+		while(rightBaseSensor <= measurement || leftBaseSensor <= measurement || time1[T1] <= timer)
 		{
-			leftBase(-breakSpeed);
-			rightBase(-breakSpeed);
-			wait1Msec(breakTime);
+			leftBase(speed);
+			rightBase(speed);
 		}
-		leftBase(0);
-		rightBase(0);
-	}
-	else if(dir == 2)
-	{
-		leftBase(-speed);
-		rightBase(-speed);
-		wait1Msec(time);
-		if(stopWithBreaks == true)
+		break;
+	case 2:
+		while(rightBaseSensor >= measurement || leftBaseSensor >= measurement || time1[T1] <= timer)
 		{
-			leftBase(breakSpeed);
-			rightBase(breakSpeed);
-			wait1Msec(breakTime);
+			leftBase(-speed);
+			rightBase(-speed);
 		}
-		leftBase(0);
-		rightBase(0);
-	}
-	else if(dir == 3)
-	{
-		leftBase(-speed);
-		rightBase(speed);
-		wait1Msec(time);
-		if(stopWithBreaks == true)
+		break;
+	case 3:
+		while(rightBaseSensor >= measurement || leftBaseSensor <= measurement || time1[T1] <= timer)
 		{
-			leftBase(breakSpeed);
-			rightBase(-breakSpeed);
-			wait1Msec(breakTime);
+			leftBase(speed);
+			rightBase(-speed);
 		}
-		leftBase(0);
-		rightBase(0);
-	}
-	else if(dir == 4)
-	{
-		leftBase(speed);
-		rightBase(-speed);
-		wait1Msec(time);
-		if(stopWithBreaks == true)
+		break;
+	case 4:
+		while(rightBaseSensor <= measurement || leftBaseSensor >= measurement || time1[T1] <= timer)
 		{
-			leftBase(-breakSpeed);
-			rightBase(breakSpeed);
-			wait1Msec(breakTime);
+			leftBase(-speed);
+			rightBase(speed);
 		}
+		break;
+	default:
 		leftBase(0);
 		rightBase(0);
 	}
-	else
-	{
-		leftBase(0);
-		rightBase(0);
-	}
-	leftBase(0);
-	rightBase(0);
+	stopWithBreaks(dir,useBreaks);
 }
 //-----AUTO_DRIVE_SENSOR_FUNCTIONS-----//
+
+
+//-----AUTO_LIFT_FUNCTIONS-----//
+void liftSensor(int dir, int speed, int sensor, int measurement, int hold, int timer)
+{
+	clearTimer(T1);
+	switch(dir)
+	{
+	case 1:
+		while(sensor <= measurement || time1[T1] <= timer)
+		{
+			leftBase(speed);
+			rightBase(speed);
+		}
+		break;
+	case 2:
+		while(sensor >= measurement || time1[T1] <= timer)
+		{
+			leftBase(-speed);
+			rightBase(-speed);
+		}
+		break;
+	default:
+		leftBase(hold);
+		rightBase(hold);
+	}
+	stopWithBreaks(dir,useBreaks);
+}
+//-----AUTO_LIFT_FUNCTIONS-----//

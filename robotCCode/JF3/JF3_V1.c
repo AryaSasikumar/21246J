@@ -33,10 +33,11 @@
 //Main competition background code...do not modify!
 #include "Vex_Competition_Includes.c"
 
-#include "functions/userControl/buttonDefinitions.h"
-#include "functions/general/motorControlFunctions.h"
-#include "functions/userControl/driverControl.h"
-#include "functions/autonControl/autonomusFunctions.h"
+#include "functions/buttonDefinitions.h"
+#include "functions/sensorDefinitions.h"
+#include "functions/motorControlFunctions.h"
+#include "functions/driverControl.h"
+#include "functions/autonomusFunctions.h"
 
 /*---------------------------------------------------------------------------*/
 /*                          Pre-Autonomous Functions                         */
@@ -78,8 +79,9 @@ void pre_auton()
 
 task autonomous()
 {
-	driveTime(right, 127, 2000, true, 40, 100);//driveTime(direction?,speed,time,stopWithBreaks?,breakSpeed,breakTime)
-	driveTime(forward, 127, 2000, true, 40, 100);//driveTime(direction?,speed,time,stopWithBreaks?,breakSpeed,breakTime)
+	driveTime(right, 127, 2000, true);//driveTime(direction?,speed,time,stopWithBreaks?,breakSpeed,breakTime)
+	driveTime(forward, 127, 2000, true);//driveTime(direction?,speed,time,stopWithBreaks?,breakSpeed,breakTime)
+	driveSensor(forward, 127, 100, true, 3000);//driveSensor(direction?,speed,measurement,useBreaks,timer)
 }
 
 /*---------------------------------------------------------------------------*/
