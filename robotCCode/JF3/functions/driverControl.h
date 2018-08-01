@@ -139,11 +139,11 @@ void ballIntakeController(int intakeBtn, int outtakeBtn)
 	}
 }
 //-----BALL_INTAKE_FUNCTIONS-----//
-
+                                                     //TODO: TOGGLE BUTTON FOR LIFT HOLD
 
 //-----LIFT_CONTROL_FUNCTIONS-----//
 int liftPower[5] = {127,-90,30,10,-10}; //{upPower, downPower, capHold, regularHold, downHold}
-bool liftHoldToggle = true;
+bool liftHoldToggle = false;
 void liftControl(int liftUp, int liftDown, int sensor)
 {
 	if(liftUp == 1)
@@ -156,7 +156,7 @@ void liftControl(int liftUp, int liftDown, int sensor)
 	}
 	else
 	{
-		if(sensor <= 2300)
+		if(sensor <= 900)
 		{
 			liftMotor(liftPower[4]);
 		}

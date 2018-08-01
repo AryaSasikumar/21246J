@@ -1,5 +1,5 @@
-int forward = 1;
-int backward = 2;
+int forwards = 1;
+int backwards = 2;
 int right = 3;
 int left = 4;
 
@@ -127,7 +127,7 @@ void driveSensor(int dir, int speed, int measurement, bool useBreaks, int timer)
 
 
 //-----AUTO_LIFT_FUNCTIONS-----//
-void liftSensor(int dir, int speed, int sensor, int measurement, int hold, int timer)
+/*void liftSensor(int dir, int speed, int sensor, int measurement, int hold, int timer)
 {
 	clearTimer(T1);
 	switch(dir)
@@ -150,6 +150,6 @@ void liftSensor(int dir, int speed, int sensor, int measurement, int hold, int t
 		leftBase(hold);
 		rightBase(hold);
 	}
-	stopWithBreaks(dir,useBreaks);
-}
+	//stopWithBreaks(dir,useBreaks);
+}*/
 //-----AUTO_LIFT_FUNCTIONS-----//
