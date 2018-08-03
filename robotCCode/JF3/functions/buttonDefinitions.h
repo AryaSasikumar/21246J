@@ -9,6 +9,7 @@
 
 #define liftUpBtn vexRT[Btn5U]
 #define liftDownBtn vexRT[Btn5D]
+#define liftAutoBtn vexRT[Btn7R]
 
 #define capClawCloseBtn vexRT[Btn8L]
 #define capClawOpenBtn vexRT[Btn8R]

@@ -102,7 +102,7 @@ task usercontrol()
 	{
 		directionController(changeDirectionBtn);
 		baseController(Y_rightJoy, Y_leftJoy);
-		liftControl(liftUpBtn, liftDownBtn, liftSensor);
+		liftControl(liftUpBtn, liftDownBtn, liftSensor, liftAutoBtn);
 		ballIntakeController(currentIntake(1), currentOuttake(1), ballAutoIntakeBtn, ballBottomSensor, ballTopSensor);
 		capIntakeController(currentIntake(0), currentOuttake(0), clawSensor);
 		capRotateController(capRotateCWBtn, capRotateCCWBtn,clawRegularLimit,clawUpsideDownLimit);

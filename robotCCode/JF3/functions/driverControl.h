@@ -169,16 +169,47 @@ void ballIntakeController(int intakeBtn, int outtakeBtn, int autoBtn, int bottom
 
 //-----LIFT_CONTROL_FUNCTIONS-----//
 int liftPower[5] = {127,-90,30,10,-10}; //{upPower, downPower, capHold, regularHold, downHold}
+int liftHieghtLow = 990;
+int liftHieghtHigh = 1400;
 bool liftHoldToggle = false;
-void liftControl(int liftUp, int liftDown, int sensor)
+int autoLift = 0;
+
+void autoLiftControl(int sensor)
+{
+	if(autoLift == 1 && sensor <= liftHieghtLow)
+	{
+		liftMotor(127);
+	}
+  else if(autoLift == 2 && sensor <= liftHieghtHigh)
+	{
+		liftMotor(127);
+	}
+	else if(autoLift > 2 && sensor > liftHieghtHigh)
+	{
+		autoLift = 0;
+	}
+}
+
+void liftControl(int liftUp, int liftDown, int sensor, int autoBtn)
 {
 	if(liftUp == 1)
 	{
 		liftMotor(liftPower[0]);
+		autoLift = 0;
 	}
 	else if(liftDown == 1)
 	{
 		liftMotor(liftPower[1]);
+		autoLift = 0;
+	}
+	else if(autoBtn == 1)
+	{
+		autoLift++;
+		wait1Msec(200);
+	}
+	else if(autoLift >= 1)
+	{
+		autoLiftControl(sensor);
 	}
 	else
 	{
@@ -210,7 +241,7 @@ void capIntakeController(int intakeBtn, int outtakeBtn, int sensor)
 	{
 		capIntakeMotor(127);
 	}
-	else if(outtakeBtn == 1 && sensor <= 2000)
+	else if(outtakeBtn == 1 && sensor <= 2100)
 	{
 		capIntakeMotor(-127);
 	}
@@ -248,28 +279,19 @@ void capRotateController(int cwBtn, int ccwBtn, int regularSensor, int upsideDow
 //-----CAP_ROTATE_FUNCTIONS-----//
 
 //-----FLYWHEEL_CONTROL_FUNCTIONS-----//
-bool flyWheelOn = false;
 
-void flyWheelController(int toggleBtn)
-{
-	if(toggleBtn == 1)
-	{
-		flyWheelOn = !flyWheelOn;
-		wait1Msec(300);
-	}
-	if(flyWheelOn == true)
-	{
-		flyWheelMotor(90);
-	}
-	else
-	{
-		flyWheelMotor(0);
-	}
-}
+
 float ticksPerSecond = 0;
 int count = 0;
 float containTicksPerSecond = 0;
 float flyWheelVelocity()
+{
+
+}
+
+bool flyWheelOn = false;
+float tPS = 0;
+void flyWheelController(int toggleBtn)
 {
 	if(time1[T2] >= 100)
 	{
@@ -277,12 +299,36 @@ float flyWheelVelocity()
 		count++;
 		clearTimer(T2);
 	}
-	containTicksPerSecond = ticksPerSecond;
 	if(count >= 10)
 	{
+		count = 0;
+		tPS = ticksPerSecond/1000;
 		ticksPerSecond = 0;
-		return containTicksPerSecond;
 	}
-	return containTicksPerSecond;
+
+
+	if(toggleBtn == 1)
+	{
+		flyWheelOn = !flyWheelOn;
+		wait1Msec(300);
+	}
+	if(flyWheelOn == true)
+	{
+		flyWheelMotor(127);
+		/*
+		if(abs(tPS) <= 170)
+		{
+			flyWheelMotor(90);
+		}
+		else
+		{
+			flyWheelMotor(10);
+		}*/
+	}
+	else
+	{
+		flyWheelMotor(0);
+	}
 }
+
 //-----FLYWHEEL_CONTROL_FUNCTIONS-----//
