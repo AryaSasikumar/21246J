@@ -123,21 +123,47 @@ void baseController(int rightJoy, int leftJoy)//Function to control base during 
 
 
 //-----BALL_INTAKE_FUNCTIONS-----//
-void ballIntakeController(int intakeBtn, int outtakeBtn)
+bool autoIntake = false;
+
+void autoIntakeControl(int bottomSensor, int topSensor)
+{
+	if(autoIntake == true && topSensor >= 2000)
+	{
+		ballIntakeMotor(127);
+	}
+	if(topSensor < 2000)
+	{
+		autoIntake = false;
+	}
+}
+
+void ballIntakeController(int intakeBtn, int outtakeBtn, int autoBtn, int bottomSensor, int topSensor)
 {
 	if(intakeBtn == 1)
 	{
 		ballIntakeMotor(127);
+		autoIntake = false;
 	}
 	else if(outtakeBtn == 1)
 	{
 		ballIntakeMotor(-127);
+		autoIntake = false;
+	}
+	else if(autoBtn == 1)
+	{
+		autoIntake = !autoIntake;
+		wait1Msec(200);
+	}
+	else if(autoIntake == true)
+	{
+		autoIntakeControl(bottomSensor,topSensor);
 	}
 	else
 	{
 		ballIntakeMotor(0);
 	}
 }
+
 //-----BALL_INTAKE_FUNCTIONS-----//
 //TODO: TOGGLE BUTTON FOR LIFT HOLD
 
@@ -180,11 +206,11 @@ void liftControl(int liftUp, int liftDown, int sensor)
 //-----CAP_INTAKE_FUNCTIONS-----//
 void capIntakeController(int intakeBtn, int outtakeBtn, int sensor)
 {
-	if(intakeBtn == 1)
+	if(intakeBtn == 1 && sensor >= 1500)
 	{
 		capIntakeMotor(127);
 	}
-	else if(outtakeBtn == 1)
+	else if(outtakeBtn == 1 && sensor <= 2000)
 	{
 		capIntakeMotor(-127);
 	}
@@ -192,7 +218,7 @@ void capIntakeController(int intakeBtn, int outtakeBtn, int sensor)
 	{
 		if(sensor <= 1900)
 		{
-			capIntakeMotor(-20);
+			capIntakeMotor(20);
 		}
 		else
 		{
@@ -204,13 +230,13 @@ void capIntakeController(int intakeBtn, int outtakeBtn, int sensor)
 
 
 //-----CAP_ROTATE_FUNCTIONS-----//
-void capRotateController(int cwBtn, int ccwBtn)
+void capRotateController(int cwBtn, int ccwBtn, int regularSensor, int upsideDownSensor)
 {
-	if(cwBtn == 1)
+	if(cwBtn == 1 && regularSensor != 1)
 	{
 		capRotateMotor(127);
 	}
-	else if(ccwBtn == 1)
+	else if(ccwBtn == 1 && upsideDownSensor != 1)
 	{
 		capRotateMotor(-127);
 	}

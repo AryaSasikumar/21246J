@@ -5,6 +5,7 @@
 
 #define ballIntakeBtn vexRT[Btn6D]
 #define ballOuttakeBtn vexRT[Btn6U]
+#define ballAutoIntakeBtn vexRT[Btn8U]
 
 #define liftUpBtn vexRT[Btn5U]
 #define liftDownBtn vexRT[Btn5D]
