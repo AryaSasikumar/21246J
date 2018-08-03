@@ -1,7 +1,6 @@
 #define liftSensor SensorValue[liftPot]
 #define flyWheelSensor SensorValue[flyWheelEncoder]
 #define clawSensor SensorValue[clawPot]
-#define turnerSensor SensorValue[turnerPot]
 #define ballTopSensor SensorValue[ballDetectorTop]
 #define ballBottomSensor SensorValue[ballDetectorBottom]
 #define leftBaseSensor SensorValue[leftBaseEncoder]

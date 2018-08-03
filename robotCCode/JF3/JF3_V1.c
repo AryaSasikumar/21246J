@@ -1,18 +1,18 @@
-#pragma config(Sensor, in1,    tipGyro,        sensorGyro)
-#pragma config(Sensor, in2,    clawPot,        sensorPotentiometer)
-#pragma config(Sensor, in3,    turnerPot,      sensorPotentiometer)
-#pragma config(Sensor, in4,    ballDetectorTop, sensorLineFollower)
-#pragma config(Sensor, in5,    liftPot,        sensorPotentiometer)
-#pragma config(Sensor, in6,    ballDetectorBottom, sensorLineFollower)
-#pragma config(Sensor, dgtl1,  flyWheelEncoder, sensorQuadEncoder)
-#pragma config(Sensor, dgtl3,  leftBaseEncoder, sensorQuadEncoder)
-#pragma config(Sensor, dgtl5,  rightBaseEncoder, sensorQuadEncoder)
+#pragma config(Sensor, in1,    ballDetectorBottom, sensorLineFollower)
+#pragma config(Sensor, in5,    clawPot,        sensorPotentiometer)
+#pragma config(Sensor, in6,    liftPot,        sensorPotentiometer)
+#pragma config(Sensor, in7,    ballDetectorTop, sensorLineFollower)
+#pragma config(Sensor, dgtl1,  leftBaseEncoder, sensorQuadEncoder)
+#pragma config(Sensor, dgtl3,  turnerBottom,   sensorTouch)
+#pragma config(Sensor, dgtl8,  turnerTop,      sensorTouch)
+#pragma config(Sensor, dgtl9,  flyWheelEncoder, sensorQuadEncoder)
+#pragma config(Sensor, dgtl11, rightBaseEncoder, sensorQuadEncoder)
 #pragma config(Motor,  port1,           capClaw,       tmotorVex393_HBridge, openLoop)
 #pragma config(Motor,  port2,           flyWheel,      tmotorVex393HighSpeed_MC29, openLoop)
-#pragma config(Motor,  port4,           leftFrontBase, tmotorVex393TurboSpeed_MC29, PIDControl, driveLeft, encoderPort, dgtl3)
-#pragma config(Motor,  port5,           rightFrontBase, tmotorVex393TurboSpeed_MC29, PIDControl, reversed, driveRight, encoderPort, dgtl5)
-#pragma config(Motor,  port6,           rightMiddleBase, tmotorVex393TurboSpeed_MC29, PIDControl, reversed, driveRight, encoderPort, dgtl5)
-#pragma config(Motor,  port7,           leftMiddleBase, tmotorVex393TurboSpeed_MC29, PIDControl, driveLeft, encoderPort, dgtl3)
+#pragma config(Motor,  port4,           leftFrontBase, tmotorVex393TurboSpeed_MC29, openLoop, driveLeft)
+#pragma config(Motor,  port5,           rightFrontBase, tmotorVex393TurboSpeed_MC29, openLoop, reversed, driveRight)
+#pragma config(Motor,  port6,           rightMiddleBase, tmotorVex393TurboSpeed_MC29, openLoop, reversed, driveRight)
+#pragma config(Motor,  port7,           leftMiddleBase, tmotorVex393TurboSpeed_MC29, openLoop, driveLeft)
 #pragma config(Motor,  port8,           lift,          tmotorVex393HighSpeed_MC29, openLoop)
 #pragma config(Motor,  port9,           capTurner,     tmotorVex393HighSpeed_MC29, openLoop)
 #pragma config(Motor,  port10,          ballIntake,    tmotorVex393TurboSpeed_HBridge, openLoop, reversed)
@@ -104,7 +104,7 @@ task usercontrol()
 		baseController(Y_rightJoy, Y_leftJoy);
 		liftControl(liftUpBtn, liftDownBtn, liftSensor);
 		ballIntakeController(currentIntake(1), currentOuttake(1));
-		capIntakeController(currentIntake(0), currentOuttake(0));
+		capIntakeController(currentIntake(0), currentOuttake(0), clawSensor);
 		capRotateController(capRotateCWBtn, capRotateCCWBtn);
 		flyWheelController(flyWheelToggleBtn);
 	}

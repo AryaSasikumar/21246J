@@ -139,7 +139,7 @@ void ballIntakeController(int intakeBtn, int outtakeBtn)
 	}
 }
 //-----BALL_INTAKE_FUNCTIONS-----//
-                                                     //TODO: TOGGLE BUTTON FOR LIFT HOLD
+//TODO: TOGGLE BUTTON FOR LIFT HOLD
 
 //-----LIFT_CONTROL_FUNCTIONS-----//
 int liftPower[5] = {127,-90,30,10,-10}; //{upPower, downPower, capHold, regularHold, downHold}
@@ -178,7 +178,7 @@ void liftControl(int liftUp, int liftDown, int sensor)
 
 
 //-----CAP_INTAKE_FUNCTIONS-----//
-void capIntakeController(int intakeBtn, int outtakeBtn)
+void capIntakeController(int intakeBtn, int outtakeBtn, int sensor)
 {
 	if(intakeBtn == 1)
 	{
@@ -190,7 +190,14 @@ void capIntakeController(int intakeBtn, int outtakeBtn)
 	}
 	else
 	{
-		capIntakeMotor(0);
+		if(sensor <= 1900)
+		{
+			capIntakeMotor(-20);
+		}
+		else
+		{
+			capIntakeMotor(0);
+		}
 	}
 }
 //-----CAP_INTAKE_FUNCTIONS-----//
@@ -232,5 +239,24 @@ void flyWheelController(int toggleBtn)
 	{
 		flyWheelMotor(0);
 	}
+}
+float ticksPerSecond = 0;
+int count = 0;
+float containTicksPerSecond = 0;
+float flyWheelVelocity()
+{
+	if(time1[T2] >= 100)
+	{
+		ticksPerSecond = ticksPerSecond+flyWheelSensor;
+		count++;
+		clearTimer(T2);
+	}
+	containTicksPerSecond = ticksPerSecond;
+	if(count >= 10)
+	{
+		ticksPerSecond = 0;
+		return containTicksPerSecond;
+	}
+	return containTicksPerSecond;
 }
 //-----FLYWHEEL_CONTROL_FUNCTIONS-----//

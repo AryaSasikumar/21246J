@@ -38,6 +38,7 @@ void stopWithBreaks(int dir, bool useBreaks)
 		default:
 			leftBase(0);
 			rightBase(0);
+			break;
 		}
 		wait1Msec(breakTime);
 		leftBase(0);
@@ -74,6 +75,7 @@ void driveTime(int dir, int speed, int time, bool useBreaks)
 	default:
 		leftBase(0);
 		rightBase(0);
+		break;
 	}
 	wait1Msec(time);
 	stopWithBreaks(dir,useBreaks);
@@ -120,6 +122,7 @@ void driveSensor(int dir, int speed, int measurement, bool useBreaks, int timer)
 	default:
 		leftBase(0);
 		rightBase(0);
+		break;
 	}
 	stopWithBreaks(dir,useBreaks);
 }
