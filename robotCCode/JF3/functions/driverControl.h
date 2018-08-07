@@ -152,7 +152,7 @@ void ballIntakeController(int intakeBtn, int outtakeBtn, int autoBtn, int bottom
 	else if(autoBtn == 1)
 	{
 		autoIntake = !autoIntake;
-		wait1Msec(200);
+		wait1Msec(300);
 	}
 	else if(autoIntake == true)
 	{
@@ -180,7 +180,7 @@ void autoLiftControl(int sensor)
 	{
 		liftMotor(127);
 	}
-  else if(autoLift == 2 && sensor <= liftHieghtHigh)
+	else if(autoLift == 2 && sensor <= liftHieghtHigh)
 	{
 		liftMotor(127);
 	}
@@ -261,52 +261,124 @@ void capIntakeController(int intakeBtn, int outtakeBtn, int sensor)
 
 
 //-----CAP_ROTATE_FUNCTIONS-----//
-void capRotateController(int cwBtn, int ccwBtn, int regularSensor, int upsideDownSensor)
-{
-	if(cwBtn == 1 && regularSensor != 1)
+bool capRotateActivate = false;
+bool capIsFlipped = false;
+void capRotateController(int turnerBtn, int sensor)
+{/*
+	if(cwBtn == 1 && sensor <= 3430)
 	{
-		capRotateMotor(127);
+	capRotateMotor(-127);
 	}
-	else if(ccwBtn == 1 && upsideDownSensor != 1)
+	else if(ccwBtn == 1 && sensor >= 650)
 	{
-		capRotateMotor(-127);
+	capRotateMotor(127);
 	}
 	else
 	{
-		capRotateMotor(0);
+	if(sensor >= 1800)
+	{
+	capRotateMotor(10);
+	}
+	else
+	{
+	capRotateMotor(-10);
+	}
+	}*/
+
+	if(turnerBtn == 1)
+	{
+		capRotateActivate = !capRotateActivate;
+	}
+	if(capRotateActivate == true)
+	{
+		if(capIsFlipped == true)
+		{
+			if(sensor <= 3430)
+			{
+				capRotateMotor(-127);
+			}
+		}
+		else
+		{
+			if(sensor >= 650)
+			{
+				capRotateMotor(127);
+			}
+		}
+	}
+	else
+	{
+		if(sensor >= 1800)
+		{
+			capRotateMotor(10);
+		}
+		else
+		{
+			capRotateMotor(-10);
+		}
+	}
+
+	if(sensor <= 1800)
+	{
+		capIsFlipped = false;
+	}
+	else
+	{
+		capIsFlipped = true;
 	}
 }
 //-----CAP_ROTATE_FUNCTIONS-----//
 
 //-----FLYWHEEL_CONTROL_FUNCTIONS-----//
-
-
-float ticksPerSecond = 0;
-int count = 0;
-float containTicksPerSecond = 0;
-float flyWheelVelocity()
+bool flyWheelOn = false;
+float ticks = 1;
+float microSeconds = 1;
+float flyWheelSpeed = 1;
+float holdSpeed = 1;
+float flyWheelCurrentRPS()//Rotations/Second
 {
+
+	if(time1[T2] <= 100)
+	{
+		ticks = flyWheelSensor;
+		microSeconds = time1[T2]+1;
+		flyWheelSpeed = (ticks*1000)/(microSeconds*360);
+		return flyWheelSpeed;
+	}
+	else
+	{
+		flyWheelSensor = 1;
+		clearTimer(T2);
+		holdSpeed = flyWheelSpeed;
+		return flyWheelSpeed;
+	}
 
 }
 
-bool flyWheelOn = false;
-float tPS = 0;
-void flyWheelController(int toggleBtn)
+int outputSpeed = 0;
+float powerToSpeedRatio = 1.924;
+
+int flyWheelMotorSpeed(int desiredRPS)
 {
-	if(time1[T2] >= 100)
-	{
-		ticksPerSecond = ticksPerSecond+flyWheelSensor;
-		count++;
-		clearTimer(T2);
-	}
-	if(count >= 10)
-	{
-		count = 0;
-		tPS = ticksPerSecond/1000;
-		ticksPerSecond = 0;
-	}
 
+	if(flyWheelCurrentRPS() < desiredRPS) //66 rps max output
+	{
+		outputSpeed = ((powerToSpeedRatio*flyWheelCurrentRPS())+5);
+		if(outputSpeed <= 50)
+		{
+			outputSpeed = 50;
+		}
+		return outputSpeed;
+	}
+	else
+	{
+		outputSpeed = outputSpeed -(outputSpeed*0.1);
+		return outputSpeed;
+	}
+}
 
+void flyWheelController(int toggleBtn, int flyWheelRPS)
+{
 	if(toggleBtn == 1)
 	{
 		flyWheelOn = !flyWheelOn;
@@ -314,16 +386,7 @@ void flyWheelController(int toggleBtn)
 	}
 	if(flyWheelOn == true)
 	{
-		flyWheelMotor(127);
-		/*
-		if(abs(tPS) <= 170)
-		{
-			flyWheelMotor(90);
-		}
-		else
-		{
-			flyWheelMotor(10);
-		}*/
+		flyWheelMotor(flyWheelMotorSpeed(flyWheelRPS));	//Max is 60
 	}
 	else
 	{

@@ -14,7 +14,8 @@
 #define capClawCloseBtn vexRT[Btn8L]
 #define capClawOpenBtn vexRT[Btn8R]
 
-#define capRotateCWBtn vexRT[Btn7U]
-#define capRotateCCWBtn vexRT[Btn7D]
+//#define capRotateCWBtn vexRT[Btn7U]
+//#define capRotateCCWBtn vexRT[Btn7D]
+#define capRotateBtn vexRT[Btn7D]
 
 #define flyWheelToggleBtn vexRT[Btn8D]
