@@ -11,11 +11,12 @@
 #define liftDownBtn vexRT[Btn5D]
 #define liftAutoBtn vexRT[Btn7R]
 
-#define capClawCloseBtn vexRT[Btn8L]
-#define capClawOpenBtn vexRT[Btn8R]
+#define capClawCloseBtn 0//vexRT[Btn8L]
+#define capClawOpenBtn 0//vexRT[Btn8R]
 
 //#define capRotateCWBtn vexRT[Btn7U]
 //#define capRotateCCWBtn vexRT[Btn7D]
 #define capRotateBtn vexRT[Btn7D]
 
 #define flyWheelToggleBtn vexRT[Btn8D]
+#define flyWheelToggleBtnTwo vexRT[Btn8R]

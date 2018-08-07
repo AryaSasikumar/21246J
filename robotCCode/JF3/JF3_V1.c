@@ -97,7 +97,7 @@ task autonomous()
 task usercontrol()
 {
 	// User control code here, inside the loop
-  clearTimer(T2);
+	clearTimer(T2);
 	while (true)
 	{
 		directionController(changeDirectionBtn);
@@ -106,7 +106,8 @@ task usercontrol()
 		ballIntakeController(currentIntake(1), currentOuttake(1), ballAutoIntakeBtn, ballBottomSensor, ballTopSensor);
 		capIntakeController(currentIntake(0), currentOuttake(0), clawSensor);
 		capRotateController(capRotateBtn,clawTurnerSensor); //clawTurnerSensor
-		flyWheelController(flyWheelToggleBtn, 53);
+		flyWheelController(flyWheelToggleBtn, 48);
+		flyWheelController(flyWheelToggleBtnTwo, 53);
 		//Cross Cort -- 53
 		//Aginst Back Tile -- Top Flag -- 48
 		//One Tile Up -- Top Flag -- 46.5

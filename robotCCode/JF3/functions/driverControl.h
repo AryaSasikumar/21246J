@@ -253,7 +253,7 @@ void capIntakeController(int intakeBtn, int outtakeBtn, int sensor)
 		}
 		else
 		{
-			capIntakeMotor(0);
+			capIntakeMotor(-10);
 		}
 	}
 }
@@ -288,21 +288,32 @@ void capRotateController(int turnerBtn, int sensor)
 	if(turnerBtn == 1)
 	{
 		capRotateActivate = !capRotateActivate;
+		wait1Msec(150);
 	}
 	if(capRotateActivate == true)
 	{
 		if(capIsFlipped == true)
 		{
-			if(sensor <= 3430)
+			if(sensor >= 650)
 			{
-				capRotateMotor(-127);
+				capRotateMotor(127);
+			}
+			if(sensor < 650)
+			{
+				capIsFlipped = false;
+				capRotateActivate = false;
 			}
 		}
 		else
 		{
-			if(sensor >= 650)
+			if(sensor <= 3430)
 			{
-				capRotateMotor(127);
+				capRotateMotor(-127);
+			}
+			if(sensor > 3430)
+			{
+				capIsFlipped = true;
+				capRotateActivate = false;
 			}
 		}
 	}
@@ -316,15 +327,6 @@ void capRotateController(int turnerBtn, int sensor)
 		{
 			capRotateMotor(-10);
 		}
-	}
-
-	if(sensor <= 1800)
-	{
-		capIsFlipped = false;
-	}
-	else
-	{
-		capIsFlipped = true;
 	}
 }
 //-----CAP_ROTATE_FUNCTIONS-----//
