@@ -1,3 +1,5 @@
+bool flyWheelIsUpToSpeed = false;
+
 //-----DIRECTION_CONTROL_FUNCTIONS-----//
 int direction = 1;
 
@@ -123,40 +125,48 @@ void baseController(int rightJoy, int leftJoy)//Function to control base during 
 
 
 //-----BALL_INTAKE_FUNCTIONS-----//
-bool autoIntake = false;
 
-void autoIntakeControl(int bottomSensor, int topSensor)
+bool ballOneLoaded()
 {
-	if(autoIntake == true && topSensor >= 2000)
+	if(ballTopSensor <= 2000)
 	{
-		ballIntakeMotor(127);
+		return true;
 	}
-	if(topSensor < 2000)
+	else
 	{
-		autoIntake = false;
+		return false;
+	}
+}
+bool ballTwoLoaded()
+{
+	if(ballBottomSensor <= 2000)
+	{
+		return true;
+	}
+	else
+	{
+		return false;
 	}
 }
 
-void ballIntakeController(int intakeBtn, int outtakeBtn, int autoBtn, int bottomSensor, int topSensor)
+bool elevatorDisabled = false;
+
+void intakeControl(int intakeBtn, int outtakeBtn)
 {
 	if(intakeBtn == 1)
 	{
-		ballIntakeMotor(127);
-		autoIntake = false;
+		if(ballOneLoaded() == true && ballTwoLoaded() == true)
+		{
+			ballIntakeMotor(0);
+		}
+		else
+		{
+			ballIntakeMotor(127);
+		}
 	}
 	else if(outtakeBtn == 1)
 	{
 		ballIntakeMotor(-127);
-		autoIntake = false;
-	}
-	else if(autoBtn == 1)
-	{
-		autoIntake = !autoIntake;
-		wait1Msec(300);
-	}
-	else if(autoIntake == true)
-	{
-		autoIntakeControl(bottomSensor,topSensor);
 	}
 	else
 	{
@@ -164,52 +174,86 @@ void ballIntakeController(int intakeBtn, int outtakeBtn, int autoBtn, int bottom
 	}
 }
 
+//bool ballOneLoaded = false;
+//bool ballTwoLoaded = false;
+//bool elevatorDisabled = false;
+
+bool stillPressed = false;
+
+void elevatorControl(int intakeBtn, int outtakeBtn)
+{
+	if(intakeBtn == 1 && elevatorDisabled == false)
+	{
+		if(ballOneLoaded() == true)
+		{
+			ballElevatorMotor(0);
+			stillPressed = true;
+		}
+		else
+		{
+			ballElevatorMotor(127);
+		}
+	}
+	else if(intakeBtn == 0 && stillPressed == true)
+	{
+		elevatorDisabled = true;
+		stillPressed = false;
+	}
+	else if(intakeBtn == 1 && outtakeBtn == 1 && elevatorDisabled == true)
+	{
+		if(flyWheelIsUpToSpeed == true)
+		{
+			ballElevatorMotor(127);
+			if(ballOneLoaded() == false)
+			{
+				elevatorDisabled = false;
+			}
+		}
+		else
+		{
+			ballElevatorMotor(0);
+		}
+
+	}
+	else if(outtakeBtn == 1 && intakeBtn == 0)
+	{
+		ballElevatorMotor(-127);
+		if(ballOneLoaded() == false)
+		{
+			elevatorDisabled = false;
+		}
+	}
+	else
+	{
+		ballElevatorMotor(0);
+	}
+}
+
+
+
+void ballIntakeController(int intakeBtn, int outtakeBtn)
+{
+	elevatorControl(intakeBtn, outtakeBtn);
+	intakeControl(intakeBtn, outtakeBtn);
+}
 //-----BALL_INTAKE_FUNCTIONS-----//
-//TODO: TOGGLE BUTTON FOR LIFT HOLD
+
 
 //-----LIFT_CONTROL_FUNCTIONS-----//
 int liftPower[5] = {127,-90,30,10,-10}; //{upPower, downPower, capHold, regularHold, downHold}
 int liftHieghtLow = 990;
 int liftHieghtHigh = 1400;
 bool liftHoldToggle = false;
-int autoLift = 0;
 
-void autoLiftControl(int sensor)
-{
-	if(autoLift == 1 && sensor <= liftHieghtLow)
-	{
-		liftMotor(127);
-	}
-	else if(autoLift == 2 && sensor <= liftHieghtHigh)
-	{
-		liftMotor(127);
-	}
-	else if(autoLift > 2 && sensor > liftHieghtHigh)
-	{
-		autoLift = 0;
-	}
-}
-
-void liftControl(int liftUp, int liftDown, int sensor, int autoBtn)
+void liftControl(int liftUp, int liftDown, int sensor)
 {
 	if(liftUp == 1)
 	{
 		liftMotor(liftPower[0]);
-		autoLift = 0;
 	}
 	else if(liftDown == 1)
 	{
 		liftMotor(liftPower[1]);
-		autoLift = 0;
-	}
-	else if(autoBtn == 1)
-	{
-		autoLift++;
-		wait1Msec(200);
-	}
-	else if(autoLift >= 1)
-	{
-		autoLiftControl(sensor);
 	}
 	else
 	{
@@ -264,27 +308,7 @@ void capIntakeController(int intakeBtn, int outtakeBtn, int sensor)
 bool capRotateActivate = false;
 bool capIsFlipped = false;
 void capRotateController(int turnerBtn, int sensor)
-{/*
-	if(cwBtn == 1 && sensor <= 3430)
-	{
-	capRotateMotor(-127);
-	}
-	else if(ccwBtn == 1 && sensor >= 650)
-	{
-	capRotateMotor(127);
-	}
-	else
-	{
-	if(sensor >= 1800)
-	{
-	capRotateMotor(10);
-	}
-	else
-	{
-	capRotateMotor(-10);
-	}
-	}*/
-
+{
 	if(turnerBtn == 1)
 	{
 		capRotateActivate = !capRotateActivate;
@@ -333,6 +357,7 @@ void capRotateController(int turnerBtn, int sensor)
 
 //-----FLYWHEEL_CONTROL_FUNCTIONS-----//
 bool flyWheelOn = false;
+
 float ticks = 1;
 float microSeconds = 1;
 float flyWheelSpeed = 1;
@@ -374,9 +399,11 @@ int flyWheelMotorSpeed(int desiredRPS)
 	}
 	else
 	{
+		flyWheelIsUpToSpeed = true;
 		outputSpeed = outputSpeed -(outputSpeed*0.1);
 		return outputSpeed;
 	}
+
 }
 
 void flyWheelController(int toggleBtn, int flyWheelRPS)
@@ -392,6 +419,8 @@ void flyWheelController(int toggleBtn, int flyWheelRPS)
 	}
 	else
 	{
+		flyWheelIsUpToSpeed = false;
+		elevatorDisabled = false;
 		flyWheelMotor(0);
 	}
 }

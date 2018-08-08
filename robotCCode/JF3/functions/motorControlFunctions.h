@@ -1,11 +1,11 @@
 //-----BASE_CONNECTION_FUNCTIONS-----//
-void leftBase(int power)//Function used to control all the motors on the left side of the base at once.
+void leftBase(float power)//Function used to control all the motors on the left side of the base at once.
 {
 	motor[leftMiddleBase] = power;
 	motor[leftFrontBase] = power;
 }
 
-void rightBase(int power)//Function used to control all the motors on the right side of the base at once.
+void rightBase(float power)//Function used to control all the motors on the right side of the base at once.
 {
 	motor[rightMiddleBase] = power;
 	motor[rightFrontBase] = power;
@@ -17,6 +17,11 @@ void rightBase(int power)//Function used to control all the motors on the right 
 void ballIntakeMotor(int power)
 {
 	motor[ballIntake] = power;
+}
+
+void ballElevatorMotor(int power)
+{
+	motor[ballElevator] = power;
 }
 //-----BALL_INTAKE_FUNCTIONS-----//
 
