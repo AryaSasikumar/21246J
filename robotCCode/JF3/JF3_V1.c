@@ -34,6 +34,10 @@
 //Main competition background code...do not modify!
 #include "Vex_Competition_Includes.c"
 
+#pragma DebuggerWindows("Globals")
+#pragma DebuggerWindows("Motors")
+
+float showError = 0;
 #include "functions/buttonDefinitions.h"
 #include "functions/sensorDefinitions.h"
 #include "functions/motorControlFunctions.h"
@@ -80,16 +84,61 @@ void pre_auton()
 
 task autonomous()
 {
-	flyWheelRev(on,48);
-	drivePID(forwards, 48);// (Direction:"forwards, backwards", Distance: inches)
+	shootingSpeed = 48;
+	revUp = on;
+	startTask(autoFlyWheel);
+	startTask(autoBallIntake);
+	drivePID(forwards, 46);
+
+	drivePID(backwards, 36.5);
+	stopTask(autoBallIntake);
 	driveTurnPID(right, 90);
-	autoBallIntake(1, 0);
-	autoBallIntake(0, 0);
-	autoBallIntake(1, 1);
-	flyWheelRev(off,0);
+
+	drivePID(forwards, 13);
+	pew();
+	drivePID(forwards, 15.5);
+	pew();
+	revUp = off;
+	wait1Msec(500);
+	driveTurnPID(right, 12);
+	drivePID(forwards, 15);
+	driveTurnPID(left, 12);
+	drivePID(forwards, 17);
+	stopTask(autoFlyWheel);
+	drivePID(backwards, 24);
+
+/*
+	shootingSpeed = 33.5;
+	revUp = on;
+	startTask(autoFlyWheel);
+
+	pew();
+	wait1Msec(500);
+	pew();
+	revUp = off;
+	stopTask(autoFlyWheel);
+	driveTurnPID(right, 3);
+	ballIntakeMotor(100);
+  ballElevatorMotor(100);
+	drivePID(forwards, 46);
+	ballIntakeMotor(0);
+  ballElevatorMotor(0);
+*/
+
+	/* // front tile top flag
+	shootingSpeed = 41;
+	revUp = on;
+	startTask(autoFlyWheel);
+
+	pew();
+	wait1Msec(500);
+	pew();
+	revUp = off;
+	stopTask(autoFlyWheel);
+	*/
 	while(true)
 	{
-
+		stopTask(autoFlyWheel);
 	}
 }
 

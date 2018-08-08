@@ -245,6 +245,7 @@ int liftHieghtLow = 990;
 int liftHieghtHigh = 1400;
 bool liftHoldToggle = false;
 
+
 void liftControl(int liftUp, int liftDown, int sensor)
 {
 	if(liftUp == 1)
@@ -281,11 +282,16 @@ void liftControl(int liftUp, int liftDown, int sensor)
 //-----CAP_INTAKE_FUNCTIONS-----//
 void capIntakeController(int intakeBtn, int outtakeBtn, int sensor)
 {
-	if(intakeBtn == 1 && sensor >= 1500)
+
+	if(intakeBtn == 1 && outtakeBtn == 0 && sensor >= 1500)
 	{
 		capIntakeMotor(127);
 	}
-	else if(outtakeBtn == 1 && sensor <= 2100)
+	else if(outtakeBtn == 1 && intakeBtn == 0 && sensor <= 1900)
+	{
+		capIntakeMotor(-127);
+	}
+	else if(intakeBtn == 1 && outtakeBtn == 1 && sensor <= 2100)
 	{
 		capIntakeMotor(-127);
 	}
@@ -391,9 +397,9 @@ int flyWheelMotorSpeed(int desiredRPS)
 	if(flyWheelCurrentRPS() < desiredRPS) //66 rps max output
 	{
 		outputSpeed = ((powerToSpeedRatio*flyWheelCurrentRPS())+5);
-		if(outputSpeed <= 50)
+		if(outputSpeed <= 70)
 		{
-			outputSpeed = 50;
+			outputSpeed = 70;
 		}
 		return outputSpeed;
 	}

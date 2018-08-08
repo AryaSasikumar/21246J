@@ -69,7 +69,7 @@ void drivePID(int dir, float pidRequestedValue)
       if( pidRunning )
           {
           // Read the sensor value and scale
-          pidSensorCurrentValue = sensorAverage() * PID_DISTANCE_SCALE;
+          pidSensorCurrentValue = dir*sensorAverage() * PID_DISTANCE_SCALE;
 
           // calculate error
           pidError = pidSensorCurrentValue - pidRequestedValue;
@@ -102,6 +102,7 @@ void drivePID(int dir, float pidRequestedValue)
           // send to motor
          	leftBase(pidDrive * PID_MOTOR_SCALE);
           rightBase(pidDrive * PID_MOTOR_SCALE);
+          showError = pidError;
           if(abs(pidError) <= 2)
           {
           	pidRunning = !pidRunning;
@@ -137,8 +138,8 @@ void driveTurnPID(int dir, float pidRequestedValue)
 	pidRunning = true;
 
 	pid_Kp = 20;//10
-	pid_Ki = 0.1;
-	pid_Kd = 10;//9.8
+	pid_Ki = 0.02;
+	pid_Kd = 25;//9.8
 
 	float  pidSensorCurrentValue;
 
@@ -197,7 +198,8 @@ void driveTurnPID(int dir, float pidRequestedValue)
           pidDrive = dir*pidDrive;
          	leftBase(pidDrive * PID_MOTOR_SCALE);
           rightBase(-pidDrive * PID_MOTOR_SCALE);
-          if(abs(pidError) <= 0.0001)
+          showError = pidError;
+          if(abs(pidError) <= 0.25)//.0001
           {
           	pidRunning = !pidRunning;
           }
@@ -211,15 +213,20 @@ void driveTurnPID(int dir, float pidRequestedValue)
           pidDerivative = 0;
           leftBase(0);
           rightBase(0);
-          }
+       }
 
       // Run at 50Hz
       wait1Msec(25);
       }
+      // clear all
+      pidError      = 0;
+      pidLastError  = 0;
+      pidIntegral   = 0;
+      pidDerivative = 0;
+      leftBase(0);
+      rightBase(0);
 
 }
-
-
 
 
 
@@ -227,34 +234,70 @@ void driveTurnPID(int dir, float pidRequestedValue)
 
 
 //-----FLYWHEEL_CONTROL_FUNCTIONS-----//
+
+float shootingSpeed = 48;
 bool on = true;
-bool off = false
-void flyWheelRev(bool state,int flyWheelRPS)
+bool off = false;
+bool revUp = off;
+task autoFlyWheel()
 {
-	if(state == true)
+	while(true)
 	{
-		flyWheelOn = true;
-		flyWheelMotor(flyWheelMotorSpeed(flyWheelRPS));	//Max is 60
-	}
-	else
-	{
-		flyWheelOn = false;
-		flyWheelIsUpToSpeed = false;
-		elevatorDisabled = false;
-		flyWheelMotor(0);
+		if(revUp == on)
+		{
+			flyWheelOn = true;
+			flyWheelMotor(flyWheelMotorSpeed(shootingSpeed));	//Max is 60
+		}
+		else
+		{
+			flyWheelOn = false;
+			flyWheelIsUpToSpeed = false;
+			elevatorDisabled = false;
+			flyWheelMotor(0);
+		}
 	}
 }
 
+void pew()
+{
+	waitUntil(flyWheelIsUpToSpeed == true);
+	ballIntakeMotor(100);
+	ballElevatorMotor(100);
+	wait1Msec(700);
+	ballIntakeMotor(0);
+	ballElevatorMotor(0);
+
+}
 //-----FLYWHEEL_CONTROL_FUNCTIONS-----//
 
 
 
 
 //-----BALL_INTAKE_FUNCTIONS-----//
-
-void autoBallIntake(int intakeBtn, int outtakeBtn)
+/*void autoBallIntake()
 {
-	elevatorControl(intakeBtn, outtakeBtn);
-	intakeControl(intakeBtn, outtakeBtn);
+	while(ballOneLoaded() == false || ballTwoLoaded() == false)
+	{
+		intakeControl(1, 0);
+	}
+	intakeControl(0, 0);
+}*/
+void autoBallOuttake()
+{
+	while(ballOneLoaded() == true || ballTwoLoaded() == true)
+	{
+		intakeControl(0, 1);
+	}
+	intakeControl(0, 0);
 }
+
+task autoBallIntake()
+{
+	while(true)
+	{
+		ballIntakeController(1, 0);
+	}
+}
+
+
 //-----BALL_INTAKE_FUNCTIONS-----//
