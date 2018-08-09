@@ -6,4 +6,4 @@
 #define ballBottomSensor SensorValue[ballDetectorBottom]
 #define leftBaseSensor SensorValue[leftBaseEncoder]
 #define rightBaseSensor SensorValue[rightBaseEncoder]
-#define tipSensor SensorValue[tipGyro]
+#define baseGyroSensor SensorValue[baseGyro]

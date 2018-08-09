@@ -1,3 +1,4 @@
+#pragma config(Sensor, in2,    baseGyro,       sensorGyro)
 #pragma config(Sensor, in3,    ballDetectorBottom, sensorLineFollower)
 #pragma config(Sensor, in4,    turnerSensor,   sensorPotentiometer)
 #pragma config(Sensor, in5,    clawPot,        sensorPotentiometer)
@@ -56,18 +57,7 @@ float showError = 0;
 
 void pre_auton()
 {
-	// Set bStopTasksBetweenModes to false if you want to keep user created tasks
-	// running between Autonomous and Driver controlled modes. You will need to
-	// manage all user created tasks if set to false.
-	bStopTasksBetweenModes = true;
 
-	// Set bDisplayCompetitionStatusOnLcd to false if you don't want the LCD
-	// used by the competition include file, for example, you might want
-	// to display your team name on the LCD in this function.
-	// bDisplayCompetitionStatusOnLcd = false;
-
-	// All activities that occur before the competition starts
-	// Example: clearing encoders, setting servo positions, ...
 }
 
 /*---------------------------------------------------------------------------*/
@@ -87,6 +77,11 @@ task autonomous()
 	shootingSpeed = 48;
 	revUp = on;
 	startTask(autoFlyWheel);
+
+	SensorType[in2] = sensorGyro;
+ 	wait1Msec(1150);
+
+
 	startTask(autoBallIntake);
 	drivePID(forwards, 46);
 

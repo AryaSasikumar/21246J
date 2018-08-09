@@ -1,5 +1,5 @@
 #define PID_DISTANCE_SCALE (PI/360) //inches/tick
-#define PID_ANGLE_SCALE    ((360*6*4*PI)/(24*360*13.5*PI))      //degrees/tick
+#define PID_ANGLE_SCALE    (10)  ////10ths of degrees ((360*6*4*PI)/(24*360*13.5*PI))
 #define PID_MOTOR_SCALE     -1
 
 	//   1 rotation      24 teeth      360 ticks     ///  14*pi inches    1 rotation
@@ -135,6 +135,7 @@ int left = -1;
 
 void driveTurnPID(int dir, float pidRequestedValue)
 {
+
 	pidRunning = true;
 
 	pid_Kp = 20;//10
@@ -150,8 +151,8 @@ void driveTurnPID(int dir, float pidRequestedValue)
   float  pidDrive;
 
   // If we are using an encoder then clear it
-  leftBaseSensor = 0;
-  rightBaseSensor = 0;
+  baseGyroSensor = 0;
+  wait1Msec(100);
 
 
   // Init the variables - thanks Glenn :)
@@ -164,7 +165,7 @@ void driveTurnPID(int dir, float pidRequestedValue)
       if( pidRunning )
           {
           // Read the sensor value and scale
-          pidSensorCurrentValue = sensorAverage() * PID_ANGLE_SCALE;
+          pidSensorCurrentValue = baseGyroSensor * PID_ANGLE_SCALE;
 
           // calculate error
           pidError = pidSensorCurrentValue - pidRequestedValue;
