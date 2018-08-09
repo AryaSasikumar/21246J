@@ -74,15 +74,18 @@ void pre_auton()
 
 task autonomous()
 {
-	shootingSpeed = 48;
-	revUp = on;
-	startTask(autoFlyWheel);
+	//shootingSpeed = 48;
+	//revUp = on;
+	//startTask(autoFlyWheel);
 
 	SensorType[in2] = sensorGyro;
  	wait1Msec(1150);
 
+ 	driveTurnPID(right, 90);
+ 	driveTurnPID(left, 90);
 
-	startTask(autoBallIntake);
+
+	/*startTask(autoBallIntake);
 	drivePID(forwards, 46);
 
 	drivePID(backwards, 36.5);
@@ -101,6 +104,9 @@ task autonomous()
 	drivePID(forwards, 17);
 	stopTask(autoFlyWheel);
 	drivePID(backwards, 24);
+
+
+	*/
 
 /*
 	shootingSpeed = 33.5;
