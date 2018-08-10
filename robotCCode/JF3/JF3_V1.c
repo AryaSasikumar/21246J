@@ -35,14 +35,38 @@
 //Main competition background code...do not modify!
 #include "Vex_Competition_Includes.c"
 
-#pragma DebuggerWindows("Globals")
-#pragma DebuggerWindows("Motors")
+//#pragma DebuggerWindows("Globals")
+//#pragma DebuggerWindows("Motors")
 
 float showError = 0;
-#include "functions/buttonDefinitions.h"
-#include "functions/sensorDefinitions.h"
+
+#define Y_leftJoy vexRT[Ch3]
+#define Y_rightJoy vexRT[Ch2]
+#define ballIntakeBtn vexRT[Btn6D]
+#define ballOuttakeBtn vexRT[Btn6U]
+#define liftUpBtn vexRT[Btn5U]
+#define liftDownBtn vexRT[Btn5D]
+#define capClawCloseBtn 0
+#define capClawOpenBtn 0
+#define capRotateBtn vexRT[Btn7D]
+#define changeDirectionBtn vexRT[Btn7L]
+#define flyWheelToggleBtn vexRT[Btn8D]
+
+
+#define liftSensor SensorValue[liftPot]
+#define flyWheelSensor SensorValue[flyWheelEncoder]
+#define clawSensor SensorValue[clawPot]
+#define clawTurnerSensor SensorValue[turnerSensor]
+#define ballTopSensor SensorValue[ballDetectorTop]
+#define ballBottomSensor SensorValue[ballDetectorBottom]
+#define leftBaseSensor SensorValue[leftBaseEncoder]
+#define rightBaseSensor SensorValue[rightBaseEncoder]
+#define baseGyroSensor SensorValue[baseGyro]
+
+
 #include "functions/motorControlFunctions.h"
 #include "functions/driverControl.h"
+#include "functions/autonomusTasks.h"
 #include "functions/autonomusFunctions.h"
 
 /*---------------------------------------------------------------------------*/
@@ -57,7 +81,8 @@ float showError = 0;
 
 void pre_auton()
 {
-
+	SensorType[in2] = sensorGyro;
+	wait1Msec(1100);
 }
 
 /*---------------------------------------------------------------------------*/
@@ -74,41 +99,32 @@ void pre_auton()
 
 task autonomous()
 {
-	//shootingSpeed = 48;
-	//revUp = on;
-	//startTask(autoFlyWheel);
+	capIntakeMotor(-10);
+	liftMotor(-15);
+	shootingSpeed = 48;
+	revUp = on;
+	startTask(autoFlyWheel);
+	startTask(autoBallIntake);
+	drivePID(forwards, 47);
 
-	SensorType[in2] = sensorGyro;
- 	wait1Msec(1150);
+	drivePID(backwards, 40.3);
 
- 	driveTurnPID(right, 90);
- 	driveTurnPID(left, 90);
-
-
-	/*startTask(autoBallIntake);
-	drivePID(forwards, 46);
-
-	drivePID(backwards, 36.5);
-	stopTask(autoBallIntake);
-	driveTurnPID(right, 90);
-
-	drivePID(forwards, 13);
+	driveTurnPID(left, 91.5);
+  stopTask(autoBallIntake);
+	drivePID(forwards, 12);
 	pew();
-	drivePID(forwards, 15.5);
+	drivePID(forwards, 15.6);
 	pew();
 	revUp = off;
-	wait1Msec(500);
-	driveTurnPID(right, 12);
-	drivePID(forwards, 15);
-	driveTurnPID(left, 12);
-	drivePID(forwards, 17);
+	driveTurnPID(left, 23);
+	drivePID(forwards, 25);
 	stopTask(autoFlyWheel);
 	drivePID(backwards, 24);
 
 
-	*/
 
-/*
+
+	/*
 	shootingSpeed = 33.5;
 	revUp = on;
 	startTask(autoFlyWheel);
@@ -120,11 +136,11 @@ task autonomous()
 	stopTask(autoFlyWheel);
 	driveTurnPID(right, 3);
 	ballIntakeMotor(100);
-  ballElevatorMotor(100);
+	ballElevatorMotor(100);
 	drivePID(forwards, 46);
 	ballIntakeMotor(0);
-  ballElevatorMotor(0);
-*/
+	ballElevatorMotor(0);
+	*/
 
 	/* // front tile top flag
 	shootingSpeed = 41;
