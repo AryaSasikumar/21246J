@@ -51,7 +51,8 @@ float showError = 0;
 #define capRotateBtn vexRT[Btn7D]
 #define changeDirectionBtn vexRT[Btn7L]
 #define flyWheelToggleBtn vexRT[Btn8D]
-
+#define pewBtn vexRT[Btn8R]
+#define pewPewBtn vexRT[Btn8U]
 
 #define liftSensor SensorValue[liftPot]
 #define flyWheelSensor SensorValue[flyWheelEncoder]
@@ -68,6 +69,7 @@ float showError = 0;
 #include "functions/driverControl.h"
 #include "functions/autonomusTasks.h"
 #include "functions/autonomusFunctions.h"
+#include "functions/autonRoutine.h"
 
 /*---------------------------------------------------------------------------*/
 /*                          Pre-Autonomous Functions                         */
@@ -99,60 +101,7 @@ void pre_auton()
 
 task autonomous()
 {
-	capIntakeMotor(-10);
-	liftMotor(-15);
-	shootingSpeed = 48;
-	revUp = on;
-	startTask(autoFlyWheel);
-	startTask(autoBallIntake);
-	drivePID(forwards, 47);
-
-	drivePID(backwards, 40.3);
-
-	driveTurnPID(left, 91.5);
-  stopTask(autoBallIntake);
-	drivePID(forwards, 12);
-	pew();
-	drivePID(forwards, 15.6);
-	pew();
-	revUp = off;
-	driveTurnPID(left, 23);
-	drivePID(forwards, 25);
-	stopTask(autoFlyWheel);
-	drivePID(backwards, 24);
-
-
-
-
-	/*
-	shootingSpeed = 33.5;
-	revUp = on;
-	startTask(autoFlyWheel);
-
-	pew();
-	wait1Msec(500);
-	pew();
-	revUp = off;
-	stopTask(autoFlyWheel);
-	driveTurnPID(right, 3);
-	ballIntakeMotor(100);
-	ballElevatorMotor(100);
-	drivePID(forwards, 46);
-	ballIntakeMotor(0);
-	ballElevatorMotor(0);
-	*/
-
-	/* // front tile top flag
-	shootingSpeed = 41;
-	revUp = on;
-	startTask(autoFlyWheel);
-
-	pew();
-	wait1Msec(500);
-	pew();
-	revUp = off;
-	stopTask(autoFlyWheel);
-	*/
+	backBlueAuton();
 	while(true)
 	{
 		stopTask(autoFlyWheel);

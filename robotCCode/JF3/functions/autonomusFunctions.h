@@ -263,7 +263,7 @@ void autoCapIntake(int dir)
 	{
 		capIntakeMotor(127);
 	}
-	else if(dir == openClaw && clawSensor <= 1900)
+	else if(dir == openClaw && clawSensor <= 2000)
 	{
 		capIntakeMotor(-127);
 	}
@@ -286,7 +286,7 @@ void autoCapIntake(int dir)
 void autoCapRotate()
 {
 	capRotateActivate = true;
-	if(capRotateActivate == true)
+	while(capRotateActivate == true)
 	{
 		if(capIsFlipped == true)
 		{
@@ -313,8 +313,6 @@ void autoCapRotate()
 			}
 		}
 	}
-	else
-	{
 		if(clawTurnerSensor >= 1800)
 		{
 			capRotateMotor(10);
@@ -323,7 +321,6 @@ void autoCapRotate()
 		{
 			capRotateMotor(-10);
 		}
-	}
 }
 //-----CAP_ROTATE_FUNCTIONS-----//
 

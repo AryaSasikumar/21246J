@@ -199,7 +199,7 @@ void elevatorControl(int intakeBtn, int outtakeBtn)
 		elevatorDisabled = true;
 		stillPressed = false;
 	}
-	else if(intakeBtn == 1 && outtakeBtn == 1 && elevatorDisabled == true)
+	else if(pewBtn == 1)
 	{
 		if(flyWheelIsUpToSpeed == true)
 		{
@@ -215,6 +215,7 @@ void elevatorControl(int intakeBtn, int outtakeBtn)
 		}
 
 	}
+
 	else if(outtakeBtn == 1 && intakeBtn == 0)
 	{
 		ballElevatorMotor(-127);
