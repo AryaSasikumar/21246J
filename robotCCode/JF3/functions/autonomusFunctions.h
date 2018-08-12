@@ -233,10 +233,92 @@ void driveTurnPID(int dir, float pidRequestedValue)
 
 }
 
+int breakSpeed = 127;
+int breakTime = 10;
+
+void stopWithBreaks(int dir, bool useBreaks)
+{
+	if(useBreaks == true)
+	{
+		switch(dir)
+		{
+		case 1:
+			leftBase(-breakSpeed);
+			rightBase(-breakSpeed);
+			break;
+		case 2:
+			leftBase(breakSpeed);
+			rightBase(breakSpeed);
+			break;
+		case 3:
+			leftBase(-breakSpeed);
+			rightBase(breakSpeed);
+			break;
+		case 4:
+			leftBase(breakSpeed);
+			rightBase(-breakSpeed);
+			break;
+		default:
+			leftBase(0);
+			rightBase(0);
+		}
+		wait1Msec(breakTime);
+		leftBase(0);
+		rightBase(0);
+	}
+	else
+	{
+		leftBase(0);
+		rightBase(0);
+	}
+}
 
 
 
 
+//-----Non_Pid_Functions-----//
+
+void driveSensor(int dir, int speed, int measurement, bool useBreaks, int timer)
+{
+	clearTimer(T1);
+	rightBaseSensor = 0;
+	leftBaseSensor = 0;
+	switch(dir)
+	{
+	case 1:
+		while(rightBaseSensor <= measurement || leftBaseSensor <= measurement || time1[T1] <= timer)
+		{
+			leftBase(speed);
+			rightBase(speed);
+		}
+		break;
+	case 2:
+		while(rightBaseSensor >= measurement || leftBaseSensor >= measurement || time1[T1] <= timer)
+		{
+			leftBase(-speed);
+			rightBase(-speed);
+		}
+		break;
+	case 3:
+		while(rightBaseSensor >= measurement || leftBaseSensor <= measurement || time1[T1] <= timer)
+		{
+			leftBase(speed);
+			rightBase(-speed);
+		}
+		break;
+	case 4:
+		while(rightBaseSensor <= measurement || leftBaseSensor >= measurement || time1[T1] <= timer)
+		{
+			leftBase(-speed);
+			rightBase(speed);
+		}
+		break;
+	default:
+		leftBase(0);
+		rightBase(0);
+	}
+	stopWithBreaks(dir,useBreaks);
+}
 
 //-----FLYWHEEL_CONTROL_FUNCTIONS-----//
 void pew()
@@ -313,14 +395,14 @@ void autoCapRotate()
 			}
 		}
 	}
-		if(clawTurnerSensor >= 1800)
-		{
-			capRotateMotor(10);
-		}
-		else
-		{
-			capRotateMotor(-10);
-		}
+	if(clawTurnerSensor >= 1800)
+	{
+		capRotateMotor(10);
+	}
+	else
+	{
+		capRotateMotor(-10);
+	}
 }
 //-----CAP_ROTATE_FUNCTIONS-----//
 
