@@ -180,10 +180,12 @@ void intakeControl(int intakeBtn, int outtakeBtn)
 
 bool stillPressed = false;
 
-void elevatorControl(int intakeBtn, int outtakeBtn)
+void elevatorControl(int intakeBtn, int outtakeBtn, int shootTwoInOneBtn)
 {
 	if(intakeBtn == 1 && elevatorDisabled == false)
 	{
+		flySpeed = highFW;
+		shootingSpeed = highFW;
 		if(ballOneLoaded() == true)
 		{
 			ballElevatorMotor(0);
@@ -201,6 +203,7 @@ void elevatorControl(int intakeBtn, int outtakeBtn)
 	}
 	else if(pewBtn == 1)
 	{
+		flySpeed = 48;
 		if(flyWheelIsUpToSpeed == true)
 		{
 			ballElevatorMotor(127);
@@ -213,8 +216,53 @@ void elevatorControl(int intakeBtn, int outtakeBtn)
 		{
 			ballElevatorMotor(0);
 		}
-
 	}
+	else if(shootTwoInOneBtn == 1)
+	{
+		if(ballOneLoaded() == true || ballTwoLoaded() == true)
+		{
+			flySpeed = highFW;
+			shootingSpeed = flySpeed;
+			elevatorDisabled = false;
+			if(flyWheelIsUpToSpeed == true)
+			{
+				ballElevatorMotor(127);
+			}
+		}
+		else if(ballOneLoaded() == false || ballTwoLoaded() == true)
+		{
+			flySpeed = lowFW;
+			shootingSpeed = flySpeed;
+			elevatorDisabled = false;
+			if(flyWheelIsUpToSpeed == true)
+			{
+				ballElevatorMotor(127);
+			}
+		}
+		else if(ballOneLoaded() == true || ballTwoLoaded() == false)
+		{
+			flySpeed = lowFW;
+			shootingSpeed = flySpeed;
+			elevatorDisabled = false;
+			if(flyWheelIsUpToSpeed == true)
+			{
+				ballElevatorMotor(127);
+			}
+		}
+		else if(ballOneLoaded() == false && ballTwoLoaded() == false)
+		{
+			flySpeed = highFW;
+			shootingSpeed = flySpeed;
+			elevatorDisabled = false;
+			ballElevatorMotor(127);
+		}
+		else
+		{
+			ballElevatorMotor(0);
+		}
+	}
+
+
 
 	else if(outtakeBtn == 1 && intakeBtn == 0)
 	{
@@ -232,9 +280,9 @@ void elevatorControl(int intakeBtn, int outtakeBtn)
 
 
 
-void ballIntakeController(int intakeBtn, int outtakeBtn)
+void ballIntakeController(int intakeBtn, int outtakeBtn, int shootTwoInOneBtn)
 {
-	elevatorControl(intakeBtn, outtakeBtn);
+	elevatorControl(intakeBtn, outtakeBtn, shootTwoInOneBtn);
 	intakeControl(intakeBtn, outtakeBtn);
 }
 //-----BALL_INTAKE_FUNCTIONS-----//

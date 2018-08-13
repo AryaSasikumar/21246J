@@ -41,7 +41,7 @@ int sensorAverage()
 
 int forwards = 1;
 int backwards = -1;
-void drivePID(int dir, float pidRequestedValue)
+void drivePID(int dir, float pidRequestedValue, int cancelTimer)
 {
 	pid_Kp = 15.0;
 	pid_Ki = 0.004;
@@ -66,8 +66,8 @@ void drivePID(int dir, float pidRequestedValue)
 	// Init the variables - thanks Glenn :)
 	pidLastError  = 0;
 	pidIntegral   = 0;
-
-	while( pidRunning )
+	clearTimer(T4);
+	while( pidRunning && time1[T4] <= cancelTimer)
 	{
 		// Is PID control active ?
 		if( pidRunning )
@@ -137,7 +137,7 @@ void drivePID(int dir, float pidRequestedValue)
 int right = 1;
 int left = -1;
 
-void driveTurnPID(int dir, float pidRequestedValue)
+void driveTurnPID(int dir, float pidRequestedValue, int cancelTimer)
 {
 
 	pidRunning = true;
@@ -163,7 +163,8 @@ void driveTurnPID(int dir, float pidRequestedValue)
 	pidLastError  = 0;
 	pidIntegral   = 0;
 
-	while( pidRunning )
+	clearTimer(T4);
+	while( pidRunning && time1[T4] <= cancelTimer)
 	{
 		// Is PID control active ?
 		if( pidRunning )
@@ -282,7 +283,7 @@ void clearEncoders()
 {
 	SensorValue[rightBaseSensor] = 0;
 	SensorValue[leftBaseSensor] = 0;
-	baseGyroSensor = 0
+	baseGyroSensor = 0;
 }
 
 void fwds(int distance, int speed, int brake, int wait, int timer)

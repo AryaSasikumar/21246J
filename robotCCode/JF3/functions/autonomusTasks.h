@@ -1,5 +1,5 @@
 //-----FLYWHEEL_CONTROL_TASK-----//
-float shootingSpeed = 48;
+
 bool on = true;
 bool off = false;
 bool revUp = off;
@@ -30,7 +30,7 @@ task autoBallIntake()
 {
 	while(true)
 	{
-		ballIntakeController(1, 0);
+		ballIntakeController(1, 0, 0);
 	}
 }
 
@@ -38,7 +38,7 @@ task autoBallOuttake()
 {
 	while(true)
 	{
-		ballIntakeController(0, 1);
+		ballIntakeController(0, 1, 0);
 	}
 }
 

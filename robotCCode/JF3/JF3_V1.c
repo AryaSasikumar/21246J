@@ -28,7 +28,6 @@
 
 // This code is for the VEX cortex platform
 #pragma platform(VEX2)
-
 // Select Download method as "competition"
 #pragma competitionControl(Competition)
 
@@ -39,6 +38,11 @@
 //#pragma DebuggerWindows("Motors")
 
 float showError = 0;
+float flySpeed = 42;
+float highFW = 42;
+float lowFW = 31;
+
+float shootingSpeed = 42;
 
 #define Y_leftJoy vexRT[Ch3]
 #define Y_rightJoy vexRT[Ch2]
@@ -101,7 +105,8 @@ void pre_auton()
 
 task autonomous()
 {
-	backBlueAuton();
+	frontRedAuton();
+	//backBlueAuton();
 	while(true)
 	{
 		stopTask(autoFlyWheel);
@@ -122,15 +127,17 @@ task usercontrol()
 {
 	// User control code here, inside the loop
 	clearTimer(T2);
+	highFW = 42;
+  lowFW = 31;
 	while (true)
 	{
 		directionController(changeDirectionBtn);
 		baseController(Y_rightJoy, Y_leftJoy);
 		liftControl(liftUpBtn, liftDownBtn, liftSensor);
-		ballIntakeController(currentIntake(1), currentOuttake(1));
+		ballIntakeController(currentIntake(1), currentOuttake(1), pewPewBtn);
 		capIntakeController(currentIntake(0), currentOuttake(0), clawSensor);
 		capRotateController(capRotateBtn,clawTurnerSensor); //clawTurnerSensor
-		flyWheelController(flyWheelToggleBtn, 48);
+		flyWheelController(flyWheelToggleBtn, flySpeed);
 		//Cross Cort -- 53
 		//Aginst Back Tile -- Top Flag -- 48
 		//One Tile Up -- Top Flag -- 46.5
