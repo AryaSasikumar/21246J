@@ -1,24 +1,25 @@
 void frontRedAuton()
 {
-	capIntakeMotor(-10);
+	/*capIntakeMotor(-10);
 	liftMotor(-15);
 	shootingSpeed = 48;
 	revUp = on;
 	startTask(autoFlyWheel);
-	startTask(autoBallIntake);
-	drivePID(forwards, 47);
-	drivePID(backwards, 40.3);
-	driveTurnPID(left, 91.5);
-  stopTask(autoBallIntake);
-	drivePID(forwards, 12);
+	startTask(autoBallIntake);*/
+	fwds(3000, 127, 15, 50, 2000)
+	//drivePID(forwards, 47);
+	//drivePID(backwards, 40.3);
+	//driveTurnPID(left, 91.5);
+  /*stopTask(autoBallIntake);
+	//drivePID(forwards, 12);
 	pew();
-	drivePID(forwards, 15.6);
+	//drivePID(forwards, 15.6);
 	pew();
 	revUp = off;
-	driveTurnPID(left, 23);
-	drivePID(forwards, 25);
+	//driveTurnPID(left, 23);
+	//drivePID(forwards, 25);
 	stopTask(autoFlyWheel);
-	drivePID(backwards, 24);
+	//drivePID(backwards, 24);*/
 }
 
 void backBlueAuton()

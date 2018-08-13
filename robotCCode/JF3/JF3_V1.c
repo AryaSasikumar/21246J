@@ -101,7 +101,7 @@ void pre_auton()
 
 task autonomous()
 {
-	backBlueAuton();
+	frontRedAuton();
 	while(true)
 	{
 		stopTask(autoFlyWheel);

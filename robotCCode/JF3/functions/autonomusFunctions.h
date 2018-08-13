@@ -278,6 +278,12 @@ void stopWithBreaks(int dir, bool useBreaks)
 
 //-----Non_Pid_Functions-----//
 
+void base(int rSpeed, int lSpeed)
+{
+	rightBase(rSpeed);
+	leftBase(lSpeed);
+}
+
 void driveSensor(int dir, int speed, int measurement, bool useBreaks, int timer)
 {
 	clearTimer(T1);
@@ -318,6 +324,70 @@ void driveSensor(int dir, int speed, int measurement, bool useBreaks, int timer)
 		rightBase(0);
 	}
 	stopWithBreaks(dir,useBreaks);
+}
+
+void clearEncoders()
+{
+	SensorValue[rightBaseSensor] = 0;
+	SensorValue[leftBaseSensor] = 0;
+}
+
+void fwds(int distance, int speed, int brake, int wait, int timer)
+{
+	clearTimer(T2);
+	clearEncoders();
+	while(abs(SensorValue[rightBaseEncoder]) < distance && time1[T2] < timer)
+	{
+		leftBase(speed);
+		rightBase(speed);
+	}
+	if(brake != 0)
+	{
+		base(-brake,-brake);
+		wait1Msec(100);
+	}
+		leftBase(0);
+		rightBase(0);
+	wait1Msec(wait);
+}
+
+void bwds(int distance, int speed, int brake, int wait, int timer)
+{
+	fwds(distance, -speed, brake, wait, timer);
+}
+
+void turnRight(int distance, int speed, int brake, int wait)
+{
+	clearEncoders();
+	//RIGHT
+	while(abs(SensorValue[rightBaseSensor]) <= distance)
+	{
+		base((-speed),(speed));
+	}
+	if(brake != 0)
+	{
+		base(brake,-brake);
+		wait1Msec(100);
+	}
+	base(0,0);
+	wait1Msec(wait);
+}
+
+void turnLeft(int distance, int speed, int brake, int wait)
+{
+	clearEncoders();
+	//LEFT
+	while(abs(SensorValue[rightBaseSensor]) <= distance)
+	{
+		base((speed),(-speed));
+	}
+	if(brake != 0)
+	{
+		base(-brake,brake);
+		wait1Msec(100);
+	}
+	base(0,0);
+	wait1Msec(wait);
 }
 
 //-----FLYWHEEL_CONTROL_FUNCTIONS-----//
