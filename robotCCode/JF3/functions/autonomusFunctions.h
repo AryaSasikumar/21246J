@@ -278,65 +278,18 @@ void stopWithBreaks(int dir, bool useBreaks)
 
 //-----Non_Pid_Functions-----//
 
-void base(int rSpeed, int lSpeed)
-{
-	rightBase(rSpeed);
-	leftBase(lSpeed);
-}
-
-void driveSensor(int dir, int speed, int measurement, bool useBreaks, int timer)
-{
-	clearTimer(T1);
-	rightBaseSensor = 0;
-	leftBaseSensor = 0;
-	switch(dir)
-	{
-	case 1:
-		while(rightBaseSensor <= measurement || leftBaseSensor <= measurement || time1[T1] <= timer)
-		{
-			leftBase(speed);
-			rightBase(speed);
-		}
-		break;
-	case 2:
-		while(rightBaseSensor >= measurement || leftBaseSensor >= measurement || time1[T1] <= timer)
-		{
-			leftBase(-speed);
-			rightBase(-speed);
-		}
-		break;
-	case 3:
-		while(rightBaseSensor >= measurement || leftBaseSensor <= measurement || time1[T1] <= timer)
-		{
-			leftBase(speed);
-			rightBase(-speed);
-		}
-		break;
-	case 4:
-		while(rightBaseSensor <= measurement || leftBaseSensor >= measurement || time1[T1] <= timer)
-		{
-			leftBase(-speed);
-			rightBase(speed);
-		}
-		break;
-	default:
-		leftBase(0);
-		rightBase(0);
-	}
-	stopWithBreaks(dir,useBreaks);
-}
-
 void clearEncoders()
 {
 	SensorValue[rightBaseSensor] = 0;
 	SensorValue[leftBaseSensor] = 0;
+	baseGyroSensor = 0
 }
 
 void fwds(int distance, int speed, int brake, int wait, int timer)
 {
-	clearTimer(T2);
+	clearTimer(T3);
 	clearEncoders();
-	while(abs(SensorValue[rightBaseEncoder]) < distance && time1[T2] < timer)
+	while(abs(rightBaseSensor) < distance && time1[T3] < timer)
 	{
 		leftBase(speed);
 		rightBase(speed);
@@ -348,7 +301,7 @@ void fwds(int distance, int speed, int brake, int wait, int timer)
 	}
 		leftBase(0);
 		rightBase(0);
-	wait1Msec(wait);
+		wait1Msec(wait);
 }
 
 void bwds(int distance, int speed, int brake, int wait, int timer)
@@ -360,7 +313,7 @@ void turnRight(int distance, int speed, int brake, int wait)
 {
 	clearEncoders();
 	//RIGHT
-	while(abs(SensorValue[rightBaseSensor]) <= distance)
+	while(abs(baseGyroSensor) <= distance)
 	{
 		base((-speed),(speed));
 	}
@@ -377,7 +330,7 @@ void turnLeft(int distance, int speed, int brake, int wait)
 {
 	clearEncoders();
 	//LEFT
-	while(abs(SensorValue[rightBaseSensor]) <= distance)
+	while(abs(baseGyroSensor) <= distance)
 	{
 		base((speed),(-speed));
 	}

@@ -10,6 +10,13 @@ void rightBase(float power)//Function used to control all the motors on the righ
 	motor[rightMiddleBase] = power;
 	motor[rightFrontBase] = power;
 }
+
+void base(int rSpeed, int lSpeed)
+{
+	rightBase(rSpeed);
+	leftBase(lSpeed);
+}
+
 //-----BASE_CONNECTION_FUNCTIONS-----//
 
 
