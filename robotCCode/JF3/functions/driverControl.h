@@ -319,7 +319,7 @@ void capRotateController(int turnerBtn, int sensor)
 	if(turnerBtn == 1)
 	{
 		capRotateActivate = !capRotateActivate;
-		wait1Msec(150);
+		wait1Msec(300);
 	}
 	if(capRotateActivate == true)
 	{
