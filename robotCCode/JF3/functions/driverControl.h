@@ -295,7 +295,7 @@ int liftHieghtHigh = 1400;
 bool liftHoldToggle = false;
 
 
-void liftControl(int liftUp, int liftDown, int sensor)
+void liftControl(int liftUp, int liftDown, int sensor, int height, int timer)
 {
 	if(liftUp == 1)
 	{
@@ -304,6 +304,18 @@ void liftControl(int liftUp, int liftDown, int sensor)
 	else if(liftDown == 1)
 	{
 		liftMotor(liftPower[1]);
+	}
+	else if(vexRT[Btn8L] == 1)
+	{
+		clearTimer(T4);
+		if(sensor <= height && time1[T4] < timer)
+		{
+			liftMotor(70);
+		}
+		else if(sensor >= height && time1[T4] < timer)
+		{
+			liftMotor(10);
+		}
 	}
 	else
 	{

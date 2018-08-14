@@ -350,7 +350,7 @@ void pew()
 	waitUntil(flyWheelIsUpToSpeed == true);
 	ballIntakeMotor(127);
 	ballElevatorMotor(127);
-	wait1Msec(550);
+	wait1Msec(600);
 	ballIntakeMotor(0);
 	ballElevatorMotor(0);
 
@@ -369,7 +369,7 @@ void autoCapIntake(int dir)
 	{
 		capIntakeMotor(127);
 	}
-	else if(dir == openClaw && clawSensor <= 2000)
+	else if(dir == openClaw && clawSensor <= 2100)
 	{
 		capIntakeMotor(-127);
 	}
@@ -381,7 +381,7 @@ void autoCapIntake(int dir)
 		}
 		else
 		{
-			capIntakeMotor(-10);
+			capIntakeMotor(-15);
 		}
 	}
 }

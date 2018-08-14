@@ -105,7 +105,8 @@ void pre_auton()
 
 task autonomous()
 {
-	frontRedAuton();
+	backRedAuton();
+	//frontRedAuton();
 	//backBlueAuton();
 	while(true)
 	{
@@ -133,7 +134,7 @@ task usercontrol()
 	{
 		directionController(changeDirectionBtn);
 		baseController(Y_rightJoy, Y_leftJoy);
-		liftControl(liftUpBtn, liftDownBtn, liftSensor);
+		liftControl(liftUpBtn, liftDownBtn, liftSensor, 1120, 1500);
 		ballIntakeController(currentIntake(1), currentOuttake(1), pewPewBtn);
 		capIntakeController(currentIntake(0), currentOuttake(0), clawSensor);
 		capRotateController(capRotateBtn,clawTurnerSensor); //clawTurnerSensor
