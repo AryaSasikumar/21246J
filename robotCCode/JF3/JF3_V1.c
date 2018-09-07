@@ -105,7 +105,7 @@ void pre_auton()
 
 task autonomous()
 {
-	backRedAuton();
+	frontRedAuton();
 	//frontRedAuton();
 	//backBlueAuton();
 	while(true)

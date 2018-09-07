@@ -11,7 +11,35 @@ void frontRedAuton()
 	driveTurnPID(left, 91.5, 3000);
   stopTask(autoBallIntake);
   highFW = 42;
-  lowFW = 15;
+  lowFW = 42;
+	while(ballOneLoaded() == true || ballTwoLoaded() == true)
+	{
+		ballIntakeController(0, 0, 1);
+	}
+	drivePID(forwards, 35, 3000);
+  wait1Msec(2000);
+	ballIntakeController(0, 0, 0);
+	revUp = off;
+	//drivePID(forwards, 25, 3000);
+	driveTurnPID(left, 15, 3000);
+	drivePID(forwards, 20, 3000);
+	stopTask(autoFlyWheel);
+	drivePID(backwards, 24, 3000);
+
+
+
+	/*capIntakeMotor(-10);
+	liftMotor(-15);
+	shootingSpeed = highFW;
+	revUp = on;
+	startTask(autoFlyWheel);
+	startTask(autoBallIntake);
+	drivePID(forwards, 46.5, 3000);
+	drivePID(backwards, 40.3, 3000);
+	driveTurnPID(left, 91.5, 3000);
+  stopTask(autoBallIntake);
+  highFW = 42;
+  lowFW = 11;
 	while(ballOneLoaded() == true || ballTwoLoaded() == true)
 	{
 		ballIntakeController(0, 0, 1);
@@ -21,9 +49,9 @@ void frontRedAuton()
 	revUp = off;
 	drivePID(forwards, 25, 3000);
 	driveTurnPID(left, 12.5, 3000);
-	drivePID(forwards, 25, 3000);
+	drivePID(forwards, 26, 3000);
 	stopTask(autoFlyWheel);
-	drivePID(backwards, 24, 3000);
+	drivePID(backwards, 24, 3000);*/
 }
 
 void backBlueAuton()
