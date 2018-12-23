@@ -1,0 +1,35 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta http-equiv="Content-Style-Type" content="text/css">
+  <title></title>
+  <meta name="Generator" content="Cocoa HTML Writer">
+  <meta name="CocoaVersion" content="1561.6">
+  <style type="text/css">
+    p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+  </style>
+</head>
+<body>
+<p class="p1">vex::brain Brain;</p>
+<p class="p1">vex::motor leftBack = vex::motor(vex::PORT13,vex::gearSetting::ratio18_1,false);</p>
+<p class="p1">vex::motor leftFront = vex::motor(vex::PORT12,vex::gearSetting::ratio18_1,false);</p>
+<p class="p1">vex::motor roller = vex::motor(vex::PORT19,vex::gearSetting::ratio18_1,true);</p>
+<p class="p1">vex::motor flyWheel = vex::motor(vex::PORT20,vex::gearSetting::ratio18_1,false);</p>
+<p class="p1">vex::motor lift = vex::motor(vex::PORT2,vex::gearSetting::ratio18_1,true);</p>
+<p class="p1">vex::motor flipper = vex::motor(vex::PORT3,vex::gearSetting::ratio18_1,false);</p>
+<p class="p1">vex::motor rightFront = vex::motor(vex::PORT11,vex::gearSetting::ratio18_1,true);</p>
+<p class="p1">vex::motor rightBack = vex::motor(vex::PORT14,vex::gearSetting::ratio18_1,true);</p>
+<p class="p1">vex::controller Controller1 = vex::controller();</p>
+<p class="p1">vex::vision::signature SIG_1 (1, -1743, -863, -1303, 4049, 5751, 4900, 2.5, 1);</p>
+<p class="p1">vex::vision::signature SIG_2 (2, -2293, -1493, -1893, -4891, -3851, -4371, 1.7999999523162842, 1);</p>
+<p class="p1">vex::vision::signature SIG_3 (3, 7615, 8501, 8058, -963, 89, -436, 4.699999809265137, 1);</p>
+<p class="p1">vex::vision::signature SIG_4 (4, 0, 0, 0, 0, 0, 0, 3, 0);</p>
+<p class="p1">vex::vision::signature SIG_5 (5, 0, 0, 0, 0, 0, 0, 3, 0);</p>
+<p class="p1">vex::vision::signature SIG_6 (6, 0, 0, 0, 0, 0, 0, 3, 0);</p>
+<p class="p1">vex::vision::signature SIG_7 (7, 0, 0, 0, 0, 0, 0, 3, 0);</p>
+<p class="p1">vex::vision::code BLUEGREEN (SIG_1, SIG_2 );</p>
+<p class="p1">vex::vision::code REDGREEN (SIG_3, SIG_2 );</p>
+<p class="p1">vex::vision Vision (vex::PORT1, 150, SIG_1, SIG_2, SIG_3, SIG_4, SIG_5, SIG_6, SIG_7);</p>
+</body>
+</html>
