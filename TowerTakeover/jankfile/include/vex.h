@@ -141,7 +141,24 @@ pidController turn(-100.0, 100.0, 1, 0.00015, 0.01, 0.0001);
 /*  You must modify the code to add your own robot specific commands here.   */
 /*---------------------------------------------------------------------------*/
 
-void rightBaseSpin(double speed=0){
+
+class base{
+    private:
+      
+    public:
+      base();
+      int leftSpeed;
+      int rightSpeed;
+      void rightSpin();
+      void leftSpin();
+        //double speed(double currentVal, double desiredVal);
+};
+
+base::base(){
+    //this->min = min;
+}
+
+void base::rightSpin(){
   if(speed != 0){
       RB.spin(vex::directionType::fwd, speed, vex::velocityUnits::pct);
       RF.spin(vex::directionType::fwd, speed, vex::velocityUnits::pct);
@@ -151,7 +168,7 @@ void rightBaseSpin(double speed=0){
   }
 }
 
-void leftBaseSpin(double speed=0){
+void base::leftSpin(){
     if(speed != 0){
       LB.spin(vex::directionType::fwd, speed, vex::velocityUnits::pct);
       LF.spin(vex::directionType::fwd, speed, vex::velocityUnits::pct);
@@ -446,10 +463,12 @@ void drivefwd_pid(int speed,int distance ){
 }
 void drivefwd_nopid(int speed,int distance) {
   LF.resetRotation() ;
-  turnonbase(speed,true) ;
-  while(LF.rotation(vex::rotationUnits::deg)<distance)
+  //reset the encoder
+  turnonbase(speed,true) //turn on drive train.
+  while(LF.rotation(vex::rotationUnits::deg)<distance){
     vex::task::sleep(1);
-  basetobrake() ;
+  }
+  basetobrake() ; //stop moving base motors and turn them to brake.
   }
 
 void reversedrive(int speed,int distance){
@@ -546,7 +565,7 @@ void blueAuton(){
   //turn on the intake motors to prepare scoring cubes
   leftIntake.spin(vex::directionType::fwd, 100, vex::velocityUnits::pct);
   rightIntake.spin(vex::directionType::fwd, 100, vex::velocityUnits::pct);
-  drivefwd_nopid(85,1520) ;
+  drivefwd_nopid(85,1520) ;//first paremeter is speed next parameter is distance.
   vex::task::sleep(1000) ; 
   //made to get the green cube to the right of things.
   reversedrive(100,400) ;
@@ -556,7 +575,9 @@ void blueAuton(){
   vex::task::sleep(300) ;
   
   //turn intake motors to hold.
-  reversedrive(180,670) ; //reverse back to the goal
+  reversed
+  
+  rive(180,670) ; //reverse back to the goal
   turn_(165,true,50) ;
   
   vex::task::sleep(50) ; //sleep system after turn for better accuracy
