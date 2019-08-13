@@ -142,67 +142,68 @@ pidController turn(-100.0, 100.0, 1, 0.00015, 0.01, 0.0001);
 /*---------------------------------------------------------------------------*/
 
 
-class base{
+class driveBase{
     private:
       
     public:
-      base();
-      int leftSpeed;
-      int rightSpeed;
-      void rightSpin();
-      void leftSpin();
-        //double speed(double currentVal, double desiredVal);
+      driveBase();
+      int leftSpeed = 0;
+      int rightSpeed = 0;
+      void rightSpin(int speed);
+      void leftSpin(int speed);
+      void Stop();
+      void userControl(int bufferSize, bool stop);
 };
 
-base::base(){
+driveBase::driveBase(){
     //this->min = min;
 }
 
-void base::rightSpin(){
-  if(speed != 0){
-      RB.spin(vex::directionType::fwd, speed, vex::velocityUnits::pct);
-      RF.spin(vex::directionType::fwd, speed, vex::velocityUnits::pct);
+void driveBase::rightSpin(int speed){
+  if(rightSpeed != 0){
+      RB.spin(vex::directionType::fwd, rightSpeed, vex::velocityUnits::pct);
+      RF.spin(vex::directionType::fwd, rightSpeed, vex::velocityUnits::pct);
   }else{
       RB.stop(vex::brakeType::coast);  
       RF.stop(vex::brakeType::coast);  
   }
 }
 
-void base::leftSpin(){
-    if(speed != 0){
-      LB.spin(vex::directionType::fwd, speed, vex::velocityUnits::pct);
-      LF.spin(vex::directionType::fwd, speed, vex::velocityUnits::pct);
+void driveBase::leftSpin(int speed){
+    if(leftSpeed != 0){
+      LB.spin(vex::directionType::fwd, leftSpeed, vex::velocityUnits::pct);
+      LF.spin(vex::directionType::fwd, leftSpeed, vex::velocityUnits::pct);
     }else{
       LB.stop(vex::brakeType::coast);  
       LF.stop(vex::brakeType::coast);  
     }
 }
 
-void baseStop(){
+void driveBase::Stop(){
   LB.stop(vex::brakeType::hold);
   LF.stop(vex::brakeType::hold);
   RB.stop(vex::brakeType::hold);  
   RF.stop(vex::brakeType::hold);  
 }
 
-void driveUserControl(int bufferSize = 10, bool stop = false){
+void driveBase::userControl(int bufferSize = 10, bool stop = false){
   if(baseLockBtn){
     vex::task::sleep(200);
     stop = !stop;
     if(stop==true){
-      baseStop();
+      this->Stop();
     }else{
-      rightBaseSpin(0);
-      leftBaseSpin(0);
+      this->rightSpin(0);
+      this->leftSpin(0);
     }
   }   
   if(abs(Y_rightJoy)>bufferSize){
-    rightBaseSpin(Y_rightJoy);
+    rightSpin(Y_rightJoy);
   }else{
-    rightBaseSpin(0);
+    rightSpin(0);
   }  
   if(abs(Y_leftJoy)>bufferSize){
-    leftBaseSpin(Y_leftJoy);
+    leftSpin(Y_leftJoy);
   }else{ 
     leftBaseSpin(0);
   }     
