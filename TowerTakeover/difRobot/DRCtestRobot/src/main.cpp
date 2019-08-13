@@ -65,23 +65,76 @@ void intakeSpin(int speed){
     leftIntake.stop(vex::brakeType::hold);      
   }
 }
+/*const unsigned int TrueSpeed[128] =
+{
+	0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
+	0, 21, 21, 21, 22, 22, 22, 23, 24, 24,
+	25, 25, 25, 25, 26, 27, 27, 28, 28, 28,
+	28, 29, 30, 30, 30, 31, 31, 32, 32, 32,
+	33, 33, 34, 34, 35, 35, 35, 36, 36, 37,
+	37, 37, 37, 38, 38, 39, 39, 39, 40, 40,
+	41, 41, 42, 42, 43, 44, 44, 45, 45, 46,
+	46, 47, 47, 48, 48, 49, 50, 50, 51, 52,
+	52, 53, 54, 55, 56, 57, 57, 58, 59, 60,
+	61, 62, 63, 64, 65, 66, 67, 67, 68, 70,
+	71, 72, 72, 73, 74, 76, 77, 78, 79, 79,
+	80, 81, 83, 84, 84, 86, 86, 87, 87, 88,
+	88, 89, 89, 90, 90,127,127,127
+};
 
+void baseDriver(int RT2, int RT1)
+{
+	if(RT2 > 0)
+	{
+		leftBase(-TrueSpeed[RT2]);
+	}
+	else if(RT2 < 0)
+	{
+		RT2 = RT2 * -1;
+		leftBase(TrueSpeed[RT2]);
+	}
+
+	if(RT1 > 0)
+	{
+		rightBase(-TrueSpeed[RT1]);
+	}
+	else if(RT1 < 0)
+	{
+		RT1 = RT1 * -1;
+		rightBase(TrueSpeed[RT1]);
+	}
+}
+
+void baseController(int rightJoy, int leftJoy)//Function to control base during driver control
+{
+	if(direction == -1)
+	{
+		baseDriver((rightJoy),(leftJoy));
+	}
+	else
+	{
+		baseDriver((-leftJoy),(-rightJoy));
+	}
+}*/
 
 
 void driveUserControl(int leftSpeed, int rightSpeed){ //User control base, parameters are joysticks.
   leftBaseSpin(leftSpeed);
   rightBaseSpin(rightSpeed);
 }
-void liftUserControl(int speed, bool upBtn, bool downBtn, bool angleUpBtn, bool angleDownBtn){
+void liftUserControl(int speed, bool upBtn, bool downBtn, bool angleUpBtn, bool angleDownBtn, bool angleSlowBtn){
   if(upBtn){
-    liftSpin(speed, speed);
+    liftSpin(90, speed);
   }else if(downBtn){
     liftSpin(-speed, -speed);
   }else if(angleUpBtn){
     liftSpin(speed, -speed);
   }else if(angleDownBtn){
     liftSpin(-speed, speed);
-  }else{
+  }else if(angleSlowBtn){
+    liftSpin(30, -30);
+  }
+  else{
     liftSpin(0, 0);
   }
 }
@@ -116,7 +169,7 @@ void autonomous(void) {
 void usercontrol(void){
   while (true){
     driveUserControl(Controller.Axis3.value(), Controller.Axis2.value());
-    liftUserControl(100, Controller.ButtonL1.pressing(), Controller.ButtonL2.pressing(), Controller.ButtonUp.pressing(), Controller.ButtonDown.pressing());
+    liftUserControl(100, Controller.ButtonL1.pressing(), Controller.ButtonL2.pressing(), Controller.ButtonUp.pressing(), Controller.ButtonDown.pressing(), Controller.ButtonRight.pressing());
     intakeUserControl(100, Controller.ButtonR1.pressing(), Controller.ButtonR2.pressing());
     vex::task::sleep(20);
   }
