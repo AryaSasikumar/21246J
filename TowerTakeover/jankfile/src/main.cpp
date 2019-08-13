@@ -7,7 +7,8 @@
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
-#include "vex.h"
+#include "tilter.h"
+
 
 using namespace vex;
 
@@ -46,7 +47,7 @@ void pre_auton( void ) {
 /*---------------------------------------------------------------------------*/
 
 void autonomous( void ) {
-  drivePID(24);
+  myBase().drivePID(24);
   //blueAuton();
   //redAuton();
 }
@@ -63,14 +64,10 @@ void autonomous( void ) {
 
 void usercontrol( void ) {
   tilt1.resetRotation();
-  while (1) {
-    driveUserControl();
-    tiltUserControl();
-    intakeUserControl();
-    buttonReset();
-    if(Controller1.ButtonA.pressing()){
-      autoScore();
-    }
+  while(true){
+    myBase().userControl();
+    myTilter().userControl();
+    myIntake().userControl();
     vex::task::sleep(1); //Sleep the task for a short amount of time to prevent wasted resources. 
   }
 }
@@ -87,7 +84,7 @@ int main() {
     pre_auton();
        
     //Prevent main from exiting with an infinite loop.                        
-    while(1) {
+    while(true) {
       vex::task::sleep(1);//Sleep the task for a short amount of time to prevent wasted resources.
     }    
        
