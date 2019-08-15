@@ -13,7 +13,8 @@ class tilter{
     void Spin(int speed);
     void Stop(bool type);
     void autoScore();
-    void userControl();   
+    void userControl(); 
+    void robotDeploy();  
 };
 
 tilter::tilter(){}
@@ -24,12 +25,12 @@ void tilter::Spin(int speed){
 }
 void tilter::Stop(bool type){
   if(type){
-      tilt1.stop(vex::brakeType::coast);  
-      tilt2.stop(vex::brakeType::coast);            
-    }else{
-      tilt1.stop(vex::brakeType::hold);   
-      tilt2.stop(vex::brakeType::hold);             
-    }  
+    tilt1.stop(vex::brakeType::coast);  
+    tilt2.stop(vex::brakeType::coast);            
+  }else{
+    tilt1.stop(vex::brakeType::hold);   
+    tilt2.stop(vex::brakeType::hold);             
+  }  
 }
 
 void tilter::buttonReset(){
@@ -39,8 +40,8 @@ void tilter::buttonReset(){
 }
 
 void tilter::autoScore(){
-  myIntake().Spin(-50);
-  myBase().Spin(-30, -30);
+  myIntake.Spin(-50);
+  myBase.Spin(-30, -30);
   this->Spin(-60);
 }
 
@@ -65,7 +66,17 @@ void tilter::userControl(){
 }
 
 
-
+void tilter::robotDeploy(){
+  this->Spin(100);
+  myIntake.Spin(100);
+  vex::task::sleep(200);
+  while(!tiltBumpBtn){
+    this->Spin(-100);
+  }
+  this->Stop(false);
+  myIntake.Spin(0);
+  vex::task::sleep(1000);
+}
 /*
 
 
@@ -135,4 +146,4 @@ void score(){
 }
 */
 
-tilter myTilter();
+tilter myTilter;

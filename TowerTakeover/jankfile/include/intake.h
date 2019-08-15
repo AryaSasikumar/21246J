@@ -51,4 +51,4 @@ void outake(int distance ){
 */
 
 
-intake myIntake();
+intake myIntake;

@@ -47,7 +47,12 @@ void pre_auton( void ) {
 /*---------------------------------------------------------------------------*/
 
 void autonomous( void ) {
-  myBase().drivePID(24);
+  myTilter.robotDeploy();
+  myIntake.Spin(100);
+  myBase.drivePID(48);
+  vex::task::sleep(1000);
+  myIntake.Spin(0);
+  myBase.drivePID(-46);
   //blueAuton();
   //redAuton();
 }
@@ -65,9 +70,9 @@ void autonomous( void ) {
 void usercontrol( void ) {
   tilt1.resetRotation();
   while(true){
-    myBase().userControl();
-    myTilter().userControl();
-    myIntake().userControl();
+    myBase.userControl();
+    myTilter.userControl();
+    myIntake.userControl();
     vex::task::sleep(1); //Sleep the task for a short amount of time to prevent wasted resources. 
   }
 }

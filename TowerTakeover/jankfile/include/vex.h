@@ -60,3 +60,4 @@ const double baseDiameterIN  = 16.5;
 #define baseGyro Gyro.value(vex::rotationUnits::deg)
 #define leftBaseEnc leftEncoder.rotation(vex::rotationUnits::deg)
 #define rightBaseEnc rightEncoder.rotation(vex::rotationUnits::deg)
+#define tiltBumpBtn Bumper.pressing()

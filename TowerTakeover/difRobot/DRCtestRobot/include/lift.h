@@ -12,7 +12,7 @@ class lift{
     lift();
     void Spin(int speedOne, int speedTwo);
     void Stop(bool type);
-    //void autoScore();
+    void autoScore();
     void userControl();   
 };
 
@@ -47,11 +47,11 @@ void lift::buttonReset(){
   }
 }
 
-//void lift::autoScore(){
-//  myIntake().Spin(-50);
-//  myBase().Spin(-30, -30);
-//  this->Spin(60,-60);
-//}
+void lift::autoScore(){
+  myIntake.Spin(-50);
+  myBase.Spin(-30, -30);
+  this->Spin(60,-60);
+}
 
 void lift::userControl(){
   if(liftUpBtn){
@@ -68,8 +68,6 @@ void lift::userControl(){
     this->Spin(0, 0);
   }
 }
-
-
 
 lift myLift;
 

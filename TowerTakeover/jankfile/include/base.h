@@ -1,4 +1,5 @@
 #include "pidController.h"
+#include <cstdio>
 
 enum dirType {forwards, backwards};
 enum turnType {right, left};
@@ -109,7 +110,7 @@ void base::userControl(int bufferSize = 10, bool Stop = false){
 
 double base::distanceToTravel(double inchesGiven){
   int wheelRadIN = 2;
-  float floatDiv = (float)95.0/36.0;
+  float floatDiv = (float)100.0/36.0;
   double Distance = (inchesGiven/(2*M_PI*wheelRadIN))*(360*floatDiv);
   return Distance; //Distance in ticks    
 }
@@ -131,7 +132,7 @@ void base::drivePID(double Distance){
     speed = drive.speed(encoderDeg,Distance);
     this->rightSpin(speed);
     this->leftSpin(speed);
-    if(fabs(drive.error)<=40){
+    if(fabs(drive.error)<=100){
       timesGood++;
     }
     if(timesGood >= 100){
@@ -161,7 +162,7 @@ void base::turnPID(double Angle){
       speed = turn.speed(-Gyro.value(vex::rotationUnits::deg),-Angle);
       this->Spin(-speed,speed);
     }
-    if(fabs(turn.error)<=3){
+    if(fabs(turn.error)<=5){
       timesGood++;
     }
     if(timesGood >= 100){
@@ -218,4 +219,4 @@ void base::turnDegrees_Gyro(double degrees,int speed){ //IDK if this works
 
 
 
-base myBase();
+base myBase;
