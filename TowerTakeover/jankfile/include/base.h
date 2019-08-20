@@ -1,4 +1,5 @@
 #include "pidController.h"
+#include "v5_api.h"
 #include <cstdio>
 
 enum dirType {forwards, backwards};
@@ -24,10 +25,12 @@ class base{
 
     //Autonomous Functions
     void turnPID(double Angle);
-    void drivePID(double Distance);
+    void drivePID(double maxLeftSpeed, double maxRightSpeed, double Distanced);
+    void drivePID(double maxSpeed, double Distanced);
     void driveInches_MotorEnc(dirType mydirection, double travelTargetIN, int speed);
     void turnDegrees_MotorEnc(turnType mydirection, double travelTargetDEG, int speed);
     void driveDegrees_MotorEnc(double degrees, int speed);
+    void driveInches_Enc(dirType mydirection, double travelTargetIN, int speed);
     void turnDegrees_MotorEnc(double leftDegrees, double rightDegrees,int speed);
     void turnDegrees_Gyro(double degrees,int speed);
 };
@@ -36,8 +39,9 @@ base::base(){}
 
 void base::Spin(int leftSpeed, int rightSpeed){
   this->rightSpeed = rightSpeed;
-  rightSpin(rightSpeed);
+  this->leftSpeed = leftSpeed;
   leftSpin(leftSpeed);
+  rightSpin(rightSpeed);
 }
 
 void base::rightSpin(int speed = 0){
@@ -86,25 +90,29 @@ void base::moveFor(double degToRotate_Left, double degToRotate_Right, int speed)
 }
 
 void base::userControl(int bufferSize = 10, bool Stop = false){
-  if(baseLockBtn){
-    vex::task::sleep(200);
-    Stop = !Stop;
-    if(Stop==true){
-      this->Hold();
-    }else{
-      this->Spin(0,0);
-    }
-  }   
-  if(abs(Y_rightJoy)>bufferSize){
-    this->rightSpin(Y_rightJoy);
+  if(autoScoreBtn){
+    this->Spin(-30, -30);
   }else{
-    this->rightSpin(0);
-  }  
-  if(abs(Y_leftJoy)>bufferSize){
-    this->leftSpin(Y_leftJoy);
-  }else{ 
-    this->leftSpin(0);
-  }     
+    if(baseLockBtn){
+      vex::task::sleep(200);
+      Stop = !Stop;
+      if(Stop==true){
+        this->Hold();
+      }else{
+        this->Spin(0,0);
+      }
+    }   
+    if(abs(Y_rightJoy)>bufferSize){
+      this->rightSpin(Y_rightJoy);
+    }else{
+      this->rightSpin(0);
+    }  
+    if(abs(Y_leftJoy)>bufferSize){
+      this->leftSpin(Y_leftJoy);
+    }else{ 
+      this->leftSpin(0);
+    }  
+  }   
 }
 
 
@@ -114,8 +122,12 @@ double base::distanceToTravel(double inchesGiven){
   double Distance = (inchesGiven/(2*M_PI*wheelRadIN))*(360*floatDiv);
   return Distance; //Distance in ticks    
 }
+
+void base::drivePID(double maxSpeed, double Distance){
+  this->drivePID(maxSpeed,maxSpeed,Distance);
+}
     
-void base::drivePID(double Distance){
+void base::drivePID(double maxLeftSpeed, double maxRightSpeed, double Distance){
   Distance = distanceToTravel(Distance);
   rightEncoder.resetRotation(); 
   leftEncoder.resetRotation();
@@ -127,11 +139,13 @@ void base::drivePID(double Distance){
   drive.error = drive.pre_error;
   int timesGood = 0;
   bool moveComplete = false;
-  while(!moveComplete && drive.enabled){ 
+  while(!moveComplete && drive.enabled && encoderDeg <= Distance){ 
     encoderDeg = (rightEncoder.rotation(vex::rotationUnits::deg) + leftEncoder.rotation(vex::rotationUnits::deg))/2;
     speed = drive.speed(encoderDeg,Distance);
-    this->rightSpin(speed);
-    this->leftSpin(speed);
+    double lSpeed = (speed>=maxLeftSpeed) ? maxLeftSpeed : speed;
+    double rSpeed = (speed>=maxRightSpeed) ? maxRightSpeed : speed;
+    this->rightSpin(rSpeed);
+    this->leftSpin(lSpeed);
     if(fabs(drive.error)<=100){
       timesGood++;
     }
@@ -145,21 +159,19 @@ void base::drivePID(double Distance){
 }
 
 void base::turnPID(double Angle){
-  Gyro.startCalibration();
-  while(Gyro.isCalibrating()){}
-  vex::task::sleep(100);    
+  //Angle = (100*Angle)/360;
   turn.dt=0.0001;
-  double speed = turn.speed(Gyro.value(vex::rotationUnits::deg),Angle);
-  turn.pre_error = Angle - Gyro.value(vex::rotationUnits::deg);
+  double speed = turn.speed(baseGyro,Angle);
+  turn.pre_error = Angle - baseGyro;
   turn.error = turn.pre_error;
   int timesGood = 0;
   bool moveComplete = false;
-  while(!moveComplete && turn.enabled){
+  while(!moveComplete && turn.enabled && baseGyro <= Angle){
     if(Angle>0){
-      speed = turn.speed(Gyro.value(vex::rotationUnits::deg),Angle);
+      speed = turn.speed(baseGyro,Angle);
       this->Spin(speed,-speed);
     }else{
-      speed = turn.speed(-Gyro.value(vex::rotationUnits::deg),-Angle);
+      speed = turn.speed(-baseGyro,-Angle);
       this->Spin(-speed,speed);
     }
     if(fabs(turn.error)<=5){
@@ -170,13 +182,13 @@ void base::turnPID(double Angle){
     }
     vex:: task:: sleep(1);
   }
-  this->Brake();
+  this->Hold();
   vex:: task:: sleep(10);
 }
 
 void base::driveInches_MotorEnc(dirType mydirection, double travelTargetIN, int speed){
   double circumference = wheelDiameterIN * M_PI;
-  double degreesToRotate = (360 * travelTargetIN) / circumference;
+  double degreesToRotate = (360.0 * travelTargetIN) / circumference;
   if(mydirection == forwards){
     this->moveFor(degreesToRotate,degreesToRotate, speed);
   }else if(mydirection == backwards){
@@ -203,17 +215,57 @@ void base::turnDegrees_MotorEnc(double leftDegrees, double rightDegrees,int spee
   this->moveFor(leftDegrees, rightDegrees, speed);
 }
 
-void base::turnDegrees_Gyro(double degrees,int speed){ //IDK if this works 
+void base::driveInches_Enc(dirType mydirection, double travelTargetIN, int speed){
+  double lSpeed = speed;
+  double rSpeed = speed;
+  double circumference = wheelDiameterIN * M_PI;
+  double degreesToRotate = ((360.0 * travelTargetIN) / circumference)*2.5;
+  leftBaseEncReset;
+  rightBaseEncReset;
+  baseGyroReset;
+  vex:: task::sleep(1000);
+  if(mydirection == forwards){
+    while(rightEncoder<degreesToRotate || leftEncoder<degreesToRotate){
+      //printf("GyroValue: %f\n",baseGyro);
+      //printf("MotorSpeed: %f and %f\n",lSpeed, rSpeed);
+      if(baseGyro>0){
+        //Controller1.rumble("---");
+        lSpeed = speed-(baseGyro*6);
+        
+      }else if (baseGyro<0) {
+        rSpeed = speed+(baseGyro*6);
+      }else{
+        lSpeed = speed;
+        rSpeed = speed;
+      }
+      this->Spin(lSpeed,rSpeed);
+    }
+    this->Brake();
+    
+  }else if(mydirection == backwards){
+    while(rightEncoder<degreesToRotate || leftEncoder<degreesToRotate){
+      this->Spin(-speed,-speed);
+    }
+    this->Brake();
+  }
+  vex:: task::sleep(500);
+}
+
+
+void base::turnDegrees_Gyro(double Angle,int speed){ //IDK if this works 
+  //Angle = (108*Angle)/360;
   int shift = baseGyro;
-  if(degrees < baseGyro){
-    degrees = degrees-shift;
+  if(Angle < baseGyro){
+    Angle = Angle-shift;
   }else{
-    degrees = degrees+shift;
+    Angle = Angle+shift;
   }
-  while(baseGyro > degrees){
-    this->Spin(speed,speed);
+  while(baseGyro < Angle ){
+    this->Spin(speed,-speed);
   }
-  this->Brake();
+  this->Hold();
+  //vex:: task::sleep(100);
+  //this->Spin(0,0);
 }
 
 
