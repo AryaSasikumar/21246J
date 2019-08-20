@@ -10,7 +10,37 @@ class base{
     int leftSpeed = 0;
     int rightSpeed = 0;
     double distanceToTravel(double inchesGiven);
+    const unsigned int TrueSpeed[128] = {
+      0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
+      0 , 21, 21, 21, 22, 22, 22, 23, 24, 24,
+      25, 25, 25, 25, 26, 27, 27, 28, 28, 28,
+      28, 29, 30, 30, 30, 31, 31, 32, 32, 32,
+      33, 33, 34, 34, 35, 35, 35, 36, 36, 37,
+      37, 37, 37, 38, 38, 39, 39, 39, 40, 40,
+      41, 41, 42, 42, 43, 44, 44, 45, 45, 46,
+      46, 47, 47, 48, 48, 49, 50, 50, 51, 52,
+      52, 53, 54, 55, 56, 57, 57, 58, 59, 60,
+      61, 62, 63, 64, 65, 66, 67, 67, 68, 70,
+      71, 72, 72, 73, 74, 76, 77, 78, 79, 79,
+      80, 81, 83, 84, 84, 86, 86, 87, 87, 88,
+      88, 89, 89, 90, 90,127,127,127};
+    const unsigned int trueSpeed[128] = {
+      0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
+      0 , 21, 21, 21, 22, 22, 22, 23, 24, 24,
+      25, 25, 25, 25, 26, 27, 27, 28, 28, 28,
+      28, 29, 30, 30, 30, 31, 31, 32, 32, 32,
+      33, 33, 34, 34, 35, 35, 35, 36, 36, 37,
+      37, 37, 37, 38, 38, 39, 39, 39, 40, 40,
+      41, 41, 42, 42, 43, 44, 44, 45, 45, 46,
+      46, 47, 47, 48, 48, 49, 50, 50, 51, 52,
+      52, 53, 54, 55, 56, 57, 57, 58, 59, 60,
+      61, 62, 63, 64, 65, 66, 67, 67, 68, 70,
+      71, 72, 72, 73, 74, 76, 77, 78, 79, 79,
+      80, 83, 84, 86, 86, 87, 87, 88, 88, 90,
+      90, 90, 95, 95, 95,100,100,100};
+    
   public:
+    bool useTrueSpeed = true;
     base();
     //General Drive Base Functions
     void leftSpin(int speed);
@@ -24,7 +54,7 @@ class base{
     void userControl(int bufferSize, bool Stop);
 
     //Autonomous Functions
-    void turnPID(double Angle);
+    void turnPID(double maxLeftSpeed, double maxRightSpeed, double Angle);
     void drivePID(double maxLeftSpeed, double maxRightSpeed, double Distanced);
     void drivePID(double maxSpeed, double Distanced);
     void driveInches_MotorEnc(dirType mydirection, double travelTargetIN, int speed);
@@ -101,17 +131,40 @@ void base::userControl(int bufferSize = 10, bool Stop = false){
       }else{
         this->Spin(0,0);
       }
-    }   
-    if(abs(Y_rightJoy)>bufferSize){
-      this->rightSpin(Y_rightJoy);
+    }
+    if(this->useTrueSpeed){
+      if(abs(Y_rightJoy)>bufferSize){
+        if(Y_rightJoy>0){
+          this->rightSpin(trueSpeed[abs(Y_rightJoy)]);
+        }else{
+          this->rightSpin(-trueSpeed[abs(Y_rightJoy)]);
+        }
+      }else{
+        this->rightSpin(0);
+      }  
+      if(abs(Y_leftJoy)>bufferSize){
+        if(Y_leftJoy>0){
+          this->leftSpin(trueSpeed[abs(Y_leftJoy)]);
+        }else{
+          this->leftSpin(-trueSpeed[abs(Y_leftJoy)]);
+        }
+      }else{
+        this->leftSpin(0);
+      }  
+      
     }else{
-      this->rightSpin(0);
-    }  
-    if(abs(Y_leftJoy)>bufferSize){
-      this->leftSpin(Y_leftJoy);
-    }else{ 
-      this->leftSpin(0);
-    }  
+      if(abs(Y_rightJoy)>bufferSize){
+        this->rightSpin(Y_rightJoy);
+      }else{
+        this->rightSpin(0);
+      }  
+      if(abs(Y_leftJoy)>bufferSize){
+        this->leftSpin(Y_leftJoy);
+      }else{ 
+        this->leftSpin(0);
+      }  
+    }
+    
   }   
 }
 
@@ -133,14 +186,14 @@ void base::drivePID(double maxLeftSpeed, double maxRightSpeed, double Distance){
   leftEncoder.resetRotation();
   vex::task::sleep(50); 
   drive.dt=0.0001;
-  double encoderDeg = (rightEncoder.rotation(vex::rotationUnits::deg) + leftEncoder.rotation(vex::rotationUnits::deg))/2;
+  double encoderDeg = (rightBaseEnc + leftBaseEnc)/2;
   double speed = drive.speed(encoderDeg,Distance);
   drive.pre_error = Distance - encoderDeg;
   drive.error = drive.pre_error;
   int timesGood = 0;
   bool moveComplete = false;
   while(!moveComplete && drive.enabled && encoderDeg <= Distance){ 
-    encoderDeg = (rightEncoder.rotation(vex::rotationUnits::deg) + leftEncoder.rotation(vex::rotationUnits::deg))/2;
+    encoderDeg = (rightBaseEnc + leftBaseEnc)/2;
     speed = drive.speed(encoderDeg,Distance);
     double lSpeed = (speed>=maxLeftSpeed) ? maxLeftSpeed : speed;
     double rSpeed = (speed>=maxRightSpeed) ? maxRightSpeed : speed;
@@ -158,7 +211,7 @@ void base::drivePID(double maxLeftSpeed, double maxRightSpeed, double Distance){
   vex:: task:: sleep(10);
 }
 
-void base::turnPID(double Angle){
+void base::turnPID(double maxLeftSpeed, double maxRightSpeed, double Angle){
   //Angle = (100*Angle)/360;
   turn.dt=0.0001;
   double speed = turn.speed(baseGyro,Angle);
@@ -166,15 +219,19 @@ void base::turnPID(double Angle){
   turn.error = turn.pre_error;
   int timesGood = 0;
   bool moveComplete = false;
-  while(!moveComplete && turn.enabled && baseGyro <= Angle){
+  while(!moveComplete && turn.enabled && baseGyro <= abs(int(Angle))){
     if(Angle>0){
       speed = turn.speed(baseGyro,Angle);
-      this->Spin(speed,-speed);
-    }else{
+      double lSpeed = (speed>=maxLeftSpeed) ? maxLeftSpeed : speed;
+      double rSpeed = (speed>=maxRightSpeed) ? maxRightSpeed : speed;
+      this->Spin(lSpeed,-rSpeed);
+    }else if(Angle<0){
       speed = turn.speed(-baseGyro,-Angle);
-      this->Spin(-speed,speed);
+      double lSpeed = (speed>=maxLeftSpeed) ? maxLeftSpeed : speed;
+      double rSpeed = (speed>=maxRightSpeed) ? maxRightSpeed : speed;
+      this->Spin(-lSpeed,rSpeed);
     }
-    if(fabs(turn.error)<=5){
+    if(fabs(turn.error)<=50){
       timesGood++;
     }
     if(timesGood >= 100){
@@ -182,7 +239,7 @@ void base::turnPID(double Angle){
     }
     vex:: task:: sleep(1);
   }
-  this->Hold();
+  this->Brake();
   vex:: task:: sleep(10);
 }
 
@@ -197,8 +254,8 @@ void base::driveInches_MotorEnc(dirType mydirection, double travelTargetIN, int 
 }
 
 void base::turnDegrees_MotorEnc(turnType mydirection, double travelTargetDEG, int speed){
-  double baseCircumference = baseDiameterIN * M_PI; //51.81
-  double degreesToRotate = ((360 * travelTargetDEG) / baseCircumference)/2; // 32,400
+  double baseCircumference = baseDiameterIN * M_PI; 
+  double degreesToRotate = ((360 * travelTargetDEG) / baseCircumference)/2;
   if(mydirection == right){
     this->moveFor(degreesToRotate,degreesToRotate*-1, speed);
   }
@@ -222,23 +279,9 @@ void base::driveInches_Enc(dirType mydirection, double travelTargetIN, int speed
   double degreesToRotate = ((360.0 * travelTargetIN) / circumference)*2.5;
   leftBaseEncReset;
   rightBaseEncReset;
-  baseGyroReset;
-  vex:: task::sleep(1000);
   if(mydirection == forwards){
     while(rightEncoder<degreesToRotate || leftEncoder<degreesToRotate){
-      //printf("GyroValue: %f\n",baseGyro);
-      //printf("MotorSpeed: %f and %f\n",lSpeed, rSpeed);
-      if(baseGyro>0){
-        //Controller1.rumble("---");
-        lSpeed = speed-(baseGyro*6);
-        
-      }else if (baseGyro<0) {
-        rSpeed = speed+(baseGyro*6);
-      }else{
-        lSpeed = speed;
-        rSpeed = speed;
-      }
-      this->Spin(lSpeed,rSpeed);
+      this->Spin(speed,speed);
     }
     this->Brake();
     
@@ -272,3 +315,44 @@ void base::turnDegrees_Gyro(double Angle,int speed){ //IDK if this works
 
 
 base myBase;
+
+/*
+const unsigned int TrueSpeed[128] = {
+      0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
+      0 , 21, 21, 21, 22, 22, 22, 23, 24, 24,
+      25, 25, 25, 25, 26, 27, 27, 28, 28, 28,
+      28, 29, 30, 30, 30, 31, 31, 32, 32, 32,
+      33, 33, 34, 34, 35, 35, 35, 36, 36, 37,
+      37, 37, 37, 38, 38, 39, 39, 39, 40, 40,
+      41, 41, 42, 42, 43, 44, 44, 45, 45, 46,
+      46, 47, 47, 48, 48, 49, 50, 50, 51, 52,
+      52, 53, 54, 55, 56, 57, 57, 58, 59, 60,
+      61, 62, 63, 64, 65, 66, 67, 67, 68, 70,
+      71, 72, 72, 73, 74, 76, 77, 78, 79, 79,
+      80, 81, 83, 84, 84, 86, 86, 87, 87, 88,
+      88, 89, 89, 90, 90,127,127,127};
+    const unsigned int TrueSpeedNew[100] = {
+      0,  0,  0,   0,  0,  0,  0,  0,  0,  0,
+      0,  0,  0,  20, 20, 21, 21, 24, 24, 25,
+      27, 28, 28, 29, 30, 31, 31, 32, 32, 32,
+      33, 33, 34, 34, 35, 35, 35, 36, 36, 37,
+      37, 37, 37, 38, 38, 39, 39, 39, 40, 40,
+      41, 41, 42, 42, 43, 44, 44, 45, 45, 46,
+      46, 47, 47, 48, 48, 49, 50, 50, 51, 52,
+      52, 53, 54, 55, 56, 57, 59, 59, 63, 63,
+      67, 67, 71, 71, 73, 75, 78, 78, 80, 81, 
+      83, 84, 84, 87, 87, 90, 90,100,100,100};
+      
+
+      const unsigned int trueSpeed[100] = {
+      0,  0,  0,   0,  0,  0,  0,  0,  0,  0,
+      0,  0,  0,  20, 20, 21, 21, 24, 24, 25,
+      27, 28, 28, 29, 30, 31, 31, 32, 32, 32,
+      33, 33, 34, 34, 35, 35, 35, 36, 36, 37,
+      37, 37, 37, 38, 38, 39, 39, 39, 40, 40,
+      41, 41, 42, 42, 43, 44, 44, 45, 45, 46,
+      46, 47, 47, 48, 48, 49, 50, 50, 51, 52,
+      52, 53, 54, 55, 56, 57, 59, 59, 63, 63,
+      67, 67, 71, 71, 73, 75, 78, 78, 80, 81, 
+      83, 84, 84, 87, 87, 90, 90,100,100,100};
+      */

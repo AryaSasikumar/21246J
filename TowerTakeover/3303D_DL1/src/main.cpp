@@ -9,6 +9,7 @@
 
 #include "tilter.h"
 
+
 using namespace vex;
 
 
@@ -80,23 +81,46 @@ void usercontrol( void ) {
     myBase.userControl();
     myTilter.userControl();
     myIntake.userControl();
-    if(Controller1.ButtonY.pressing()){
-      
-      //myBase.driveInches_Enc(forwards, 40, 100);
-      //----------------------------------------
-      //myTilter.robotDeploy();  
-      //vex::task::sleep(5000);        
-      //myIntake.Spin(100);
-      //myBase.drivePID(60,45);
+    if(btnX){
+      vex::task::sleep(250);
+      myBase.useTrueSpeed = !myBase.useTrueSpeed;
+    }
+    while(btnY){
+      baseGyroReset;
+      vex::task::sleep(500);
+      while(Gyro.isCalibrating()){vex::task::sleep(1);}
+      //Intake and drive forward 4 cubes
+      myIntake.Spin(100);
+      vex::task::sleep(100); 
+      //myBase.driveInches_Enc(forwards, 50, 45);
+      myBase.drivePID(25, 25, 54);
+      vex::task::sleep(250);
+
+      //Turn towards right stack
+      //baseGyroReset;
       //vex::task::sleep(500);
-      //myBase.turnPID(100);
-      //myIntake.Spin(0);
-      //----------------------------------------
-      //myBase.drivePID(-46);
-      myBase.turnDegrees_Gyro(300,50);
+      //while(Gyro.isCalibrating()){vex::task::sleep(1);}
+      //myBase.turnPID(35,35, 80);
+    
+      //Drive into stack to intake first cube
+      //myBase.drivePID(30, 30, 10);
+      vex::task::sleep(1000);
+
+      /*baseGyroReset;
+      vex::task::sleep(250);
+      while(Gyro.isCalibrating()){vex::task::sleep(1);}
+      myBase.turnPID(50,50, -50);
+      myBase.drivePID(50, 50, 4);
+      vex::task::sleep(1000);
+      */
+      myIntake.Spin(0);
+      while(btnY){
+        vex::task::sleep(1000);
+      }
+      //myBase.turnDegrees_Gyro(300,50);
       //myBase.turnPID(700);
     }
-    vex::task::sleep(1); //Sleep the task for a short amount of time to prevent wasted resources. 
+    vex::task::sleep(5); //Sleep the task for a short amount of time to prevent wasted resources. 
   }
 }
 
@@ -113,8 +137,15 @@ int main() {
        
     //Prevent main from exiting with an infinite loop.                        
     while(true) {
-      printf("gyroVal: %li\n",baseGyro);
-      vex::task::sleep(1);//Sleep the task for a short amount of time to prevent wasted resources.
+      if(Brain.Battery.capacity(percentUnits::pct) <= 50){
+        Controller1.rumble("-.-.-.-");
+        Controller1.Screen.clearScreen();
+        Controller1.Screen.setCursor(1,1);
+        Controller1.Screen.print("ROBOT BATTERY LOW!");
+        vex::task::sleep(1000);
+      }
+      //printf("gyroVal: %ld\n",Controller1.Axis3.position(percent));
+      vex::task::sleep(5);//Sleep the task for a short amount of time to prevent wasted resources.
     }    
        
 }

@@ -42,14 +42,22 @@ vex::bumper Bumper = vex::bumper(Brain.ThreeWirePort.B);
 const double wheelDiameterIN  = 4.0; 
 const double baseDiameterIN  = 15.0;
 
+//Controller Buttons
 #define Y_leftJoy Controller1.Axis3.value()
 #define Y_rightJoy Controller1.Axis2.value()
 
 #define X_leftJoy Controller1.Axis4.value()
 #define X_rightJoy Controller1.Axis1.value()
 
+#define btnX Controller1.ButtonX.pressing()
 #define autoScoreBtn Controller1.ButtonA.pressing()
 #define baseLockBtn Controller1.ButtonB.pressing()
+#define btnY Controller1.ButtonY.pressing()
+
+#define BtnUp Controller1.ButtonUp.pressing()
+#define BtnRight Controller1.ButtonRight.pressing()
+#define BtnDown Controller1.ButtonDown.pressing()
+#define BtnLeft Controller1.ButtonLeft.pressing()
 
 #define tiltOutBtn Controller1.ButtonL1.pressing()
 #define tiltInBtn  Controller1.ButtonL2.pressing()
@@ -58,9 +66,8 @@ const double baseDiameterIN  = 15.0;
 #define outtakeBtn Controller1.ButtonR2.pressing()
 
 //Sensors:
-//#define baseGyro (-Gyro.value(roationUnits::deg)/2)
 #define baseGyro (-Gyro.value(vex::analogUnits::mV))
-#define baseGyroReset Gyro.startCalibration(1000)
+#define baseGyroReset Gyro.startCalibration()
 #define leftBaseEnc leftEncoder.rotation(vex::rotationUnits::deg)
 #define rightBaseEnc rightEncoder.rotation(vex::rotationUnits::deg)
 #define leftBaseEncReset leftEncoder.resetRotation()
