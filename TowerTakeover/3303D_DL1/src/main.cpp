@@ -33,7 +33,7 @@ vex::competition Competition;
 
 void pre_auton( void ) {
   baseGyroReset;
-  while(Gyro.isCalibrating()){}
+  while(Gyro.isCalibrating()){vex::task::sleep(1);}
   // All activities that occur before the competition starts
   // Example: clearing encoders, setting servo positions, ...
   
@@ -76,7 +76,7 @@ void autonomous( void ) {
 void usercontrol( void ) {
   tilt1.resetRotation();
   baseGyroReset;
-  while(Gyro.isCalibrating()){}
+  while(Gyro.isCalibrating()){vex::task::sleep(1);}
   while(true){
     myBase.userControl();
     myTilter.userControl();
@@ -86,25 +86,22 @@ void usercontrol( void ) {
       myBase.useTrueSpeed = !myBase.useTrueSpeed;
     }
     while(btnY){
-      baseGyroReset;
-      vex::task::sleep(500);
-      while(Gyro.isCalibrating()){vex::task::sleep(1);}
       //Intake and drive forward 4 cubes
-      myIntake.Spin(100);
-      vex::task::sleep(100); 
+      //myIntake.Spin(100);
+      //vex::task::sleep(100); 
       //myBase.driveInches_Enc(forwards, 50, 45);
-      myBase.drivePID(25, 25, 54);
-      vex::task::sleep(250);
+      //myBase.drivePID(25, 25, 54);
+      //vex::task::sleep(250);
 
       //Turn towards right stack
       //baseGyroReset;
       //vex::task::sleep(500);
       //while(Gyro.isCalibrating()){vex::task::sleep(1);}
-      //myBase.turnPID(35,35, 80);
+      myBase.turnPID(50,50, 450);  //450 Gyro units is about 90 degrees
     
       //Drive into stack to intake first cube
       //myBase.drivePID(30, 30, 10);
-      vex::task::sleep(1000);
+      //vex::task::sleep(1000);
 
       /*baseGyroReset;
       vex::task::sleep(250);
@@ -112,8 +109,9 @@ void usercontrol( void ) {
       myBase.turnPID(50,50, -50);
       myBase.drivePID(50, 50, 4);
       vex::task::sleep(1000);
-      */
       myIntake.Spin(0);
+      */
+      
       while(btnY){
         vex::task::sleep(1000);
       }
@@ -141,10 +139,10 @@ int main() {
         Controller1.rumble("-.-.-.-");
         Controller1.Screen.clearScreen();
         Controller1.Screen.setCursor(1,1);
-        Controller1.Screen.print("ROBOT BATTERY LOW!");
+        Controller1.Screen.print("BATTERY LOW!");
         vex::task::sleep(1000);
       }
-      //printf("gyroVal: %ld\n",Controller1.Axis3.position(percent));
+      //printf("gyroVal: %ld\n",baseGyro);
       vex::task::sleep(5);//Sleep the task for a short amount of time to prevent wasted resources.
     }    
        

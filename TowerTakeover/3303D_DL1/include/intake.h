@@ -11,6 +11,7 @@ class intake{
     void Stop();
     void userControl();
 };
+
 intake::intake(){}
 
 void intake::Spin(int speed){

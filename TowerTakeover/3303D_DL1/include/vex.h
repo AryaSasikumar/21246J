@@ -54,10 +54,10 @@ const double baseDiameterIN  = 15.0;
 #define baseLockBtn Controller1.ButtonB.pressing()
 #define btnY Controller1.ButtonY.pressing()
 
-#define BtnUp Controller1.ButtonUp.pressing()
-#define BtnRight Controller1.ButtonRight.pressing()
-#define BtnDown Controller1.ButtonDown.pressing()
-#define BtnLeft Controller1.ButtonLeft.pressing()
+#define btnUp Controller1.ButtonUp.pressing()
+#define btnRight Controller1.ButtonRight.pressing()
+#define btnDown Controller1.ButtonDown.pressing()
+#define btnLeft Controller1.ButtonLeft.pressing()
 
 #define tiltOutBtn Controller1.ButtonL1.pressing()
 #define tiltInBtn  Controller1.ButtonL2.pressing()
@@ -67,7 +67,7 @@ const double baseDiameterIN  = 15.0;
 
 //Sensors:
 #define baseGyro (-Gyro.value(vex::analogUnits::mV))
-#define baseGyroReset Gyro.startCalibration()
+#define baseGyroReset Gyro.startCalibration(1000)
 #define leftBaseEnc leftEncoder.rotation(vex::rotationUnits::deg)
 #define rightBaseEnc rightEncoder.rotation(vex::rotationUnits::deg)
 #define leftBaseEncReset leftEncoder.resetRotation()
