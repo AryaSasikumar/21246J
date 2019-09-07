@@ -11,6 +11,7 @@ class intake{
     void Stop();
     void userControl();
 };
+
 intake::intake(){}
 
 void intake::Spin(int speed){
@@ -29,6 +30,8 @@ void intake::userControl(){
     this->Spin(this->inSpeed);
   }else if(outtakeBtn){ 
     this->Spin(this->outSpeed);
+  }else if(autoScoreBtn){
+    this->Spin(-50);
   }else{
     this->Stop();
   }

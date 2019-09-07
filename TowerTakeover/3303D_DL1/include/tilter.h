@@ -11,10 +11,12 @@ class tilter{
   public:
     tilter();
     void Spin(int speed);
+    void moveFor(double degToRotate, int speed);
     void Stop(bool type);
     void autoScore();
     void userControl(); 
     void robotDeploy();  
+    void autoScoreStack();
 };
 
 tilter::tilter(){}
@@ -23,6 +25,12 @@ void tilter::Spin(int speed){
   tilt1.spin(vex::directionType::fwd, speed, vex::velocityUnits::pct);   
   tilt2.spin(vex::directionType::fwd, speed, vex::velocityUnits::pct);  
 }
+
+void tilter::moveFor(double degToRotate, int speed){
+  tilt1.startRotateFor(degToRotate,vex::rotationUnits::deg,speed,vex::velocityUnits::pct);
+  tilt2.rotateFor(degToRotate,vex::rotationUnits::deg,speed,vex::velocityUnits::pct);
+}
+
 void tilter::Stop(bool type){
   if(type){
     tilt1.stop(vex::brakeType::coast);  
@@ -34,16 +42,14 @@ void tilter::Stop(bool type){
 }
 
 void tilter::buttonReset(){
-  if(Bumper.pressing()==1){
+  if(Bumper.pressing()){
     tilt1.resetRotation();
+    tilt2.resetRotation();
   }
 }
 
-void tilter::autoScore(){
-  myIntake.Spin(-50);
-  myBase.Spin(-30, -30);
-  this->Spin(-60);
-}
+
+
 
 void tilter::userControl(){
   if(tiltInBtn && tiltOutBtn){
@@ -60,21 +66,39 @@ void tilter::userControl(){
     }     
   }
   if(autoScoreBtn){
-      //this->autoScore();
-    }
+    this->Spin(-60);
+  }
   this->buttonReset();
 }
 
 
 void tilter::robotDeploy(){
+  //myIntake.Spin(-100);
+  //vex::task::sleep(200);
   this->Spin(100);
-  myIntake.Spin(100);
+  myIntake.Spin(50);
   vex::task::sleep(200);
   while(!tiltBumpBtn){
     this->Spin(-100);
   }
   this->Stop(false);
   myIntake.Spin(0);
+  vex::task::sleep(500);
+  myBase.Spin(-100, -100);
+  vex::task::sleep(250); 
+  myBase.Hold();
+}
+
+void tilter::autoScoreStack(){
+  while(!tiltBumpBtn){
+    this->Spin(-80);
+  }
+  while(tilt1.rotation(vex::rotationUnits::deg)<=75){
+    this->Spin(this->slowSpeed);
+  }
+  this->Stop(0);
+
+  this->autoScore();
   vex::task::sleep(1000);
 }
 /*
@@ -126,24 +150,8 @@ void deployslide(int speed,int distance ) {
 }
 
 
-
-
-void score(){
-  tilt1.resetRotation() ;
-  tilt1.spin(vex::directionType::fwd,100,vex::velocityUnits::pct);
-  tilt2.spin(vex::directionType::fwd,100,vex::velocityUnits::pct);    
-  
-  while(tilt1.rotation(vex::rotationUnits::deg)<525 ){
-    if(tilt1.rotation(vex::rotationUnits::deg)>200){
-    tilt1.spin(vex::directionType::fwd,30,vex::velocityUnits::pct);
-    tilt2.spin(vex::directionType::fwd,30,vex::velocityUnits::pct);  
-    }
-    vex::task::sleep(1) ;
-  }
-  vex::task::sleep(1500) ;
-  autoScore() ;
-  vex::task::sleep(2000) ;
-}
 */
 
+
 tilter myTilter;
+

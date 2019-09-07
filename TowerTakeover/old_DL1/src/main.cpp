@@ -7,8 +7,7 @@
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
-#include "tilter.h"
-
+#include "vex.h"
 
 using namespace vex;
 
@@ -33,7 +32,9 @@ vex::competition Competition;
 void pre_auton( void ) {
   // All activities that occur before the competition starts
   // Example: clearing encoders, setting servo positions, ...
-  
+  Gyro.startCalibration();
+  while(Gyro.isCalibrating())
+    vex::task::sleep(1); 
 }
 
 /*---------------------------------------------------------------------------*/
@@ -47,12 +48,9 @@ void pre_auton( void ) {
 /*---------------------------------------------------------------------------*/
 
 void autonomous( void ) {
-  myTilter.robotDeploy();
-  myIntake.Spin(100);
-  myBase.drivePID(48);
-  vex::task::sleep(1000);
-  myIntake.Spin(0);
-  myBase.drivePID(-46);
+  drivefwd_nopid(200,1000);
+  turn_(9,true,80);
+  //drivePID(24);
   //blueAuton();
   //redAuton();
 }
@@ -69,10 +67,14 @@ void autonomous( void ) {
 
 void usercontrol( void ) {
   tilt1.resetRotation();
-  while(true){
-    myBase.userControl();
-    myTilter.userControl();
-    myIntake.userControl();
+  while (1) {
+    driveUserControl();
+    tiltUserControl();
+    intakeUserControl();
+    buttonReset();
+    if(Controller1.ButtonA.pressing()){
+      autoScore();
+    }
     vex::task::sleep(1); //Sleep the task for a short amount of time to prevent wasted resources. 
   }
 }
@@ -84,13 +86,13 @@ int main() {
     //Set up callbacks for autonomous and driver control periods.
     Competition.autonomous( autonomous );
     Competition.drivercontrol( usercontrol );
-    
+
     //Run the pre-autonomous function. 
     pre_auton();
-       
+
     //Prevent main from exiting with an infinite loop.                        
-    while(true) {
+    while(1) {
       vex::task::sleep(1);//Sleep the task for a short amount of time to prevent wasted resources.
     }    
-       
-}
+
+} 
