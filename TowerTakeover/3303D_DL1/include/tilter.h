@@ -150,25 +150,8 @@ void deployslide(int speed,int distance ) {
 }
 
 
-
-
-void score(){
-  tilt1.resetRotation() ;
-  tilt1.spin(vex::directionType::fwd,100,vex::velocityUnits::pct);
-  tilt2.spin(vex::directionType::fwd,100,vex::velocityUnits::pct);    
-  
-  while(tilt1.rotation(vex::rotationUnits::deg)<525 ){
-    if(tilt1.rotation(vex::rotationUnits::deg)>200){
-    tilt1.spin(vex::directionType::fwd,30,vex::velocityUnits::pct);
-    tilt2.spin(vex::directionType::fwd,30,vex::velocityUnits::pct);  
-    }
-    vex::task::sleep(1) ;
-  }
-  vex::task::sleep(1500) ;
-  autoScore() ;
-  vex::task::sleep(2000) ;
-}
 */
+
 
 tilter myTilter;
 

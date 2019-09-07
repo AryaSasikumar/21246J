@@ -276,7 +276,7 @@ void base::driveInches_Enc(dirType mydirection, double travelTargetIN, int speed
     this->Brake();
     
   }else if(mydirection == backwards){
-    while(rightEncoder<degreesToRotate || leftEncoder<degreesToRotate){
+    while(rightEncoder>degreesToRotate || leftEncoder>degreesToRotate){
       this->Spin(-speed,-speed);
     }
     this->Brake();
