@@ -85,7 +85,7 @@ void tilter::robotDeploy(){
   myIntake.Spin(0);
   vex::task::sleep(500);
   myBase.Spin(-100, -100);
-  vex::task::sleep(250); 
+  vex::task::sleep(500); 
   myBase.Hold();
 }
 
