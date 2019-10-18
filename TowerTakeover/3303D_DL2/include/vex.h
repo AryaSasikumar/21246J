@@ -65,9 +65,14 @@ const double baseDiameterIN  = 16.5;
 #define outtakeBtn Controller1.ButtonR2.pressing()
 
 //Sensors:
-#define baseGyro Gyro.value(vex::rotationUnits::deg)
+//#define baseGyro Gyro.value(vex::rotationUnits::deg)OLD
+#define baseGyro (-Gyro.value(vex::analogUnits::mV))
+#define baseGyroReset Gyro.startCalibration(1000)
 #define leftBaseEnc leftEncoder.rotation(vex::rotationUnits::deg)
 #define rightBaseEnc rightEncoder.rotation(vex::rotationUnits::deg)
+#define leftBaseEncReset leftEncoder.resetRotation()
+#define rightBaseEncReset rightEncoder.resetRotation()
+#define tiltBumpBtn Bumper.pressing()
 
 //driveUserControl(Controller.Axis3.value(), Controller.Axis2.value());
 //liftUserControl(100, Controller.ButtonL1.pressing(), Controller.ButtonL2.pressing(), Controller.ButtonUp.pressing(), Controller.ButtonDown.pressing(), Controller.ButtonRight.pressing());
