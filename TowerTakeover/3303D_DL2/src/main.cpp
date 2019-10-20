@@ -24,7 +24,9 @@ void pre_auton(void) {
 void autonomous(void) {
   baseGyroReset;
   while(Gyro.isCalibrating()){vex::task::sleep(1);}
-  myAuton.blueFrontAuton();
+  //myAuton.blueFrontAuton();
+  myBase.turnPID(90);
+  //myBase.drivePID(50, 50, 10);
 }
 
 /*---------------------------------------------------------------------------*/
@@ -48,10 +50,24 @@ int main(){
   Competition.drivercontrol(usercontrol);
   
   //Run the pre-autonomous function. 
-  pre_auton();
+  pre_auton(); //baseGyro
+
+    /*while(true) {
+      if(Brain.Battery.capacity(percentUnits::pct) <= 50){
+        Controller1.rumble("-.-.-.-");
+        Controller1.Screen.clearScreen();
+        Controller1.Screen.setCursor(1,1);
+        Controller1.Screen.print("BATTERY LOW!");
+        vex::task::sleep(1000);
+      }
+      //printf("gyroVal: %ld\n",baseGyro);
+      vex::task::sleep(5);//Sleep the task for a short amount of time to prevent wasted resources.
+    }  */  
+       
       
   //Prevent main from exiting with an infinite loop.                        
   while(true){
-    vex::task::sleep(100);//Sleep the task for a short amount of time to prevent wasted resources.
-  }     
+    printf("gyroVal: %ld\n",baseGyro);  
+    vex::task::sleep(5);//Sleep the task for a short amount of time to prevent wasted resources.
+  }   
 }

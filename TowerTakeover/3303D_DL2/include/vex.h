@@ -38,9 +38,9 @@ vex::motor leftIntake  = vex::motor(vex::PORT18,vex::gearSetting::ratio18_1,true
 
 vex::controller Controller1 = vex::controller();
 
-vex::gyro Gyro = vex::gyro(Brain.ThreeWirePort.F);
-vex::encoder leftEncoder  = vex::encoder(Brain.ThreeWirePort.C) ;
-vex::encoder rightEncoder = vex::encoder(Brain.ThreeWirePort.G) ;
+vex::gyro Gyro = vex::gyro(Brain.ThreeWirePort.A);
+//vex::encoder leftEncoder  = vex::encoder(Brain.ThreeWirePort.C) ;
+vex::encoder baseEncoder = vex::encoder(Brain.ThreeWirePort.G) ;
 vex::bumper Bumper = vex::bumper(Brain.ThreeWirePort.B);
 
 const double wheelDiameterIN  = 4; 
@@ -65,13 +65,11 @@ const double baseDiameterIN  = 16.5;
 #define outtakeBtn Controller1.ButtonR2.pressing()
 
 //Sensors:
-//#define baseGyro Gyro.value(vex::rotationUnits::deg)OLD
-#define baseGyro (-Gyro.value(vex::analogUnits::mV))
+#define baseGyro Gyro.value(vex::rotationUnits::deg) //OLD
+//#define baseGyro (-Gyro.value(vex::analogUnits::mV))
 #define baseGyroReset Gyro.startCalibration(1000)
-#define leftBaseEnc leftEncoder.rotation(vex::rotationUnits::deg)
-#define rightBaseEnc rightEncoder.rotation(vex::rotationUnits::deg)
-#define leftBaseEncReset leftEncoder.resetRotation()
-#define rightBaseEncReset rightEncoder.resetRotation()
+#define mainBaseEnc baseEncoder.rotation(vex::rotationUnits::deg)
+#define mainBaseEncReset baseEncoder.resetRotation()
 #define tiltBumpBtn Bumper.pressing()
 
 //driveUserControl(Controller.Axis3.value(), Controller.Axis2.value());

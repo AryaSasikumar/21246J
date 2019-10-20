@@ -38,9 +38,9 @@ class base{
     void userControl(int bufferSize, bool Stop);
 
     //Autonomous Functions
-    //void turnPID(double Angle);OLDDD
+    void turnPID(double Angle);//OLDDD
     //void drivePID(double Distance);
-    void turnPID(double maxLeftSpeed, double maxRightSpeed, double Angle);
+    //void turnPID(double maxLeftSpeed, double maxRightSpeed, double Angle); //NEWWWW
     void drivePID(double maxLeftSpeed, double maxRightSpeed, double Distance);
     void driveInches_MotorEnc(dirType mydirection, double travelTargetIN, int speed);
     void turnDegrees_MotorEnc(turnType mydirection, double travelTargetDEG, int speed);
@@ -190,16 +190,15 @@ void base::driveInches_Enc(dirType mydirection, double travelTargetIN, int speed
  double rSpeed = speed;
  double circumference = wheelDiameterIN * M_PI;
  double degreesToRotate = ((360.0 * travelTargetIN) / circumference)*2.5;
- leftBaseEncReset;
- rightBaseEncReset;
+ mainBaseEncReset;
  if(mydirection == forwards){
-   while(rightEncoder<degreesToRotate || leftEncoder<degreesToRotate){
+   while(baseEncoder<degreesToRotate){  //|| baseEncoder<degreesToRotate
      this->Spin(speed,speed);
    }
    this->Brake();
   
  }else if(mydirection == backwards){
-   while(rightEncoder>degreesToRotate || leftEncoder>degreesToRotate){
+   while(baseEncoder>degreesToRotate){  //|| baseEncoder<degreesToRotate
      this->Spin(-speed,-speed);
    }
    this->Brake();
@@ -235,7 +234,7 @@ void base::driveInches_Enc(dirType mydirection, double travelTargetIN, int speed
   }
   this->Brake();
   vex:: task:: sleep(10);
-}
+}*/
 
 void base::turnPID(double Angle){
   Gyro.startCalibration();
@@ -265,22 +264,21 @@ void base::turnPID(double Angle){
   }
   this->Brake();
   vex:: task:: sleep(10);
-}*/
+}
 
 void base::drivePID(double maxLeftSpeed, double maxRightSpeed, double Distance){
  Distance = distanceToTravel(Distance);
- rightEncoder.resetRotation();
- leftEncoder.resetRotation();
+ baseEncoder.resetRotation();
  vex::task::sleep(50);
  drive.dt=0.0001;
- double encoderDeg = (rightBaseEnc + leftBaseEnc)/2;
+ double encoderDeg = mainBaseEnc; //(rightBaseEnc + leftBaseEnc)/2
  double speed = drive.speed(encoderDeg,Distance);
  drive.pre_error = Distance - encoderDeg;
  drive.error = drive.pre_error;
  int timesGood = 0;
  bool moveComplete = false;
  while(!moveComplete && drive.enabled && encoderDeg <= Distance){
-   encoderDeg = (rightBaseEnc + leftBaseEnc)/2;
+   encoderDeg = mainBaseEnc; //(rightBaseEnc + leftBaseEnc)/2
    speed = drive.speed(encoderDeg,Distance);
    double lSpeed = (speed>=maxLeftSpeed) ? maxLeftSpeed : speed;
    double rSpeed = (speed>=maxRightSpeed) ? maxRightSpeed : speed;
@@ -298,7 +296,7 @@ void base::drivePID(double maxLeftSpeed, double maxRightSpeed, double Distance){
  vex:: task:: sleep(10);
 }
  
-void base::turnPID(double maxLeftSpeed, double maxRightSpeed, double Angle){ //450 Gyro units is about 90 degrees
+/*void base::turnPID(double maxLeftSpeed, double maxRightSpeed, double Angle){ //450 Gyro units is about 90 degrees NEWWW
  Angle = baseGyro+Angle;
  turn.dt=0.0001;
  double speed = turn.speed(baseGyro,Angle);
@@ -330,7 +328,7 @@ void base::turnPID(double maxLeftSpeed, double maxRightSpeed, double Angle){ //4
  }
  this->Brake();
  vex:: task:: sleep(10);
-}
+}*/
 
 
 void base::driveInches_MotorEnc(dirType mydirection, double travelTargetIN, int speed){
