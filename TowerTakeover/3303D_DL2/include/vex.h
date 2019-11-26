@@ -15,6 +15,7 @@
 
 #include "v5.h"
 #include "v5_vcs.h"
+#include "vex_global.h"
 
 
 // A global instance of vex::brain used for printing to the V5 brain screen
@@ -25,7 +26,7 @@ vex::competition Competition;
 // define your global instances of motors and other devices here
 vex::controller Controller = vex::controller();
 
-vex::motor LF  = vex::motor(vex::PORT20,vex::gearSetting::ratio18_1,false);
+vex::motor LF  = vex::motor(vex::PORT16,vex::gearSetting::ratio18_1,false);
 vex::motor LB   = vex::motor(vex::PORT19,vex::gearSetting::ratio18_1,false);
 vex::motor RF = vex::motor(vex::PORT10,vex::gearSetting::ratio18_1,true);
 vex::motor RB  = vex::motor(vex::PORT9,vex::gearSetting::ratio18_1,true);
@@ -33,8 +34,8 @@ vex::motor RB  = vex::motor(vex::PORT9,vex::gearSetting::ratio18_1,true);
 vex::motor liftOne = vex::motor(vex::PORT6,vex::gearSetting::ratio18_1,true);
 vex::motor liftTwo = vex::motor(vex::PORT7,vex::gearSetting::ratio18_1,true);
 
-vex::motor rightIntake = vex::motor(vex::PORT5,vex::gearSetting::ratio18_1,false);
-vex::motor leftIntake  = vex::motor(vex::PORT18,vex::gearSetting::ratio18_1,true);
+vex::motor rightIntake = vex::motor(vex::PORT11,vex::gearSetting::ratio18_1,false);
+vex::motor leftIntake  = vex::motor(vex::PORT14,vex::gearSetting::ratio18_1,true);
 
 vex::controller Controller1 = vex::controller();
 
