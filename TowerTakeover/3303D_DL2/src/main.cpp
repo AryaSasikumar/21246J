@@ -22,11 +22,16 @@ void pre_auton(void) {
 /*                              Autonomous Task                              */
 /*---------------------------------------------------------------------------*/
 void autonomous(void) {
-  baseGyroReset;
+  /*baseGyroReset;
+  vex::task::sleep(500);
   while(Gyro.isCalibrating()){vex::task::sleep(1);}
-  //myAuton.blueFrontAuton();
-  myBase.turnPID(90);
-  //myBase.drivePID(50, 50, 10);
+  myBase.turnPID(50,50, -459);  //450 Gyro units is about 90 degrees 
+
+  myLift.liftUp(900, 100, 100);
+  myLift.liftDown(500, 60, 100);
+
+  myLift.tiltForward(50, 100, 200); */
+
 }
 
 /*---------------------------------------------------------------------------*/
@@ -67,7 +72,9 @@ int main(){
       
   //Prevent main from exiting with an infinite loop.                        
   while(true){
-    printf("gyroVal: %ld\n",baseGyro);  
-    vex::task::sleep(5);//Sleep the task for a short amount of time to prevent wasted resources.
+    printf("gyroVal: %f\n",liftPot.value(vex::rotationUnits::deg));  
+    vex::task::sleep(100);//Sleep the task for a short amount of time to prevent wasted resources.
   }   
 }
+
+

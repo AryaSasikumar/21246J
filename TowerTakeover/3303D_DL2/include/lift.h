@@ -13,6 +13,10 @@ class lift{
     void Spin(int speedOne, int speedTwo);
     void Stop(bool type);
     void autoScore();
+    void liftUp(int potValue, int speed, int waitTime);
+    void liftDown(int potValue, int speed, int waitTime);
+    void tiltForward(int potValue, int speed, int waitTime);
+    void tiltBackward(int potValue, int speed, int waitTime);
     void userControl();   
 };
 
@@ -45,6 +49,42 @@ void lift::buttonReset(){
   if(Bumper.pressing()==1){
     liftOne.resetRotation();
   }
+}
+
+void lift::liftUp(int potValue, int speed, int waitTime){
+	while(liftSensor <= potValue)
+	{
+		Spin(speed, speed);
+	}
+  Stop(false);
+	vex::task::sleep(waitTime);
+}
+
+void lift::liftDown(int potValue, int speed, int waitTime){
+  while(liftSensor >= potValue)
+	{
+		Spin(-speed, -speed);
+	}
+  Stop(false);
+	vex::task::sleep(waitTime);
+}
+
+void lift::tiltForward(int potValue, int speed, int waitTime){
+	while(liftPot.value(vex::rotationUnits::deg) >= potValue)
+	{
+		Spin(speed, -speed);
+	}
+  Stop(false);
+	vex::task::sleep(waitTime);
+}
+
+void lift::tiltBackward(int potValue, int speed, int waitTime){
+  while(liftPot.value(vex::rotationUnits::deg) <= potValue)
+	{
+		Spin(-speed, speed);
+	}
+  Stop(false);
+	vex::task::sleep(waitTime);
 }
 
 void lift::autoScore(){

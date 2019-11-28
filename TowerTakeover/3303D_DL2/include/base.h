@@ -38,9 +38,9 @@ class base{
     void userControl(int bufferSize, bool Stop);
 
     //Autonomous Functions
-    void turnPID(double Angle);//OLDDD
+    //void turnPID(double Angle);//OLDDD
     //void drivePID(double Distance);
-    //void turnPID(double maxLeftSpeed, double maxRightSpeed, double Angle); //NEWWWW
+    void turnPID(double maxLeftSpeed, double maxRightSpeed, double Angle); //NEWWWW
     void drivePID(double maxLeftSpeed, double maxRightSpeed, double Distance);
     void driveInches_MotorEnc(dirType mydirection, double travelTargetIN, int speed);
     void turnDegrees_MotorEnc(turnType mydirection, double travelTargetDEG, int speed);
@@ -234,7 +234,7 @@ void base::driveInches_Enc(dirType mydirection, double travelTargetIN, int speed
   }
   this->Brake();
   vex:: task:: sleep(10);
-}*/
+}
 
 void base::turnPID(double Angle){
   Gyro.startCalibration();
@@ -264,7 +264,7 @@ void base::turnPID(double Angle){
   }
   this->Brake();
   vex:: task:: sleep(10);
-}
+}*/
 
 void base::drivePID(double maxLeftSpeed, double maxRightSpeed, double Distance){
  Distance = distanceToTravel(Distance);
@@ -296,39 +296,39 @@ void base::drivePID(double maxLeftSpeed, double maxRightSpeed, double Distance){
  vex:: task:: sleep(10);
 }
  
-/*void base::turnPID(double maxLeftSpeed, double maxRightSpeed, double Angle){ //450 Gyro units is about 90 degrees NEWWW
- Angle = baseGyro+Angle;
- turn.dt=0.0001;
- double speed = turn.speed(baseGyro,Angle);
- turn.pre_error = Angle - baseGyro;
- turn.error = turn.pre_error;
- int timesGood = 0;
- bool moveComplete = false;
- while(!moveComplete && turn.enabled && baseGyro <= abs(int(Angle))){
-   printf("gyroVal: %ld\n",baseGyro);
-   printf("Angle: %f\n",Angle);
-   if(Angle>0){
-     speed = turn.speed(baseGyro,Angle);
-     double lSpeed = (speed>=maxLeftSpeed) ? maxLeftSpeed : speed;
-     double rSpeed = (speed>=maxRightSpeed) ? maxRightSpeed : speed;
-     this->Spin(lSpeed,-rSpeed);
-   }else if(Angle<0){
-     speed = turn.speed(-baseGyro,-Angle);
-     double lSpeed = (speed>=maxLeftSpeed) ? maxLeftSpeed : speed;
-     double rSpeed = (speed>=maxRightSpeed) ? maxRightSpeed : speed;
-     this->Spin(-lSpeed,rSpeed);
-   }
-   if(int(turn.error)<=50){
-     timesGood++;
-   }
-   if(timesGood >= 100){
-     moveComplete = true;
-   }
-   vex:: task:: sleep(1);
- }
- this->Brake();
- vex:: task:: sleep(10);
-}*/
+void base::turnPID(double maxLeftSpeed, double maxRightSpeed, double Angle){ //450 Gyro units is about 90 degrees
+  Angle = baseGyro+Angle;
+  turn.dt=0.0001;
+  double speed = turn.speed(baseGyro,Angle);
+  turn.pre_error = Angle - baseGyro;
+  turn.error = turn.pre_error;
+  int timesGood = 0;
+  bool moveComplete = false;
+  while(!moveComplete && turn.enabled && baseGyro <= abs(int(Angle))){
+    printf("gyroVal: %ld\n",baseGyro);
+    printf("Angle: %f\n",Angle);
+    if(Angle>0){
+      speed = turn.speed(baseGyro,Angle);
+      double lSpeed = (speed>=maxLeftSpeed) ? maxLeftSpeed : speed;
+      double rSpeed = (speed>=maxRightSpeed) ? maxRightSpeed : speed;
+      this->Spin(lSpeed,-rSpeed);
+    }else if(Angle<0){
+      speed = turn.speed(-baseGyro,-Angle);
+      double lSpeed = (speed>=maxLeftSpeed) ? maxLeftSpeed : speed;
+      double rSpeed = (speed>=maxRightSpeed) ? maxRightSpeed : speed;
+      this->Spin(-lSpeed,rSpeed);
+    }
+    if(int(turn.error)<=50){
+      timesGood++;
+    }
+    if(timesGood >= 100){
+      moveComplete = true;
+    }
+    vex:: task:: sleep(1);
+  }
+  this->Brake();
+  vex:: task:: sleep(10);
+}
 
 
 void base::driveInches_MotorEnc(dirType mydirection, double travelTargetIN, int speed){

@@ -34,15 +34,16 @@ vex::motor RB  = vex::motor(vex::PORT9,vex::gearSetting::ratio18_1,true);
 vex::motor liftOne = vex::motor(vex::PORT6,vex::gearSetting::ratio18_1,true);
 vex::motor liftTwo = vex::motor(vex::PORT7,vex::gearSetting::ratio18_1,true);
 
-vex::motor rightIntake = vex::motor(vex::PORT11,vex::gearSetting::ratio18_1,false);
-vex::motor leftIntake  = vex::motor(vex::PORT14,vex::gearSetting::ratio18_1,true);
+vex::motor rightIntake = vex::motor(vex::PORT4,vex::gearSetting::ratio18_1,false);
+vex::motor leftIntake  = vex::motor(vex::PORT12,vex::gearSetting::ratio18_1,true);
 
 vex::controller Controller1 = vex::controller();
 
-vex::gyro Gyro = vex::gyro(Brain.ThreeWirePort.A);
+vex::gyro Gyro = vex::gyro(Brain.ThreeWirePort.C);
 //vex::encoder leftEncoder  = vex::encoder(Brain.ThreeWirePort.C) ;
 vex::encoder baseEncoder = vex::encoder(Brain.ThreeWirePort.G) ;
 vex::bumper Bumper = vex::bumper(Brain.ThreeWirePort.B);
+vex::pot liftPot = vex::pot(Brain.ThreeWirePort.A);
 
 const double wheelDiameterIN  = 4; 
 const double baseDiameterIN  = 16.5;
@@ -66,12 +67,14 @@ const double baseDiameterIN  = 16.5;
 #define outtakeBtn Controller1.ButtonR2.pressing()
 
 //Sensors:
-#define baseGyro Gyro.value(vex::rotationUnits::deg) //OLD
-//#define baseGyro (-Gyro.value(vex::analogUnits::mV))
+//#define baseGyro Gyro.value(vex::rotationUnits::deg) //OLD
+#define baseGyro (-Gyro.value(vex::analogUnits::mV))
 #define baseGyroReset Gyro.startCalibration(1000)
 #define mainBaseEnc baseEncoder.rotation(vex::rotationUnits::deg)
 #define mainBaseEncReset baseEncoder.resetRotation()
 #define tiltBumpBtn Bumper.pressing()
+#define liftSensor ((liftOne.rotation(vex::rotationUnits::deg)+liftTwo.rotation(vex::rotationUnits::deg))/2)
+#define tiltSensor liftPot.value(vex::rotationUnits::deg))
 
 //driveUserControl(Controller.Axis3.value(), Controller.Axis2.value());
 //liftUserControl(100, Controller.ButtonL1.pressing(), Controller.ButtonL2.pressing(), Controller.ButtonUp.pressing(), Controller.ButtonDown.pressing(), Controller.ButtonRight.pressing());
