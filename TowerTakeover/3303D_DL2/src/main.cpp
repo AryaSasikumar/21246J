@@ -22,15 +22,53 @@ void pre_auton(void) {
 /*                              Autonomous Task                              */
 /*---------------------------------------------------------------------------*/
 void autonomous(void) {
+  
+  myIntake.Spin(100);
+  vex::task::sleep(200);
+  myBase.drivePID(60, 60, 27);
+
+  baseGyroReset;
+  vex::task::sleep(500);
+  while(Gyro.isCalibrating()){vex::task::sleep(1);}
+  myBase.turnPID(-50,-50, -76);//right
+
+  
+  myBase.driveInches_Enc(backwards, -25, 80);
+  
+  baseGyroReset;
+  vex::task::sleep(500);
+  while(Gyro.isCalibrating()){vex::task::sleep(1);}
+  myBase.turnPID(-50,-50, 98);//left
+
+  myBase.drivePID(70, 70, 20);  
+  vex::task::sleep(100);
+  myBase.driveInches_Enc(backwards, -15, 100);  
+  
+  myBase.turnPID(-50,-50, 800);//left
+  myBase.drivePID(80, 80, 5);    
+  vex::task::sleep(150);
+
+  myIntake.Stop();
+  rightIntake.startRotateFor(-60,vex::rotationUnits::deg,60,vex::velocityUnits::pct);  
+  leftIntake.rotateFor(-60,vex::rotationUnits::deg,60,vex::velocityUnits::pct); 
+  vex::task::sleep(120);  
+  
+  myLift.tiltForward(57, 50, 200);
+  vex::task::sleep(100);  
+  myBase.driveInches_Enc(backwards, -10, 100);  
+
+
+
+
   /*baseGyroReset;
   vex::task::sleep(500);
   while(Gyro.isCalibrating()){vex::task::sleep(1);}
   myBase.turnPID(50,50, -459);  //450 Gyro units is about 90 degrees 
 
   myLift.liftUp(900, 100, 100);
-  myLift.liftDown(500, 60, 100);
+  myLift.liftDown(500, 60, 100);*/
 
-  myLift.tiltForward(50, 100, 200); */
+  //myLift.tiltForward(50, 100, 200);
 
 }
 
