@@ -22,8 +22,77 @@ void pre_auton(void) {
 /*                              Autonomous Task                              */
 /*---------------------------------------------------------------------------*/
 void autonomous(void) {
+
+  /*myIntake.Spin(100);     //BLUEEEEEEEEE
+  vex::task::sleep(750);
+  myBase.drivePID(45, 45, 26.5);
+  vex::task::sleep(650); 
+  myBase.driveInches_Enc(backwards, -15, 80);
+
+  baseGyroReset;
+  vex::task::sleep(500);
+  while(Gyro.isCalibrating()){vex::task::sleep(1);}
+  myBase.turnPID(-50,-50, 700);//left
+
+  myBase.drivePID(80, 80, 7.5);    
+  vex::task::sleep(150);
+
+  myIntake.Stop();
+  rightIntake.startRotateFor(-260,vex::rotationUnits::deg,40,vex::velocityUnits::pct);  
+  leftIntake.rotateFor(-260,vex::rotationUnits::deg,40,vex::velocityUnits::pct); 
+  vex::task::sleep(120);  
   
-  myIntake.Spin(100);
+  myLift.tiltForward(60, 30, 200);
+  vex::task::sleep(500);  
+  myBase.driveInches_Enc(backwards, -10, 100);  */
+
+
+
+  
+  
+  
+  
+  myIntake.Spin(100);    // REDDDDDDDD
+  vex::task::sleep(700);
+  myBase.drivePID(45, 45, 25);
+  vex::task::sleep(650); 
+  myBase.driveInches_Enc(backwards, -14, 80);
+
+  baseGyroReset;
+  vex::task::sleep(500);
+  while(Gyro.isCalibrating()){vex::task::sleep(1);}
+  myBase.turnPID(-50,-50, -700);//right
+
+  myBase.drivePID(80, 80, 7.5);    
+  vex::task::sleep(150);
+
+  myIntake.Stop();
+  rightIntake.startRotateFor(-260,vex::rotationUnits::deg,40,vex::velocityUnits::pct);  
+  leftIntake.rotateFor(-260,vex::rotationUnits::deg,40,vex::velocityUnits::pct); 
+  vex::task::sleep(120);  
+  
+  myLift.tiltForward(60, 30, 200);
+  vex::task::sleep(500);  
+  myBase.driveInches_Enc(backwards, -10, 100); 
+
+
+
+
+  /*baseGyroReset;
+  vex::task::sleep(500);
+  while(Gyro.isCalibrating()){vex::task::sleep(1);}
+  myBase.turnPID(50,50, -459);  //450 Gyro units is about 90 degrees 
+
+  myLift.liftUp(900, 100, 100);
+  myLift.liftDown(500, 60, 100);*/
+
+  //myLift.tiltForward(50, 100, 200);
+
+
+
+
+
+  /*myIntake.Spin(100);          8 cube auton
   vex::task::sleep(200);
   myBase.drivePID(60, 60, 27);
 
@@ -68,7 +137,7 @@ void autonomous(void) {
   myLift.liftUp(900, 100, 100);
   myLift.liftDown(500, 60, 100);*/
 
-  //myLift.tiltForward(50, 100, 200);
+  //myLift.tiltForward(50, 100, 200);*/
 
 }
 
