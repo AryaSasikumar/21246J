@@ -67,7 +67,7 @@ void score(){
     }
     vex::task::sleep(1) ;
   }
-  vex::task::sleep(1250) ;
+  vex::task::sleep(2000) ;
   autoScore();
   vex::task::sleep(2000) ;
 }
@@ -77,38 +77,32 @@ void blueAuton(){
   myTilter.robotDeploy();
   vex::task::sleep(100);  
   myBase.Spin(-100, -100);
-  myIntake.Spin(100);
-  vex::task::sleep(250); 
+  myIntake.Spin(80);
+  vex::task::sleep(300); 
   myBase.Spin(0, 0);
   //myBase.driveInches_Enc(forwards, 50, 45);
-  myBase.drivePID(45, 45, 49);//55
+  myBase.drivePID(44, 44, 51);//55
   vex::task::sleep(100);
   //myBase.drivePID(-45, -45, -10);
-  myBase.driveInches_Enc(backwards, -10.5, 80);
+  myBase.driveInches_Enc(backwards, -29.5, 45);
   //myBase.drivePID(-40, -40, -20);
 
   //Turn towards right stack
   baseGyroReset;
   vex::task::sleep(500);
   while(Gyro.isCalibrating()){vex::task::sleep(1);}
-  myBase.turnPID(50,50, 60);  //450 Gyro units is about 90 degrees 
+  myBase.turnPID(40,40, -850);  //450 Gyro units is about 90 degrees 
 
   //myBase.turnPID(50,50, 450);  //450 Gyro units is about 90 degrees
     
   //Drive into stack to intake first cube
-  myBase.drivePID(75, 75, 13.5);
-  vex::task::sleep(100);
-  myBase.driveInches_Enc(backwards, -30, 80);      
+  myBase.drivePID(60, 60, 13);
+  vex::task::sleep(150);
 
-  baseGyroReset;
-  vex::task::sleep(500);
-  while(Gyro.isCalibrating()){vex::task::sleep(1);}
-  myBase.turnPID(50,50, -1024);  //450 Gyro units is about 90 degrees
-  myBase.drivePID(75, 75, 13.5);
   myIntake.Stop();
   rightIntake.startRotateFor(-380,vex::rotationUnits::deg,80,vex::velocityUnits::pct);  
   leftIntake.rotateFor(-380,vex::rotationUnits::deg,80,vex::velocityUnits::pct); 
-  vex::task::sleep(125);  
+  vex::task::sleep(120);  
   score();  
 }
 
@@ -117,34 +111,28 @@ void redAuton(){
   myTilter.robotDeploy();
   vex::task::sleep(100);  
   myBase.Spin(-100, -100);
-  myIntake.Spin(100);
+  myIntake.Spin(80);
   vex::task::sleep(200); 
   myBase.Spin(0, 0);
   //myBase.driveInches_Enc(forwards, 50, 45);
-  myBase.drivePID(45, 45, 48);//55
+  myBase.drivePID(45, 45, 50);//55
   vex::task::sleep(100);
   //myBase.drivePID(-45, -45, -10);
-  myBase.driveInches_Enc(backwards, -10, 80);
+  myBase.driveInches_Enc(backwards, -29, 45);
   //myBase.drivePID(-40, -40, -20);
 
   //Turn towards right stack
   baseGyroReset;
   vex::task::sleep(500);
   while(Gyro.isCalibrating()){vex::task::sleep(1);}
-  myBase.turnPID(50,50, -58);  //450 Gyro units is about 90 degrees 
+  myBase.turnPID(40,40, 890);  //450 Gyro units is about 90 degrees 
 
   //myBase.turnPID(50,50, 450);  //450 Gyro units is about 90 degrees
     
   //Drive into stack to intake first cube
-  myBase.drivePID(70, 70, 13);
+  myBase.drivePID(50, 50, 13.5);
   vex::task::sleep(150);
-  myBase.driveInches_Enc(backwards, -30, 80);      
 
-  baseGyroReset;
-  vex::task::sleep(500);
-  while(Gyro.isCalibrating()){vex::task::sleep(1);}
-  myBase.turnPID(50,50, 1024);  //450 Gyro units is about 90 degrees
-  myBase.drivePID(80, 80, 14);
   myIntake.Stop();
   rightIntake.startRotateFor(-380,vex::rotationUnits::deg,80,vex::velocityUnits::pct);  
   leftIntake.rotateFor(-380,vex::rotationUnits::deg,80,vex::velocityUnits::pct); 
@@ -216,7 +204,7 @@ void basicBlueAuton(){
   baseGyroReset;
   vex::task::sleep(500);
   while(Gyro.isCalibrating()){vex::task::sleep(1);}
-  myBase.turnPID(50,50, 450);  //450 Gyro units is about 90 degrees 
+  myBase.turnPID(50,50, 485);  //450 Gyro units is about 90 degrees 
 
   //myBase.turnPID(50,50, 450);  //450 Gyro units is about 90 degrees
     
@@ -228,7 +216,7 @@ void basicBlueAuton(){
   baseGyroReset;
   vex::task::sleep(500);
   while(Gyro.isCalibrating()){vex::task::sleep(1);}
-  myBase.turnPID(50,50, 220);  //450 Gyro units is about 90 degrees
+  myBase.turnPID(50,50, 195);  //450 Gyro units is about 90 degrees
   myBase.drivePID(70, 70, 7.5);
   myIntake.Stop();
   rightIntake.startRotateFor(-380,vex::rotationUnits::deg,80,vex::velocityUnits::pct);  
@@ -256,7 +244,7 @@ void basicRedAuton(){
   baseGyroReset;
   vex::task::sleep(500);
   while(Gyro.isCalibrating()){vex::task::sleep(1);}
-  myBase.turnPID(50,50, -430);  //450 Gyro units is about 90 degrees 
+  myBase.turnPID(50,50, -459);  //450 Gyro units is about 90 degrees 
 
   //myBase.turnPID(50,50, 450);  //450 Gyro units is about 90 degrees
     
@@ -268,8 +256,8 @@ void basicRedAuton(){
   baseGyroReset;
   vex::task::sleep(500);
   while(Gyro.isCalibrating()){vex::task::sleep(1);}
-  myBase.turnPID(50,50, -150);  //450 Gyro units is about 90 degrees
-  myBase.drivePID(80, 80, 6.5);
+  myBase.turnPID(50,50, -103);  //450 Gyro units is about 90 degrees
+  myBase.drivePID(80, 80, 7.3);
   myIntake.Stop();
   rightIntake.startRotateFor(-380,vex::rotationUnits::deg,80,vex::velocityUnits::pct);  
   leftIntake.rotateFor(-380,vex::rotationUnits::deg,80,vex::velocityUnits::pct); 

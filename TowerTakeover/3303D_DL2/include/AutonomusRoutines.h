@@ -30,7 +30,7 @@ class AutonomusRoutines{
 }*/
 
 void AutonomusRoutines::blueFrontAuton(){
-  myBase.turnPID(90);
+  myBase.turnPID(50,50,450);
   //myBase.drivePID(60, 60, 10);
 }
 void AutonomusRoutines::blueBackAuton(){

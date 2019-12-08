@@ -135,11 +135,11 @@ Discarded input sections
  .ARM.exidx.text._ZN6tilter14autoScoreStackEv
                 0x0000000000000000        0x8 build/src/main.o
  .text._Z9blueAutonv
-                0x0000000000000000      0x370 build/src/main.o
+                0x0000000000000000      0x2a0 build/src/main.o
  .ARM.exidx.text._Z9blueAutonv
                 0x0000000000000000        0x8 build/src/main.o
  .text._Z8redAutonv
-                0x0000000000000000      0x368 build/src/main.o
+                0x0000000000000000      0x290 build/src/main.o
  .ARM.exidx.text._Z8redAutonv
                 0x0000000000000000        0x8 build/src/main.o
  .text._Z17supportBasicAutonv
@@ -147,7 +147,7 @@ Discarded input sections
  .ARM.exidx.text._Z17supportBasicAutonv
                 0x0000000000000000        0x8 build/src/main.o
  .text._Z13basicRedAutonv
-                0x0000000000000000      0x338 build/src/main.o
+                0x0000000000000000      0x340 build/src/main.o
  .ARM.exidx.text._Z13basicRedAutonv
                 0x0000000000000000        0x8 build/src/main.o
  .llvm_addrsig  0x0000000000000000       0x24 build/src/main.o
