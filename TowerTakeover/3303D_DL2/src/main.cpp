@@ -51,7 +51,7 @@ void autonomous(void) {
   
   
   
-  
+/*
   myIntake.Spin(100);    // REDDDDDDDD
   vex::task::sleep(700);
   myBase.drivePID(45, 45, 25);
@@ -88,33 +88,31 @@ void autonomous(void) {
 
   //myLift.tiltForward(50, 100, 200);
 
+/*
+//8 cube auton one turn
 
-
-
-
-  /*myIntake.Spin(100);          8 cube auton
+  myIntake.Spin(100);         
   vex::task::sleep(200);
-  myBase.drivePID(60, 60, 27);
+  myBase.drivePID(55, 55, 26);
 
   baseGyroReset;
   vex::task::sleep(500);
   while(Gyro.isCalibrating()){vex::task::sleep(1);}
   myBase.turnPID(-50,-50, -76);//right
 
-  
-  myBase.driveInches_Enc(backwards, -25, 80);
+  myBase.driveInches_Enc(backwards, -27, 96);
   
   baseGyroReset;
   vex::task::sleep(500);
   while(Gyro.isCalibrating()){vex::task::sleep(1);}
-  myBase.turnPID(-50,-50, 98);//left
+  myBase.turnPID(-50,-50, 100);//left
 
-  myBase.drivePID(70, 70, 20);  
+  myBase.drivePID(50, 50, 26);  
   vex::task::sleep(100);
-  myBase.driveInches_Enc(backwards, -15, 100);  
+  myBase.driveInches_Enc(backwards, -10, 100);  
   
-  myBase.turnPID(-50,-50, 800);//left
-  myBase.drivePID(80, 80, 5);    
+  myBase.turnPID(-50,-50, 760);//left
+  myBase.drivePID(80, 80, 9);    
   vex::task::sleep(150);
 
   myIntake.Stop();
@@ -122,7 +120,45 @@ void autonomous(void) {
   leftIntake.rotateFor(-60,vex::rotationUnits::deg,60,vex::velocityUnits::pct); 
   vex::task::sleep(120);  
   
-  myLift.tiltForward(57, 50, 200);
+  myLift.tiltForward(57, 40, 200);
+  vex::task::sleep(100);  
+  myBase.driveInches_Enc(backwards, -10, 100);  
+
+*/
+
+ //8 cube auton sharp turn
+
+  myIntake.Spin(100);         
+  vex::task::sleep(200);
+  myBase.drivePID(55, 55, 26);
+
+  baseGyroReset;
+  vex::task::sleep(500);
+  while(Gyro.isCalibrating()){vex::task::sleep(1);}
+  myBase.driveInches_Enc(backwards, -10, 95);
+  myBase.turnPID(-70,-70, -166);//right
+
+  myBase.driveInches_Enc(backwards, -16, 95);
+  
+  baseGyroReset;
+  vex::task::sleep(500);
+  while(Gyro.isCalibrating()){vex::task::sleep(1);}
+  myBase.turnPID(-50,-50, 270);//left
+
+  myBase.drivePID(50, 50, 26);  
+  vex::task::sleep(100);
+  myBase.driveInches_Enc(backwards, -10, 100);  
+  
+  myBase.turnPID(-50,-50, 760);//left
+  myBase.drivePID(80, 80,11);    
+  vex::task::sleep(150);
+
+  myIntake.Stop();
+  rightIntake.startRotateFor(-60,vex::rotationUnits::deg,60,vex::velocityUnits::pct);  
+  leftIntake.rotateFor(-60,vex::rotationUnits::deg,60,vex::velocityUnits::pct); 
+  vex::task::sleep(120);  
+  
+  myLift.tiltForward(57, 40, 200);
   vex::task::sleep(100);  
   myBase.driveInches_Enc(backwards, -10, 100);  
 
