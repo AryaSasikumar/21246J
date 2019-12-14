@@ -62,6 +62,7 @@ const double baseDiameterIN  = 16.5;
 #define angleUpBtn   Controller1.ButtonUp.pressing()
 #define angleDownBtn Controller1.ButtonDown.pressing()
 #define angleSlowBtn Controller1.ButtonRight.pressing()
+#define macroDriveBtn Controller1.ButtonLeft.pressing()
 
 #define intakeBtn Controller1.ButtonR1.pressing()
 #define outtakeBtn Controller1.ButtonR2.pressing()
