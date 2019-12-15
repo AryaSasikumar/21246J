@@ -12,7 +12,239 @@ class AutonomusRoutines{
     void score();
 };
 
-/*void score(){             FIXXXXX FOR NEW BOT
+void AutonomusRoutines::blueFrontAuton(){
+  
+}
+void AutonomusRoutines::blueBackAuton(){
+  myIntake.Spin(100);         
+  vex::task::sleep(200);
+  myBase.drivePID(45, 45, 24.5);
+  
+  //myBase.driveInches_Enc(backwards, -10, 95);
+  myBase.turnPID(-70,-70, 125);//left
+  myBase.driveBackPID(-70, -70, -20);
+  
+  baseGyroReset;
+  vex::task::sleep(500);
+  while(Gyro.isCalibrating()){vex::task::sleep(1);}
+  myBase.turnPID(-70,-70, -105);//right
+  vex::task::sleep(200);  
+  myBase.drivePID(45, 45, 15);  
+
+  baseGyroReset;
+  vex::task::sleep(500);
+  while(Gyro.isCalibrating()){vex::task::sleep(1);}
+  myBase.turnPID(-50,-50, 666);//left
+  vex::task::sleep(300);
+  myBase.drivePID(85, 85, 24);
+
+  myIntake.Stop();
+  //rightIntake.startRotateFor(-240,vex::rotationUnits::deg,60,vex::velocityUnits::pct);  
+  //leftIntake.rotateFor(-240,vex::rotationUnits::deg,60,vex::velocityUnits::pct); 
+  vex::task::sleep(120);  
+  myLift.tiltForward(100, 65, 0);
+  myLift.tiltForward(54, 30, 0);
+  vex::task::sleep(500);  
+  myBase.driveInches_Enc(backwards, -10, 100);
+}
+void AutonomusRoutines::redFrontAuton(){
+  
+}
+void AutonomusRoutines::redBackAuton(){
+  myIntake.Spin(100);         
+  vex::task::sleep(200);
+  myBase.drivePID(45, 45, 24.5);
+  
+  //myBase.driveInches_Enc(backwards, -10, 95);
+  myBase.turnPID(-70,-70, -85);//right
+  myBase.driveBackPID(-70, -70, -21);
+  
+  baseGyroReset;
+  vex::task::sleep(500);
+  while(Gyro.isCalibrating()){vex::task::sleep(1);}
+  myBase.turnPID(-70,-70, 145);//left
+  vex::task::sleep(200);  
+  myBase.drivePID(45, 45, 16);  
+
+  baseGyroReset;
+  vex::task::sleep(500);
+  while(Gyro.isCalibrating()){vex::task::sleep(1);}
+  myBase.turnPID(-50,-50, -616);//right
+  vex::task::sleep(300);
+  myBase.drivePID(85, 85, 23.5);
+
+  myIntake.Stop();
+  rightIntake.startRotateFor(-140,vex::rotationUnits::deg,30,vex::velocityUnits::pct);  
+  leftIntake.rotateFor(-140,vex::rotationUnits::deg,30,vex::velocityUnits::pct); 
+  //vex::task::sleep(120);  
+  myLift.tiltForward(95, 75, 0);
+  myLift.tiltForward(52, 25, 0);
+  vex::task::sleep(500);  
+  myBase.driveInches_Enc(backwards, -10, 100);
+}
+void AutonomusRoutines::simpleAuton(){
+  
+}
+
+AutonomusRoutines myAuton;
+
+/*
+
+//8 cube auton sharp turn
+
+  myIntake.Spin(100);         
+  vex::task::sleep(200);
+  myBase.drivePID(55, 55, 26);
+
+  baseGyroReset;
+  vex::task::sleep(500);
+  while(Gyro.isCalibrating()){vex::task::sleep(1);}
+  myBase.driveInches_Enc(backwards, -10, 95);
+  myBase.turnPID(-70,-70, -166);//right
+
+  myBase.driveInches_Enc(backwards, -16, 95);
+  
+  baseGyroReset;
+  vex::task::sleep(500);
+  while(Gyro.isCalibrating()){vex::task::sleep(1);}
+  myBase.turnPID(-50,-50, 270);//left
+
+  myBase.drivePID(50, 50, 26);  
+  vex::task::sleep(100);
+  myBase.driveInches_Enc(backwards, -10, 100);  
+  
+  myBase.turnPID(-50,-50, 760);//left
+  myBase.drivePID(80, 80,11);    
+  vex::task::sleep(150);
+
+  myIntake.Stop();
+  rightIntake.startRotateFor(-60,vex::rotationUnits::deg,60,vex::velocityUnits::pct);  
+  leftIntake.rotateFor(-60,vex::rotationUnits::deg,60,vex::velocityUnits::pct); 
+  vex::task::sleep(120);  
+  
+  myLift.tiltForward(57, 40, 200);
+  vex::task::sleep(100);  
+  myBase.driveInches_Enc(backwards, -10, 100); */
+
+
+
+  /*myIntake.Spin(100);     //BLUEEEEEEEEE
+  vex::task::sleep(750);
+  myBase.drivePID(45, 45, 26.5);
+  vex::task::sleep(650); 
+  myBase.driveInches_Enc(backwards, -15, 80);
+
+  baseGyroReset;
+  vex::task::sleep(500);
+  while(Gyro.isCalibrating()){vex::task::sleep(1);}
+  myBase.turnPID(-50,-50, 700);//left
+
+  myBase.drivePID(80, 80, 7.5);    
+  vex::task::sleep(150);
+
+  myIntake.Stop();
+  rightIntake.startRotateFor(-260,vex::rotationUnits::deg,40,vex::velocityUnits::pct);  
+  leftIntake.rotateFor(-260,vex::rotationUnits::deg,40,vex::velocityUnits::pct); 
+  vex::task::sleep(120);  
+  
+  myLift.tiltForward(60, 30, 200);
+  vex::task::sleep(500);  
+  myBase.driveInches_Enc(backwards, -10, 100);  */
+
+
+
+  
+  
+  
+/*
+  myIntake.Spin(100);    // REDDDDDDDD
+  vex::task::sleep(700);
+  myBase.drivePID(45, 45, 25);
+  vex::task::sleep(650); 
+  myBase.driveInches_Enc(backwards, -14, 80);
+
+  baseGyroReset;
+  vex::task::sleep(500);
+  while(Gyro.isCalibrating()){vex::task::sleep(1);}
+  myBase.turnPID(-50,-50, -700);//right
+
+  myBase.drivePID(80, 80, 7.5);    
+  vex::task::sleep(150);
+
+  myIntake.Stop();
+  rightIntake.startRotateFor(-260,vex::rotationUnits::deg,40,vex::velocityUnits::pct);  
+  leftIntake.rotateFor(-260,vex::rotationUnits::deg,40,vex::velocityUnits::pct); 
+  vex::task::sleep(120);  
+  
+  myLift.tiltForward(60, 30, 200);
+  vex::task::sleep(500);  
+  myBase.driveInches_Enc(backwards, -10, 100); */
+
+
+
+
+  /*baseGyroReset;
+  vex::task::sleep(500);
+  while(Gyro.isCalibrating()){vex::task::sleep(1);}
+  myBase.turnPID(50,50, -459);  //450 Gyro units is about 90 degrees 
+
+  myLift.liftUp(900, 100, 100);
+  myLift.liftDown(500, 60, 100);*/
+
+  //myLift.tiltForward(50, 100, 200);
+
+/*
+//8 cube auton one turn
+
+  myIntake.Spin(100);         
+  vex::task::sleep(200);
+  myBase.drivePID(55, 55, 26);
+
+  baseGyroReset;
+  vex::task::sleep(500);
+  while(Gyro.isCalibrating()){vex::task::sleep(1);}
+  myBase.turnPID(-50,-50, -76);//right
+
+  myBase.driveInches_Enc(backwards, -27, 96);
+  
+  baseGyroReset;
+  vex::task::sleep(500);
+  while(Gyro.isCalibrating()){vex::task::sleep(1);}
+  myBase.turnPID(-50,-50, 100);//left
+
+  myBase.drivePID(50, 50, 26);  
+  vex::task::sleep(100);
+  myBase.driveInches_Enc(backwards, -10, 100);  
+  
+  myBase.turnPID(-50,-50, 760);//left
+  myBase.drivePID(80, 80, 9);    
+  vex::task::sleep(150);
+
+  myIntake.Stop();
+  rightIntake.startRotateFor(-60,vex::rotationUnits::deg,60,vex::velocityUnits::pct);  
+  leftIntake.rotateFor(-60,vex::rotationUnits::deg,60,vex::velocityUnits::pct); 
+  vex::task::sleep(120);  
+  
+  myLift.tiltForward(57, 40, 200);
+  vex::task::sleep(100);  
+  myBase.driveInches_Enc(backwards, -10, 100);  
+
+*/ 
+
+
+
+
+  /*baseGyroReset;
+  vex::task::sleep(500);
+  while(Gyro.isCalibrating()){vex::task::sleep(1);}
+  myBase.turnPID(50,50, -459);  //450 Gyro units is about 90 degrees 
+
+  myLift.liftUp(900, 100, 100);
+  myLift.liftDown(500, 60, 100);*/
+
+  //myLift.tiltForward(50, 100, 200);*/
+
+  /*void score(){             FIXXXXX FOR NEW BOT
  tilt1.resetRotation() ;
  tilt1.spin(vex::directionType::fwd,100,vex::velocityUnits::pct);
  tilt2.spin(vex::directionType::fwd,100,vex::velocityUnits::pct);   
@@ -28,22 +260,3 @@ class AutonomusRoutines{
  autoScore();
  vex::task::sleep(2000) ;
 }*/
-
-void AutonomusRoutines::blueFrontAuton(){
-  myBase.turnPID(50,50,450);
-  //myBase.drivePID(60, 60, 10);
-}
-void AutonomusRoutines::blueBackAuton(){
-  
-}
-void AutonomusRoutines::redFrontAuton(){
-  
-}
-void AutonomusRoutines::redBackAuton(){
-  
-}
-void AutonomusRoutines::simpleAuton(){
-  
-}
-
-AutonomusRoutines myAuton;

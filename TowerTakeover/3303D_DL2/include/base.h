@@ -42,6 +42,7 @@ class base{
     //void drivePID(double Distance);
     void turnPID(double maxLeftSpeed, double maxRightSpeed, double Angle); //NEWWWW
     void drivePID(double maxLeftSpeed, double maxRightSpeed, double Distance);
+    void driveBackPID(double maxLeftSpeed, double maxRightSpeed, double Distance);
     void driveInches_MotorEnc(dirType mydirection, double travelTargetIN, int speed);
     void turnDegrees_MotorEnc(turnType mydirection, double travelTargetDEG, int speed);
     void driveDegrees_MotorEnc(double degrees, int speed);
@@ -110,7 +111,7 @@ void base::userControl(int bufferSize = 10, bool Stop = false){
  if(autoScoreBtn){
    this->Spin(-30, -30);
  }else if(macroDriveBtn){
-   this->Spin(60, 60);   
+   this->Spin(45, 45);   
  }else{
    if(baseLockBtn){
      vex::task::sleep(200);
@@ -280,6 +281,36 @@ void base::drivePID(double maxLeftSpeed, double maxRightSpeed, double Distance){
  int timesGood = 0;
  bool moveComplete = false;
  while(!moveComplete && drive.enabled && encoderDeg <= Distance){
+   encoderDeg = mainBaseEnc; //(rightBaseEnc + leftBaseEnc)/2
+   speed = drive.speed(encoderDeg,Distance);
+   double lSpeed = (speed>=maxLeftSpeed) ? maxLeftSpeed : speed;
+   double rSpeed = (speed>=maxRightSpeed) ? maxRightSpeed : speed;
+   this->rightSpin(rSpeed);
+   this->leftSpin(lSpeed);
+   if(fabs(drive.error)<=100){
+     timesGood++;
+   }
+   if(timesGood >= 100){
+     moveComplete = true;
+   }
+   vex:: task:: sleep(1);
+ }
+ this->Brake();
+ vex:: task:: sleep(10);
+}
+
+void base::driveBackPID(double maxLeftSpeed, double maxRightSpeed, double Distance){
+ Distance = distanceToTravel(Distance);
+ baseEncoder.resetRotation();
+ vex::task::sleep(50);
+ drive.dt=0.0001;
+ double encoderDeg = mainBaseEnc; //(rightBaseEnc + leftBaseEnc)/2
+ double speed = drive.speed(encoderDeg,Distance);
+ drive.pre_error = Distance - encoderDeg;
+ drive.error = drive.pre_error;
+ int timesGood = 0;
+ bool moveComplete = false;
+ while(!moveComplete && drive.enabled && encoderDeg >= Distance){
    encoderDeg = mainBaseEnc; //(rightBaseEnc + leftBaseEnc)/2
    speed = drive.speed(encoderDeg,Distance);
    double lSpeed = (speed>=maxLeftSpeed) ? maxLeftSpeed : speed;
