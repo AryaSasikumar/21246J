@@ -23,7 +23,7 @@ void pre_auton(void) {
 /*                              Autonomous Task                              */
 /*---------------------------------------------------------------------------*/
 void autonomous(void) {
-  myAuton.redBackAuton();
+  myAuton.simpleAuton();
 }
 
 /*---------------------------------------------------------------------------*/
