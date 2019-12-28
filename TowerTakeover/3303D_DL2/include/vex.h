@@ -34,7 +34,7 @@ vex::motor RB  = vex::motor(vex::PORT9,vex::gearSetting::ratio18_1,true);
 vex::motor liftOne = vex::motor(vex::PORT6,vex::gearSetting::ratio18_1,true);
 vex::motor liftTwo = vex::motor(vex::PORT7,vex::gearSetting::ratio18_1,true);
 
-vex::motor rightIntake = vex::motor(vex::PORT5,vex::gearSetting::ratio18_1,false);
+vex::motor rightIntake = vex::motor(vex::PORT3,vex::gearSetting::ratio18_1,false);
 vex::motor leftIntake  = vex::motor(vex::PORT20,vex::gearSetting::ratio18_1,true);
 
 vex::controller Controller1 = vex::controller();
