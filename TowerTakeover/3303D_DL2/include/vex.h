@@ -63,6 +63,7 @@ const double baseDiameterIN  = 16.5;
 #define angleDownBtn Controller1.ButtonDown.pressing()
 #define angleSlowBtn Controller1.ButtonRight.pressing()
 #define macroDriveBtn Controller1.ButtonLeft.pressing()
+#define tiltMacroBtn    Controller1.ButtonX.pressing()
 
 #define intakeBtn Controller1.ButtonR1.pressing()
 #define outtakeBtn Controller1.ButtonR2.pressing()
@@ -75,7 +76,7 @@ const double baseDiameterIN  = 16.5;
 #define mainBaseEncReset baseEncoder.resetRotation()
 #define tiltBumpBtn Bumper.pressing()
 #define liftSensor ((liftOne.rotation(vex::rotationUnits::deg)+liftTwo.rotation(vex::rotationUnits::deg))/2)
-#define tiltSensor liftPot.value(vex::rotationUnits::deg))
+#define tiltSensor liftPot.value(vex::rotationUnits::deg)
 
 //driveUserControl(Controller.Axis3.value(), Controller.Axis2.value());
 //liftUserControl(100, Controller.ButtonL1.pressing(), Controller.ButtonL2.pressing(), Controller.ButtonUp.pressing(), Controller.ButtonDown.pressing(), Controller.ButtonRight.pressing());

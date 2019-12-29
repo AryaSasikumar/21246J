@@ -104,6 +104,15 @@ void lift::userControl(){
     this->Spin(-tiltSpeed, tiltSpeed);
   }else if(angleSlowBtn){
     this->Spin(slowSpeed, -slowSpeed);
+  }else if(tiltMacroBtn){
+    if(tiltSensor>=90){
+      this->Spin(tiltSpeed, -tiltSpeed);
+    }else if(tiltSensor>=41){
+      this->Spin(slowSpeed, -slowSpeed);
+    }
+    else{
+      this->Spin(10, -10);  
+    }
   }else{
     this->Spin(0, 0);
   }
