@@ -116,10 +116,11 @@ void base::userControl(int bufferSize = 10, bool Stop = false){
    if(baseLockBtn){
      vex::task::sleep(200);
      Stop = !Stop;
-     if(Stop==true){
-       this->Hold();
-     }else{
-       this->Spin(0,0);
+     if(Stop==true){ 
+      this->Hold();
+     }
+     else{
+      this->Spin(0,0);
      }
    }
    if(this->useTrueSpeed){
@@ -130,7 +131,7 @@ void base::userControl(int bufferSize = 10, bool Stop = false){
          this->rightSpin(-trueSpeed[abs(Y_rightJoy)]);
        }
      }else{
-       this->rightSpin(0);
+        this->rightSpin(0);
      } 
      if(abs(Y_leftJoy)>bufferSize){
        if(Y_leftJoy>0){
@@ -199,7 +200,6 @@ void base::driveInches_Enc(dirType mydirection, double travelTargetIN, int speed
      this->Spin(speed,speed);
    }
    this->Brake();
-  
  }else if(mydirection == backwards){
    while(baseEncoder>degreesToRotate){  //|| baseEncoder<degreesToRotate
      this->Spin(-speed,-speed);
@@ -287,12 +287,8 @@ void base::drivePID(double maxLeftSpeed, double maxRightSpeed, double Distance){
    double rSpeed = (speed>=maxRightSpeed) ? maxRightSpeed : speed;
    this->rightSpin(rSpeed);
    this->leftSpin(lSpeed);
-   if(fabs(drive.error)<=100){
-     timesGood++;
-   }
-   if(timesGood >= 100){
-     moveComplete = true;
-   }
+   if(fabs(drive.error)<=100){ timesGood++; }
+   if(timesGood >= 100){ moveComplete = true; }
    vex:: task:: sleep(1);
  }
  this->Brake();
@@ -317,12 +313,8 @@ void base::driveBackPID(double maxLeftSpeed, double maxRightSpeed, double Distan
    double rSpeed = (speed>=maxRightSpeed) ? maxRightSpeed : speed;
    this->rightSpin(rSpeed);
    this->leftSpin(lSpeed);
-   if(fabs(drive.error)<=100){
-     timesGood++;
-   }
-   if(timesGood >= 100){
-     moveComplete = true;
-   }
+   if(fabs(drive.error)<=100){ timesGood++; }
+   if(timesGood >= 100){ moveComplete = true; }
    vex:: task:: sleep(1);
  }
  this->Brake();
@@ -351,12 +343,8 @@ void base::turnPID(double maxLeftSpeed, double maxRightSpeed, double Angle){ //4
       double rSpeed = (speed>=maxRightSpeed) ? maxRightSpeed : speed;
       this->Spin(-lSpeed,rSpeed);
     }
-    if(int(turn.error)<=50){
-      timesGood++;
-    }
-    if(timesGood >= 100){
-      moveComplete = true;
-    }
+    if(int(turn.error)<=50){ timesGood++; }
+    if(timesGood >= 100){ moveComplete = true; }
     vex:: task:: sleep(1);
   }
   this->Brake();
@@ -393,7 +381,7 @@ void base::turnDegrees_MotorEnc(double leftDegrees, double rightDegrees,int spee
   this->moveFor(leftDegrees, rightDegrees, speed);
 }
 
-void base::turnDegrees_Gyro(double degrees,int speed){ //IDK if this works 
+void base::turnDegrees_Gyro(double degrees,int speed){ //IDK if this works, lol
   int shift = baseGyro;
   if(degrees < baseGyro){
     degrees = degrees-shift;
@@ -407,5 +395,3 @@ void base::turnDegrees_Gyro(double degrees,int speed){ //IDK if this works
 }
 
 base myBase;
-
-
