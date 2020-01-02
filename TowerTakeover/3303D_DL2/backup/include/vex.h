@@ -34,7 +34,7 @@ vex::motor liftOne = vex::motor(vex::PORT6,vex::gearSetting::ratio18_1,true);
 vex::motor liftTwo = vex::motor(vex::PORT7,vex::gearSetting::ratio18_1,true);
 
 //---Intake Motor Setup---//
-vex::motor rightIntake = vex::motor(vex::PORT15,vex::gearSetting::ratio18_1,false);
+vex::motor rightIntake = vex::motor(vex::PORT3,vex::gearSetting::ratio18_1,false);
 vex::motor leftIntake  = vex::motor(vex::PORT20,vex::gearSetting::ratio18_1,true);
 
 //---Sensor Setup---//
@@ -85,15 +85,5 @@ vex::pot liftPot = vex::pot(Brain.ThreeWirePort.A);
 //intakeUserControl(100, Controller.ButtonR1.pressing(), Controller.ButtonR2.pressing());
 
 //---Constants---//
-const double wheelDiameterIN  = 4;
+const double wheelDiameterIN  = 4; 
 const double baseDiameterIN  = 16.5;
-
-#include "robot-config.h"
-
-#define waitUntil(condition)                                                   \
-  do {                                                                         \
-    wait(5, msec);                                                             \
-  } while (!(condition))
-
-#define repeat(iterations)                                                     \
-  for (int iterator = 0; iterator < iterations; iterator++)
