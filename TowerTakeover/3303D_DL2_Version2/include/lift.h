@@ -1,5 +1,4 @@
-#include "robot-config.h"
-#include "vex.h"
+#include "intake.h"
 
 enum liftType {extend, retract};
 
@@ -90,7 +89,7 @@ void lift::tiltBackward(int potValue, int speed, int waitTime){
 
 void lift::autoScore(){
   myIntake.Spin(-50);
-  myBase.Spin(-30, -30);
+  //myBase.Spin(-30, -30);
   this->Spin(60,-60);
 }
 

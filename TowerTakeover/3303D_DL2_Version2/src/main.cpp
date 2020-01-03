@@ -22,7 +22,8 @@
 // liftPot              pot           A               
 // ---- END VEXCODE CONFIGURED DEVICES ----
 
-#include "vex.h"
+//#include "vex.h"
+#include "OverAllControl.h"
 
 using namespace vex;
 
@@ -63,7 +64,12 @@ void autonomous(void) {
   // ..........................................................................
   // Insert autonomous user code here.
   // ..........................................................................
+  //Drivetrain.setTurnVelocity(100.0, percent);
+  //Drivetrain.turnFor(90.0,degrees,false);
+  myBase.turnPID(100.0, 100.0, 90.0);
 }
+
+
 
 /*---------------------------------------------------------------------------*/
 /*                                                                           */
