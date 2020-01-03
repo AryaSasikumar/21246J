@@ -99,80 +99,57 @@ void base::moveFor(double degToRotate_Left, double degToRotate_Right, int speed)
   rightMotorB.rotateFor(degToRotate_Right,degrees,speed,velocityUnits::pct); 
 }
 
-void base::userControl(int bufferSize = 10, bool Stop = false){
+void base::userControl(int bufferSize = 5, bool Stop = false){
  if(autoScoreBtn){
-   this->Spin(-30, -30);
+    Spin(-30, -30);
  }else if(macroDriveBtn){
-   this->Spin(45, 45);   
+    Spin(45, 45);   
  }else{
    if(baseLockBtn){
-     vex::task::sleep(200);
+     task::sleep(200);
      Stop = !Stop;
      if(Stop==true){ 
-      this->Hold();
+      Hold();
      }
      else{
-      this->Spin(0,0);
+      Spin(0,0);
      }
    }
-   if(this->useTrueSpeed){
+   if(useTrueSpeed){
      if(abs(Y_rightJoy)>bufferSize){
        if(Y_rightJoy>0){
-         this->rightSpin(trueSpeed[abs(Y_rightJoy)]);
+         rightSpin(trueSpeed[abs(Y_rightJoy)]);
        }else{
-         this->rightSpin(-trueSpeed[abs(Y_rightJoy)]);
+         rightSpin(-trueSpeed[abs(Y_rightJoy)]);
        }
      }else{
-        this->rightSpin(0);
+        rightSpin(0);
      } 
      if(abs(Y_leftJoy)>bufferSize){
        if(Y_leftJoy>0){
-         this->leftSpin(trueSpeed[abs(Y_leftJoy)]);
+         leftSpin(trueSpeed[abs(Y_leftJoy)]);
        }else{
-         this->leftSpin(-trueSpeed[abs(Y_leftJoy)]);
+         leftSpin(-trueSpeed[abs(Y_leftJoy)]);
        }
      }else{
-       this->leftSpin(0);
+       leftSpin(0);
      } 
     
    }else{
      if(abs(Y_rightJoy)>bufferSize){
-       this->rightSpin(Y_rightJoy);
+       rightSpin(Y_rightJoy);
      }else{
-       this->rightSpin(0);
+       rightSpin(0);
      } 
      if(abs(Y_leftJoy)>bufferSize){
-       this->leftSpin(Y_leftJoy);
+       leftSpin(Y_leftJoy);
      }else{
-       this->leftSpin(0);
+       leftSpin(0);
      } 
    }
   
  }  
 }
-
-/*void base::userControl(int bufferSize = 10, bool Stop = false){
-  if(baseLockBtn){
-    vex::task::sleep(200);
-    Stop = !Stop;
-    if(Stop==true){
-      this->Hold();
-    }else{
-      this->Spin(0,0);
-    }
-  }   
-  if(abs(Y_rightJoy)>bufferSize){
-    this->rightSpin(Y_rightJoy);
-  }else{
-    this->rightSpin(0);
-  }  
-  if(abs(Y_leftJoy)>bufferSize){
-    this->leftSpin(Y_leftJoy);
-  }else{ 
-    this->leftSpin(0);
-  }     
-}*/
-
 
 double base::distanceToTravel(double inchesGiven){
   int wheelRadIN = 2;
@@ -198,7 +175,7 @@ void base::driveInches_Enc(dirType mydirection, double travelTargetIN, int speed
    }
    this->Brake();
  }
- vex:: task::sleep(500);
+  task::sleep(500);
 }
 
 
@@ -206,16 +183,16 @@ void base::driveInches_Enc(dirType mydirection, double travelTargetIN, int speed
   Distance = distanceToTravel(Distance);
   rightEncoder.resetRotation(); 
   leftEncoder.resetRotation();
-  vex::task::sleep(50); 
+  task::sleep(50); 
   drive.dt=0.0001;
-  double encoderDeg = (rightEncoder.rotation(vex::rotationUnits::deg) + leftEncoder.rotation(vex::rotationUnits::deg))/2;
+  double encoderDeg = (rightEncoder.rotation(rotationUnits::deg) + leftEncoder.rotation(rotationUnits::deg))/2;
   double speed = drive.speed(encoderDeg,Distance);
   drive.pre_error = Distance - encoderDeg;
   drive.error = drive.pre_error;
   int timesGood = 0;
   bool moveComplete = false;
   while(!moveComplete && drive.enabled){ 
-    encoderDeg = (rightEncoder.rotation(vex::rotationUnits::deg) + leftEncoder.rotation(vex::rotationUnits::deg))/2;
+    encoderDeg = (rightEncoder.rotation(rotationUnits::deg) + leftEncoder.rotation(rotationUnits::deg))/2;
     speed = drive.speed(encoderDeg,Distance);
     this->rightSpin(speed);
     this->leftSpin(speed);
@@ -225,28 +202,28 @@ void base::driveInches_Enc(dirType mydirection, double travelTargetIN, int speed
     if(timesGood >= 100){
       moveComplete = true;
     }
-    vex:: task:: sleep(1);
+     task:: sleep(1);
   }
   this->Brake();
-  vex:: task:: sleep(10);
+   task:: sleep(10);
 }
 
 void base::turnPID(double Angle){
   Gyro.startCalibration();
   while(Gyro.isCalibrating()){}
-  vex::task::sleep(100);    
+  task::sleep(100);    
   turn.dt=0.0001;
-  double speed = turn.speed(Gyro.value(vex::rotationUnits::deg),Angle);
-  turn.pre_error = Angle - Gyro.value(vex::rotationUnits::deg);
+  double speed = turn.speed(Gyro.value(rotationUnits::deg),Angle);
+  turn.pre_error = Angle - Gyro.value(rotationUnits::deg);
   turn.error = turn.pre_error;
   int timesGood = 0;
   bool moveComplete = false;
   while(!moveComplete && turn.enabled){
     if(Angle>0){
-      speed = turn.speed(Gyro.value(vex::rotationUnits::deg),Angle);
+      speed = turn.speed(Gyro.value(rotationUnits::deg),Angle);
       this->Spin(speed,-speed);
     }else{
-      speed = turn.speed(-Gyro.value(vex::rotationUnits::deg),-Angle);
+      speed = turn.speed(-Gyro.value(rotationUnits::deg),-Angle);
       this->Spin(-speed,speed);
     }
     if(fabs(turn.error)<=3){
@@ -255,16 +232,16 @@ void base::turnPID(double Angle){
     if(timesGood >= 100){
       moveComplete = true;
     }
-    vex:: task:: sleep(1);
+     task:: sleep(1);
   }
   this->Brake();
-  vex:: task:: sleep(10);
+   task:: sleep(10);
 }*/
 
 void base::drivePID(double maxLeftSpeed, double maxRightSpeed, double Distance){
  Distance = distanceToTravel(Distance);
  baseEncoder.resetRotation();
- vex::task::sleep(50);
+ task::sleep(50);
  drive.dt=0.0001;
  double encoderDeg = mainBaseEnc; //(rightBaseEnc + leftBaseEnc)/2
  double speed = drive.speed(encoderDeg,Distance);
@@ -281,16 +258,16 @@ void base::drivePID(double maxLeftSpeed, double maxRightSpeed, double Distance){
    this->leftSpin(lSpeed);
    if(fabs(drive.error)<=100){ timesGood++; }
    if(timesGood >= 100){ moveComplete = true; }
-   vex:: task:: sleep(1);
+    task:: sleep(1);
  }
  this->Brake();
- vex:: task:: sleep(10);
+  task:: sleep(10);
 }
 
 void base::driveBackPID(double maxLeftSpeed, double maxRightSpeed, double Distance){
  Distance = distanceToTravel(Distance);
  baseEncoder.resetRotation();
- vex::task::sleep(50);
+ task::sleep(50);
  drive.dt=0.0001;
  double encoderDeg = mainBaseEnc; //(rightBaseEnc + leftBaseEnc)/2
  double speed = drive.speed(encoderDeg,Distance);
@@ -307,10 +284,10 @@ void base::driveBackPID(double maxLeftSpeed, double maxRightSpeed, double Distan
    this->leftSpin(lSpeed);
    if(fabs(drive.error)<=100){ timesGood++; }
    if(timesGood >= 100){ moveComplete = true; }
-   vex:: task:: sleep(1);
+    task:: sleep(1);
  }
  this->Brake();
- vex:: task:: sleep(10);
+  task:: sleep(10);
 }
  
 void base::turnPID(double maxLeftSpeed, double maxRightSpeed, double Angle){ //450 Gyro units is about 90 degrees
@@ -337,10 +314,10 @@ void base::turnPID(double maxLeftSpeed, double maxRightSpeed, double Angle){ //4
     }
     if(int(turn.error)<=50){ timesGood++; }
     if(timesGood >= 100){ moveComplete = true; }
-    vex:: task:: sleep(1);
+     task:: sleep(1);
   }
   this->Brake();
-  vex:: task:: sleep(10);
+   task:: sleep(10);
 }
 
 

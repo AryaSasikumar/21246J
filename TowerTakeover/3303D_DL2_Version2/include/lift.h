@@ -6,7 +6,7 @@ class lift{
   private:
     int liftSpeed = 100;
     int tiltSpeed = 100;
-    int slowSpeed = 30;
+    int slowSpeed = 20;
     void buttonReset();
   public:
     lift();
@@ -26,27 +26,27 @@ lift::lift(){
 
 void lift::Spin(int speedOne, int speedTwo){
   if(speedOne!=0 && speedTwo!=0){
-    liftA.spin(vex::directionType::fwd, speedOne, vex::velocityUnits::pct);
-    liftB.spin(vex::directionType::fwd, speedTwo, vex::velocityUnits::pct);
+    liftA.spin(directionType::fwd, speedOne, velocityUnits::pct);
+    liftB.spin(directionType::fwd, speedTwo, velocityUnits::pct);
   }else{
-    liftA.stop(vex::brakeType::hold);  
-    liftB.stop(vex::brakeType::hold);    
+    liftA.stop(brakeType::hold);  
+    liftB.stop(brakeType::hold);    
   }
 }
 
 
 void lift::Stop(bool type){
   if(type){
-      liftA.stop(vex::brakeType::coast);  
-      liftB.stop(vex::brakeType::coast);            
+      liftA.stop(brakeType::coast);  
+      liftB.stop(brakeType::coast);            
     }else{
-      liftA.stop(vex::brakeType::hold);   
-      liftB.stop(vex::brakeType::hold);             
+      liftA.stop(brakeType::hold);   
+      liftB.stop(brakeType::hold);             
     }  
 }
 
 void lift::buttonReset(){
-  if(Bumper.pressing()==1){
+  if(tiltBumpBtn){
     liftA.resetRotation();
   }
 }
@@ -57,7 +57,7 @@ void lift::liftUp(int potValue, int speed, int waitTime){
 		Spin(speed, speed);
 	}
   Stop(false);
-	vex::task::sleep(waitTime);
+	task::sleep(waitTime);
 }
 
 void lift::liftDown(int potValue, int speed, int waitTime){
@@ -66,25 +66,25 @@ void lift::liftDown(int potValue, int speed, int waitTime){
 		Spin(-speed, -speed);
 	}
   Stop(false);
-	vex::task::sleep(waitTime);
+	task::sleep(waitTime);
 }
 
 void lift::tiltForward(int potValue, int speed, int waitTime){
-	while(liftPot.value(vex::rotationUnits::deg) >= potValue)
+	while(tiltSensor >= potValue)
 	{
 		Spin(speed, -speed);
 	}
   Stop(false);
-	vex::task::sleep(waitTime);
+	task::sleep(waitTime);
 }
 
 void lift::tiltBackward(int potValue, int speed, int waitTime){
-  while(liftPot.value(vex::rotationUnits::deg) <= potValue)
+  while(tiltSensor <= potValue)
 	{
 		Spin(-speed, speed);
 	}
   Stop(false);
-	vex::task::sleep(waitTime);
+	task::sleep(waitTime);
 }
 
 void lift::autoScore(){
@@ -94,19 +94,19 @@ void lift::autoScore(){
 }
 
 void lift::userControl(){
-  if(liftUpBtn){
+  if(liftUpBtn && tiltBumpBtn){
     this->Spin(90, liftSpeed);
-  }else if(liftDownBtn){
+  }else if(liftDownBtn && tiltBumpBtn){
     this->Spin(-liftSpeed, -liftSpeed);
-  }else if(angleUpBtn){
+  }else if(angleUpBtn && !tiltBumpBtn){
     this->Spin(tiltSpeed, -tiltSpeed);
-  }else if(angleDownBtn){
+  }else if(angleDownBtn && !tiltBumpBtn){
     this->Spin(-tiltSpeed, tiltSpeed);
-  }else if(angleSlowBtn){
+  }else if(angleSlowBtn && !tiltBumpBtn){
     this->Spin(slowSpeed, -slowSpeed);
-  }else if(tiltMacroBtn){
+  }else if(tiltMacroBtn && !tiltBumpBtn){
     if(tiltSensor>=90){
-      this->Spin(tiltSpeed, -tiltSpeed);
+      this->Spin(tiltSpeed-10, -tiltSpeed+10);
     }else if(tiltSensor>=41){
       this->Spin(slowSpeed, -slowSpeed);
     }

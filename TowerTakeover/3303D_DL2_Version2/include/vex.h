@@ -49,7 +49,8 @@ motor_group IntakeSmart = motor_group(rightIntake, leftIntake);
 encoder baseEncoder = encoder(Brain.ThreeWirePort.G);
 gyro Gyro = gyro(Brain.ThreeWirePort.C);
 bumper Bumper = bumper(Brain.ThreeWirePort.B);
-pot liftPot = pot(Brain.ThreeWirePort.A);
+pot liftPot = pot(Brain.ThreeWirePort.D);
+pot tiltPot = pot(Brain.ThreeWirePort.A);
 
 //***---Controller1 Definitions---***//
 
@@ -79,13 +80,14 @@ pot liftPot = pot(Brain.ThreeWirePort.A);
 
 //---Sensor Definitions---//
 #define baseInetrial (TurnGyroSmart.rotation(degrees))
-#define baseGyro (-Gyro.value(vex::analogUnits::mV))
+#define baseGyro (-Gyro.value(analogUnits::mV))
 #define baseGyroReset Gyro.startCalibration(1000)
-#define mainBaseEnc baseEncoder.rotation(vex::rotationUnits::deg)
+#define mainBaseEnc baseEncoder.rotation(rotationUnits::deg)
 #define mainBaseEncReset baseEncoder.resetRotation()
 #define tiltBumpBtn Bumper.pressing()
-#define liftSensor ((liftA.rotation(vex::rotationUnits::deg) + liftB.rotation(vex::rotationUnits::deg))/2)
-#define tiltSensor liftPot.value(vex::rotationUnits::deg)
+//#define liftSensor ((liftA.rotation(rotationUnits::deg) + liftB.rotation(rotationUnits::deg))/2)
+#define liftSensor liftPot.value(rotationUnits::deg)
+#define tiltSensor tiltPot.value(rotationUnits::deg)
 
 const double wheelDiameterIN  = 4;
 const double baseDiameterIN  = 16.5;

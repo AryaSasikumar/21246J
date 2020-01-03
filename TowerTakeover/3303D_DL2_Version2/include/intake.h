@@ -2,9 +2,12 @@
 
 class intake{
   private:
-    int inSpeed = -100;
-    int outSpeed = 100;
+    int inSpeed = 100;
+    int outSpeed = -100;
+    int inSpeedWhileUp = 100;
+    int outSpeedWhileUp = -60;
     int slowSpeed = 20;
+    bool enable = false;
   public:
     intake();
     void Spin(int speed);
@@ -16,44 +19,39 @@ intake::intake(){
 }
 
 void intake::Spin(int speed){
-  leftIntake.spin(vex::directionType::fwd, speed, vex::velocityUnits::pct);
-  rightIntake.spin(vex::directionType::fwd, speed, vex::velocityUnits::pct);
+  leftIntake.spin(directionType::fwd, speed, velocityUnits::pct);
+  rightIntake.spin(directionType::fwd, speed, velocityUnits::pct);
 }
 void intake::Stop(){
-  leftIntake.stop(vex::brakeType::brake);  
-  rightIntake.stop(vex::brakeType::brake);  
+  leftIntake.stop(brakeType::brake);  
+  rightIntake.stop(brakeType::brake);  
 }
 
 void intake::userControl(){
-  if(intakeBtn && outtakeBtn){
-    this->Spin(this->slowSpeed);
-  }else if(intakeBtn){ 
-    this->Spin(this->inSpeed);
-  }else if(outtakeBtn){ 
-    this->Spin(this->outSpeed);
-  }else if(macroDriveBtn){
-    this->Spin(this->outSpeed);
- }
-  else{
-    this->Stop();
+  if (!intakeBtn && !outtakeBtn) {
+    if (!enable) {
+      Stop();
+      enable = true;
+    }
+  } else {
+    enable = false;
+  }
+  if (!enable) {
+    if(intakeBtn && outtakeBtn){
+      Spin(slowSpeed);
+    }else if(intakeBtn){ 
+      Spin(inSpeed);
+    }else if(outtakeBtn){ 
+      Spin(outSpeed);
+    }else if(macroDriveBtn){
+      Spin(outtakeBtn);
+    }else if(tiltMacroBtn && tiltSensor>=41 && tiltSensor<=90){
+      //Spin(-slowSpeed);
+    }
   }
 }
 
 
-
-/*
-void outake(int distance ){
-  //first reset encoder for outaking.
-  rightIntake.resetRotation() ;
-  leftIntake.spin(vex::directionType::rev, 70, vex::velocityUnits::pct);
-  rightIntake.spin(vex::directionType::rev, 70, vex::velocityUnits::pct);
-  while((rightIntake.rotation(vex::rotationUnits::deg)*-1)<distance) {
-    vex::task::sleep(1) ;
-  }
-  leftIntake.stop(vex::brakeType::hold);
-   rightIntake.stop(vex::brakeType::hold) ;
-}
-*/
 
 intake myIntake;
 
