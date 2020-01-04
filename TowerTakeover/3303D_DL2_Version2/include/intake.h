@@ -7,7 +7,7 @@ class intake{
     int inSpeedWhileUp = 100;
     int outSpeedWhileUp = -60;
     int slowSpeed = 20;
-    bool enable = false;
+    bool enabled = false;
   public:
     intake();
     void Spin(int speed);
@@ -29,20 +29,20 @@ void intake::Stop(){
 
 void intake::userControl(){
   if (!intakeBtn && !outtakeBtn) {
-    if (!enable) {
+    if (!enabled) {
       Stop();
-      enable = true;
+      enabled = true;
     }
   } else {
-    enable = false;
+    enabled = false;
   }
-  if (!enable) {
+  if (!enabled) {
     if(intakeBtn && outtakeBtn){
       Spin(slowSpeed);
     }else if(intakeBtn){ 
-      Spin(inSpeed);
+      Spin((liftSensor >= 100) ? inSpeedWhileUp : inSpeed);
     }else if(outtakeBtn){ 
-      Spin(outSpeed);
+      Spin((liftSensor >= 100) ? outSpeedWhileUp : outSpeed);
     }else if(macroDriveBtn){
       Spin(outtakeBtn);
     }else if(tiltMacroBtn && tiltSensor>=41 && tiltSensor<=90){

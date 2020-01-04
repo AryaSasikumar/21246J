@@ -21,12 +21,12 @@ class pidController{
 };
 
 pidController::pidController(double min, double max, double Kp, double Ki, double Kd, double dt){
-    this->min = min;
-    this->max = max;
-    this->Kp = Kp;
-    this->Ki = Ki;
-    this->Kd = Kd;
-    this->dt = dt;
+    min = min;
+    max = max;
+    Kp = Kp;
+    Ki = Ki;
+    Kd = Kd;
+    dt = dt;
 }
 
 double pidController::speed(double currentVal, double desiredVal){

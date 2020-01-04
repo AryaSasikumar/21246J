@@ -13,41 +13,11 @@ bool intakeStop = true;
 int rc_auto_loop_callback_Controller1() {
   while (true) {
     if (RemoteControlCodeEnabled) {
+      myBase.userControl();
       myLift.userControl();
       myIntake.userControl();
-      myBase.userControl();
-      // if (Y_leftJoy < 5 && Y_leftJoy > -5) {
-      //   if (leftDriveStop) {
-      //     LeftDriveSmart.stop();
-      //     leftDriveStop = false;
-      //   }
-      // } else {
-      //   leftDriveStop = true;
-      // }
-      // if (Y_rightJoy < 5 && Y_rightJoy > -5) {
-      //   if (rightDriveStop) {
-      //     RightDriveSmart.stop();
-      //     rightDriveStop = false;
-      //   }
-      // } else {
-      //   rightDriveStop = true;
-      // }
-      // if (leftDriveStop) {
-      //   LeftDriveSmart.setVelocity(Y_leftJoy, percent);
-      //   LeftDriveSmart.spin(forward);
-      // }
-      // if (rightDriveStop) {
-      //   RightDriveSmart.setVelocity(Y_rightJoy, percent);
-      //   RightDriveSmart.spin(forward);
-      // }
-
-      // if (intakeBtn) {
-      //   IntakeSmart.spin(forward, 100, percent);
-      // } else if (outtakeBtn) {
-      //   IntakeSmart.spin(reverse, 100, percent);
-      // } else {
-      //   IntakeSmart.stop(hold);
-      // }
+      
+      myAuton.userControl();
     }
     wait(20, msec);
   }

@@ -49,7 +49,7 @@ motor_group IntakeSmart = motor_group(rightIntake, leftIntake);
 encoder baseEncoder = encoder(Brain.ThreeWirePort.G);
 gyro Gyro = gyro(Brain.ThreeWirePort.C);
 bumper Bumper = bumper(Brain.ThreeWirePort.B);
-pot liftPot = pot(Brain.ThreeWirePort.D);
+pot liftPot = pot(Brain.ThreeWirePort.F);
 pot tiltPot = pot(Brain.ThreeWirePort.A);
 
 //***---Controller1 Definitions---***//
@@ -66,7 +66,9 @@ pot tiltPot = pot(Brain.ThreeWirePort.A);
 #define autoScoreBtn Controller1.ButtonA.pressing()
 #define baseLockBtn Controller1.ButtonB.pressing()
 #define tiltMacroBtn Controller1.ButtonX.pressing()
-//#define buttonY Controller.ButtonY.pressing()
+
+#define autonTestButton Controller1.ButtonY.pressing()
+bool enableAutonTestButton = false;
 
 #define liftUpBtn Controller1.ButtonL1.pressing()
 #define liftDownBtn Controller1.ButtonL2.pressing()

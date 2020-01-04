@@ -90,31 +90,82 @@ void lift::tiltBackward(int potValue, int speed, int waitTime){
 void lift::autoScore(){
   myIntake.Spin(-50);
   //myBase.Spin(-30, -30);
-  this->Spin(60,-60);
+  Spin(60,-60);
 }
 
 void lift::userControl(){
-  if(liftUpBtn && tiltBumpBtn){
-    this->Spin(90, liftSpeed);
-  }else if(liftDownBtn && tiltBumpBtn){
-    this->Spin(-liftSpeed, -liftSpeed);
-  }else if(angleUpBtn && !tiltBumpBtn){
-    this->Spin(tiltSpeed, -tiltSpeed);
-  }else if(angleDownBtn && !tiltBumpBtn){
-    this->Spin(-tiltSpeed, tiltSpeed);
-  }else if(angleSlowBtn && !tiltBumpBtn){
-    this->Spin(slowSpeed, -slowSpeed);
-  }else if(tiltMacroBtn && !tiltBumpBtn){
+  // if(tiltBumpBtn){
+  //   if(liftUpBtn){
+  //     Spin(90, liftSpeed);
+  //   }else if(liftDownBtn){
+  //     Spin(-liftSpeed, -liftSpeed);
+  //   }else if(angleUpBtn){
+  //     if(liftSensor >= 82){
+  //       Spin(-liftSpeed, -liftSpeed);
+  //     } else {
+  //       Spin(tiltSpeed, -tiltSpeed);
+  //     }
+  //   }else if(angleDownBtn){
+  //     Spin(0,0);
+  //   }else if(angleSlowBtn){
+  //     Spin(slowSpeed, -slowSpeed);
+  //   }else if(tiltMacroBtn){
+  //     if(tiltSensor>=90){
+  //       Spin(tiltSpeed-10, -tiltSpeed+10);
+  //     }else if(tiltSensor>=41){
+  //       Spin(slowSpeed, -slowSpeed);
+  //     }else{
+  //       Spin(10, -10);  
+  //     }
+  //   }else{
+  //     Spin(0, 0);
+  //   }
+  // } else{
+  //   if(liftUpBtn){
+  //     Spin(-tiltSpeed, tiltSpeed);
+  //   }else if(liftDownBtn){
+  //     Spin(-tiltSpeed, tiltSpeed);
+  //   }else if(angleUpBtn){
+  //     Spin(tiltSpeed, -tiltSpeed);
+  //   }else if(angleDownBtn){
+  //     Spin(-tiltSpeed, tiltSpeed);
+  //   }else if(angleSlowBtn){
+  //     Spin(slowSpeed, -slowSpeed);
+  //   }else if(tiltMacroBtn){
+  //     if(tiltSensor>=90){
+  //       Spin(tiltSpeed-10, -tiltSpeed+10);
+  //     }else if(tiltSensor>=41){
+  //       Spin(slowSpeed, -slowSpeed);
+  //     }else{
+  //       Spin(10, -10);  
+  //     }
+  //   }else{
+  //     Spin(0, 0);
+  //   }
+  // }
+  
+
+
+  if(liftUpBtn){
+    Spin(90, liftSpeed);
+  }else if(liftDownBtn){
+    Spin(-liftSpeed, -liftSpeed);
+  }else if(angleUpBtn){
+    Spin(tiltSpeed, -tiltSpeed);
+  }else if(angleDownBtn){
+    Spin(-tiltSpeed, tiltSpeed);
+  }else if(angleSlowBtn){
+    Spin(slowSpeed, -slowSpeed);
+  }else if(tiltMacroBtn){
     if(tiltSensor>=90){
-      this->Spin(tiltSpeed-10, -tiltSpeed+10);
+      Spin(tiltSpeed-10, -tiltSpeed+10);
     }else if(tiltSensor>=41){
-      this->Spin(slowSpeed, -slowSpeed);
-    }
-    else{
-      this->Spin(10, -10);  
+      Spin(slowSpeed, -slowSpeed);
+    }else{
+      Spin(10, -10);  
     }
   }else{
-    this->Spin(0, 0);
+    Spin(0, 0);
   }
 }
 

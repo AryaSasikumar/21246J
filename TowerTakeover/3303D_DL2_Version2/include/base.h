@@ -56,14 +56,14 @@ base::base(){
 }
 
 void base::Spin(int leftSpeed, int rightSpeed){
-  this->rightSpeed = rightSpeed;
-  this->leftSpeed = leftSpeed;
+  rightSpeed = rightSpeed;
+  leftSpeed = leftSpeed;
   rightSpin(rightSpeed);
   leftSpin(leftSpeed);
 }
 
 void base::rightSpin(int speed = 0){
-  this->rightSpeed = speed;
+  rightSpeed = speed;
   if(rightSpeed != 0){
     RightDriveSmart.spin(forward, rightSpeed, percent);
   }else{
@@ -72,7 +72,7 @@ void base::rightSpin(int speed = 0){
 }
 
 void base::leftSpin(int speed = 0){
-  this->leftSpeed = speed;
+  leftSpeed = speed;
   if(leftSpeed != 0){
     LeftDriveSmart.spin(forward, leftSpeed, percent);
   }else{
@@ -81,14 +81,14 @@ void base::leftSpin(int speed = 0){
 }
 
 void base::Hold(){
-  this->rightSpeed = 0;
-  this->leftSpeed = 0;
+  rightSpeed = 0;
+  leftSpeed = 0;
   DriveTrainSmart.stop(hold);
 }
 
 void base::Brake() {
-  this->rightSpeed = 0;
-  this->leftSpeed = 0;
+  rightSpeed = 0;
+  leftSpeed = 0;
   DriveTrainSmart.stop(brake);
 }
 
@@ -98,6 +98,7 @@ void base::moveFor(double degToRotate_Left, double degToRotate_Right, int speed)
   rightMotorA.startRotateFor(degToRotate_Right,degrees,speed,velocityUnits::pct);  
   rightMotorB.rotateFor(degToRotate_Right,degrees,speed,velocityUnits::pct); 
 }
+
 
 void base::userControl(int bufferSize = 5, bool Stop = false){
  if(autoScoreBtn){
@@ -166,77 +167,17 @@ void base::driveInches_Enc(dirType mydirection, double travelTargetIN, int speed
  mainBaseEncReset;
  if(mydirection == forwards){
    while(baseEncoder<degreesToRotate){  //|| baseEncoder<degreesToRotate
-     this->Spin(speed,speed);
+     Spin(speed,speed);
    }
-   this->Brake();
+   Brake();
  }else if(mydirection == backwards){
    while(baseEncoder>degreesToRotate){  //|| baseEncoder<degreesToRotate
-     this->Spin(-speed,-speed);
+     Spin(-speed,-speed);
    }
-   this->Brake();
+   Brake();
  }
   task::sleep(500);
 }
-
-
-/*void base::drivePID(double Distance){
-  Distance = distanceToTravel(Distance);
-  rightEncoder.resetRotation(); 
-  leftEncoder.resetRotation();
-  task::sleep(50); 
-  drive.dt=0.0001;
-  double encoderDeg = (rightEncoder.rotation(rotationUnits::deg) + leftEncoder.rotation(rotationUnits::deg))/2;
-  double speed = drive.speed(encoderDeg,Distance);
-  drive.pre_error = Distance - encoderDeg;
-  drive.error = drive.pre_error;
-  int timesGood = 0;
-  bool moveComplete = false;
-  while(!moveComplete && drive.enabled){ 
-    encoderDeg = (rightEncoder.rotation(rotationUnits::deg) + leftEncoder.rotation(rotationUnits::deg))/2;
-    speed = drive.speed(encoderDeg,Distance);
-    this->rightSpin(speed);
-    this->leftSpin(speed);
-    if(fabs(drive.error)<=40){
-      timesGood++;
-    }
-    if(timesGood >= 100){
-      moveComplete = true;
-    }
-     task:: sleep(1);
-  }
-  this->Brake();
-   task:: sleep(10);
-}
-
-void base::turnPID(double Angle){
-  Gyro.startCalibration();
-  while(Gyro.isCalibrating()){}
-  task::sleep(100);    
-  turn.dt=0.0001;
-  double speed = turn.speed(Gyro.value(rotationUnits::deg),Angle);
-  turn.pre_error = Angle - Gyro.value(rotationUnits::deg);
-  turn.error = turn.pre_error;
-  int timesGood = 0;
-  bool moveComplete = false;
-  while(!moveComplete && turn.enabled){
-    if(Angle>0){
-      speed = turn.speed(Gyro.value(rotationUnits::deg),Angle);
-      this->Spin(speed,-speed);
-    }else{
-      speed = turn.speed(-Gyro.value(rotationUnits::deg),-Angle);
-      this->Spin(-speed,speed);
-    }
-    if(fabs(turn.error)<=3){
-      timesGood++;
-    }
-    if(timesGood >= 100){
-      moveComplete = true;
-    }
-     task:: sleep(1);
-  }
-  this->Brake();
-   task:: sleep(10);
-}*/
 
 void base::drivePID(double maxLeftSpeed, double maxRightSpeed, double Distance){
  Distance = distanceToTravel(Distance);
@@ -254,13 +195,13 @@ void base::drivePID(double maxLeftSpeed, double maxRightSpeed, double Distance){
    speed = drive.speed(encoderDeg,Distance);
    double lSpeed = (speed>=maxLeftSpeed) ? maxLeftSpeed : speed;
    double rSpeed = (speed>=maxRightSpeed) ? maxRightSpeed : speed;
-   this->rightSpin(rSpeed);
-   this->leftSpin(lSpeed);
+   rightSpin(rSpeed);
+   leftSpin(lSpeed);
    if(fabs(drive.error)<=100){ timesGood++; }
    if(timesGood >= 100){ moveComplete = true; }
     task:: sleep(1);
  }
- this->Brake();
+ Brake();
   task:: sleep(10);
 }
 
@@ -280,13 +221,13 @@ void base::driveBackPID(double maxLeftSpeed, double maxRightSpeed, double Distan
    speed = drive.speed(encoderDeg,Distance);
    double lSpeed = (speed>=maxLeftSpeed) ? maxLeftSpeed : speed;
    double rSpeed = (speed>=maxRightSpeed) ? maxRightSpeed : speed;
-   this->rightSpin(rSpeed);
-   this->leftSpin(lSpeed);
+   rightSpin(rSpeed);
+   leftSpin(lSpeed);
    if(fabs(drive.error)<=100){ timesGood++; }
    if(timesGood >= 100){ moveComplete = true; }
     task:: sleep(1);
  }
- this->Brake();
+ Brake();
   task:: sleep(10);
 }
  
@@ -305,18 +246,18 @@ void base::turnPID(double maxLeftSpeed, double maxRightSpeed, double Angle){ //4
       speed = turn.speed(baseInetrial,Angle);
       double lSpeed = (speed>=maxLeftSpeed) ? maxLeftSpeed : speed;
       double rSpeed = (speed>=maxRightSpeed) ? maxRightSpeed : speed;
-      this->Spin(lSpeed,-rSpeed);
+      Spin(lSpeed,-rSpeed);
     }else if(Angle<0){
       speed = turn.speed(-baseInetrial,-Angle);
       double lSpeed = (speed>=maxLeftSpeed) ? maxLeftSpeed : speed;
       double rSpeed = (speed>=maxRightSpeed) ? maxRightSpeed : speed;
-      this->Spin(-lSpeed,rSpeed);
+      Spin(-lSpeed,rSpeed);
     }
     if(int(turn.error)<=50){ timesGood++; }
     if(timesGood >= 100){ moveComplete = true; }
      task:: sleep(1);
   }
-  this->Brake();
+  Brake();
    task:: sleep(10);
 }
 
@@ -325,9 +266,9 @@ void base::driveInches_MotorEnc(dirType mydirection, double travelTargetIN, int 
   double circumference = wheelDiameterIN * M_PI;
   double degreesToRotate = (360 * travelTargetIN) / circumference;
   if(mydirection == forwards){
-    this->moveFor(degreesToRotate,degreesToRotate, speed);
+    moveFor(degreesToRotate,degreesToRotate, speed);
   }else if(mydirection == backwards){
-    this->moveFor(degreesToRotate*-1,degreesToRotate*-1, speed);
+    moveFor(degreesToRotate*-1,degreesToRotate*-1, speed);
   }
 }
 
@@ -335,19 +276,19 @@ void base::turnDegrees_MotorEnc(TurnType mydirection, double travelTargetDEG, in
   double baseCircumference = baseDiameterIN * M_PI; //51.81
   double degreesToRotate = ((360 * travelTargetDEG) / baseCircumference)/2; // 32,400
   if(mydirection == Right){
-    this->moveFor(degreesToRotate,degreesToRotate*-1, speed);
+    moveFor(degreesToRotate,degreesToRotate*-1, speed);
   }
   else if(mydirection == Left){
-    this->moveFor(degreesToRotate*-1,degreesToRotate, speed);
+    moveFor(degreesToRotate*-1,degreesToRotate, speed);
   }
 }
 
 void base::driveDegrees_MotorEnc(double degrees, int speed){
-  this->moveFor(degrees, degrees, speed);
+  moveFor(degrees, degrees, speed);
 }
 
 void base::turnDegrees_MotorEnc(double leftDegrees, double rightDegrees,int speed){
-  this->moveFor(leftDegrees, rightDegrees, speed);
+  moveFor(leftDegrees, rightDegrees, speed);
 }
 
 void base::turnDegrees_Gyro(double degrees,int speed){ //IDK if this works, lol
@@ -358,9 +299,9 @@ void base::turnDegrees_Gyro(double degrees,int speed){ //IDK if this works, lol
     degrees = degrees+shift;
   }
   while(baseGyro > degrees){
-    this->Spin(speed,speed);
+    Spin(speed,speed);
   }
-  this->Brake();
+  Brake();
 }
 
 base myBase;
