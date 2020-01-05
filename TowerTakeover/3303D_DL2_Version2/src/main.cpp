@@ -94,7 +94,8 @@ int main() {
 
   // Prevent main from exiting with an infinite loop.
   while (true) {
-    printf("LiftPot: %f\n",liftSensor);
+    printf("Lift Pot: %f\n",liftSensor);
+    printf("Tilt Pot: %f\n",tiltSensor);
     wait(100, msec);
   }
 }
