@@ -59,7 +59,7 @@ void autonomous(void) {
   // ..........................................................................
   //Drivetrain.setTurnVelocity(100.0, percent);
   //Drivetrain.turnFor(90.0,degrees,false);
-  myBase.turnPID(100.0, 100.0, 90.0);
+  myBase.drivePID(50.0, 50.0, 24.0);
 }
 
 
@@ -94,8 +94,8 @@ int main() {
 
   // Prevent main from exiting with an infinite loop.
   while (true) {
-    printf("Lift Pot: %f\n",liftSensor);
-    printf("Tilt Pot: %f\n",tiltSensor);
+    printf("Base Encoder: %f\n",mainBaseEnc);
+    //printf("Tilt Pot: %f\n",tiltSensor);
     wait(100, msec);
   }
 }

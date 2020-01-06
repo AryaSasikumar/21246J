@@ -25,7 +25,6 @@ int rc_auto_loop_callback_Controller1() {
 }
 
 
-
 /**
  * Used to initialize code/tasks/devices added using tools in VEXcode Text.
  *

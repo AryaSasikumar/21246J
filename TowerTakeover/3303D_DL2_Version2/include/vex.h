@@ -37,7 +37,7 @@ motor rightMotorB = motor(PORT10, ratio18_1, true);
 motor_group RightDriveSmart = motor_group(rightMotorA, rightMotorB);
 
 inertial TurnGyroSmart = inertial(PORT12);
-smartdrive DriveTrainSmart = smartdrive(LeftDriveSmart, RightDriveSmart, TurnGyroSmart, 319.19, 320, 165, mm, 1);
+smartdrive DriveTrainSmart = smartdrive(LeftDriveSmart, RightDriveSmart, TurnGyroSmart, 319.19, 320, 165, inches, 1);
 
 motor liftA = motor(PORT6, ratio18_1, true);
 motor liftB = motor(PORT7, ratio18_1, true);
@@ -91,7 +91,7 @@ bool enableAutonTestButton = false;
 #define liftSensor liftPot.value(rotationUnits::deg)
 #define tiltSensor tiltPot.value(rotationUnits::deg)
 
-const double wheelDiameterIN  = 4;
+const double wheelDiameterIN  = 3.75;
 const double baseDiameterIN  = 16.5;
 
 

@@ -17,17 +17,20 @@ class AutonomusRoutines{
 
 //--//--//----CURRENT TEST AUTON---//--//--//
 void AutonomusRoutines::currentTestAuton(){
-  
+  while(testEnableTog){
+    myBase.drivePID(50, 50, 24);
+    testEnableTog = false;
+  }
 }
 //--//--//----CURRENT TEST AUTON---//--//--//
 
 
 void AutonomusRoutines::userControl(){
-  if(autonTestButton){
-    task::sleep(200);
+  if(enableAutonTestButton && autonTestButton){
     testEnableTog = !testEnableTog;
+    task::sleep(300);
   }
-  if(enableAutonTestButton && testEnableTog){
+  if(testEnableTog){
     currentTestAuton();
   }
 }

@@ -65,7 +65,8 @@ void base::Spin(int leftSpeed, int rightSpeed){
 void base::rightSpin(int speed = 0){
   rightSpeed = speed;
   if(rightSpeed != 0){
-    RightDriveSmart.spin(forward, rightSpeed, percent);
+    rightMotorA.spin(forward, rightSpeed, percent);
+    rightMotorB.spin(forward, rightSpeed, percent);
   }else{
     RightDriveSmart.stop(coast); 
   }
@@ -74,7 +75,8 @@ void base::rightSpin(int speed = 0){
 void base::leftSpin(int speed = 0){
   leftSpeed = speed;
   if(leftSpeed != 0){
-    LeftDriveSmart.spin(forward, leftSpeed, percent);
+    leftMotorA.spin(forward, leftSpeed, percent);
+    leftMotorB.spin(forward, leftSpeed, percent);
   }else{
     LeftDriveSmart.stop(coast);  
   }
@@ -153,9 +155,8 @@ void base::userControl(int bufferSize = 5, bool Stop = false){
 }
 
 double base::distanceToTravel(double inchesGiven){
-  int wheelRadIN = 2;
-  float floatDiv = (float)95.0/36.0;
-  double Distance = (inchesGiven/(2*M_PI*wheelRadIN))*(360*floatDiv);
+  float floatDiv = (float)55.0/40.0;
+  double Distance = (inchesGiven/(M_PI*wheelDiameterIN))*(360*floatDiv);
   return Distance; //Distance in ticks    
 }
 
@@ -182,7 +183,7 @@ void base::driveInches_Enc(dirType mydirection, double travelTargetIN, int speed
 void base::drivePID(double maxLeftSpeed, double maxRightSpeed, double Distance){
  Distance = distanceToTravel(Distance);
  baseEncoder.resetRotation();
- task::sleep(50);
+ task::sleep(10);
  drive.dt=0.0001;
  double encoderDeg = mainBaseEnc; //(rightBaseEnc + leftBaseEnc)/2
  double speed = drive.speed(encoderDeg,Distance);
@@ -202,7 +203,7 @@ void base::drivePID(double maxLeftSpeed, double maxRightSpeed, double Distance){
     task:: sleep(1);
  }
  Brake();
-  task:: sleep(10);
+ task:: sleep(10);
 }
 
 void base::driveBackPID(double maxLeftSpeed, double maxRightSpeed, double Distance){
@@ -225,10 +226,10 @@ void base::driveBackPID(double maxLeftSpeed, double maxRightSpeed, double Distan
    leftSpin(lSpeed);
    if(fabs(drive.error)<=100){ timesGood++; }
    if(timesGood >= 100){ moveComplete = true; }
-    task:: sleep(1);
+  task:: sleep(1);
  }
  Brake();
-  task:: sleep(10);
+ task:: sleep(10);
 }
  
 void base::turnPID(double maxLeftSpeed, double maxRightSpeed, double Angle){ //450 Gyro units is about 90 degrees
