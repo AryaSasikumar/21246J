@@ -17,8 +17,21 @@ class AutonomusRoutines{
 
 //--//--//----CURRENT TEST AUTON---//--//--//
 void AutonomusRoutines::currentTestAuton(){
+  baseEncoder.resetRotation();
+  task::sleep(300);
   while(testEnableTog){
-    myBase.drivePID(50, 50, 24);
+    myIntake.Spin(100);
+    myBase.drivePID(45, 45, 37);
+    task::sleep(500);
+    myBase.driveBackPID(100, 100, -7);
+    task::sleep(150);
+    myBase.turnPID(100, 100, -40);
+    task::sleep(200);
+    myBase.driveBackPID(100, 100, -32);
+    task::sleep(200);
+    myBase.turnPID(100, 100, 39);
+    task::sleep(300);
+    myIntake.Stop();
     testEnableTog = false;
   }
 }

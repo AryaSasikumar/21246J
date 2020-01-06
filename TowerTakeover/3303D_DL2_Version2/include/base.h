@@ -41,6 +41,8 @@ class base{
     //void turnPID(double Angle);//OLDDD
     //void drivePID(double Distance);
     void turnPID(double maxLeftSpeed, double maxRightSpeed, double Angle); //NEWWWW
+    void smartDrive(double maxSpeed, double Distance);
+    void smartTurn(double maxSpeed, double Angle);
     void drivePID(double maxLeftSpeed, double maxRightSpeed, double Distance);
     void driveBackPID(double maxLeftSpeed, double maxRightSpeed, double Distance);
     void driveInches_MotorEnc(dirType mydirection, double travelTargetIN, int speed);
@@ -63,42 +65,50 @@ void base::Spin(int leftSpeed, int rightSpeed){
 }
 
 void base::rightSpin(int speed = 0){
-  rightSpeed = speed;
+  this->rightSpeed = speed;
   if(rightSpeed != 0){
-    rightMotorA.spin(forward, rightSpeed, percent);
-    rightMotorB.spin(forward, rightSpeed, percent);
+    RB.spin(vex::directionType::fwd, rightSpeed, vex::velocityUnits::pct);
+    RF.spin(vex::directionType::fwd, rightSpeed, vex::velocityUnits::pct);
   }else{
-    RightDriveSmart.stop(coast); 
+    RB.stop(vex::brakeType::coast); 
+    RF.stop(vex::brakeType::coast);
   }
 }
 
 void base::leftSpin(int speed = 0){
-  leftSpeed = speed;
+  this->leftSpeed = speed;
   if(leftSpeed != 0){
-    leftMotorA.spin(forward, leftSpeed, percent);
-    leftMotorB.spin(forward, leftSpeed, percent);
+    LB.spin(vex::directionType::fwd, leftSpeed, vex::velocityUnits::pct);
+    LF.spin(vex::directionType::fwd, leftSpeed, vex::velocityUnits::pct);
   }else{
-    LeftDriveSmart.stop(coast);  
+    LB.stop(vex::brakeType::coast);  
+    LF.stop(vex::brakeType::coast);  
   }
 }
 
 void base::Hold(){
-  rightSpeed = 0;
-  leftSpeed = 0;
-  DriveTrainSmart.stop(hold);
+  this->rightSpeed = 0;
+  this->leftSpeed = 0;
+  LB.stop(vex::brakeType::hold);
+  LF.stop(vex::brakeType::hold);
+  RB.stop(vex::brakeType::hold);
+  RF.stop(vex::brakeType::hold);  
 }
 
 void base::Brake() {
-  rightSpeed = 0;
-  leftSpeed = 0;
-  DriveTrainSmart.stop(brake);
+  this->rightSpeed = 0;
+  this->leftSpeed = 0;
+  LF.stop(vex::brakeType::brake);
+  RB.stop(vex::brakeType::brake);
+  LB.stop(vex::brakeType::brake);
+  RF.stop(vex::brakeType::brake);
 }
 
 void base::moveFor(double degToRotate_Left, double degToRotate_Right, int speed){
-  leftMotorA.startRotateFor(degToRotate_Left,degrees,speed,velocityUnits::pct);
-  leftMotorB.startRotateFor(degToRotate_Left,degrees,speed,velocityUnits::pct);  
-  rightMotorA.startRotateFor(degToRotate_Right,degrees,speed,velocityUnits::pct);  
-  rightMotorB.rotateFor(degToRotate_Right,degrees,speed,velocityUnits::pct); 
+  LF.startRotateFor(degToRotate_Left,degrees,speed,velocityUnits::pct);
+  LB.startRotateFor(degToRotate_Left,degrees,speed,velocityUnits::pct);  
+  RF.startRotateFor(degToRotate_Right,degrees,speed,velocityUnits::pct);  
+  RB.rotateFor(degToRotate_Right,degrees,speed,velocityUnits::pct); 
 }
 
 
@@ -155,8 +165,9 @@ void base::userControl(int bufferSize = 5, bool Stop = false){
 }
 
 double base::distanceToTravel(double inchesGiven){
-  float floatDiv = (float)55.0/40.0;
-  double Distance = (inchesGiven/(M_PI*wheelDiameterIN))*(360*floatDiv);
+  int wheelRadIN = 2;
+  float floatDiv = (float)95.0/36.0;
+  double Distance = ((inchesGiven/(M_PI*wheelRadIN))*(360*floatDiv))/4;
   return Distance; //Distance in ticks    
 }
 
@@ -180,10 +191,19 @@ void base::driveInches_Enc(dirType mydirection, double travelTargetIN, int speed
   task::sleep(500);
 }
 
+void base::smartDrive(double maxSpeed, double Distance){
+  DriveTrainSmart.setDriveVelocity(maxSpeed, percent);
+  DriveTrainSmart.driveFor(Distance, inches, true);
+}
+void base::smartTurn(double maxSpeed, double Angle){
+  DriveTrainSmart.setTurnVelocity(maxSpeed, percent);
+  DriveTrainSmart.turnFor(Angle, degrees, true);
+}
+
 void base::drivePID(double maxLeftSpeed, double maxRightSpeed, double Distance){
  Distance = distanceToTravel(Distance);
  baseEncoder.resetRotation();
- task::sleep(10);
+ vex::task::sleep(50);
  drive.dt=0.0001;
  double encoderDeg = mainBaseEnc; //(rightBaseEnc + leftBaseEnc)/2
  double speed = drive.speed(encoderDeg,Distance);
@@ -196,14 +216,14 @@ void base::drivePID(double maxLeftSpeed, double maxRightSpeed, double Distance){
    speed = drive.speed(encoderDeg,Distance);
    double lSpeed = (speed>=maxLeftSpeed) ? maxLeftSpeed : speed;
    double rSpeed = (speed>=maxRightSpeed) ? maxRightSpeed : speed;
-   rightSpin(rSpeed);
-   leftSpin(lSpeed);
+   this->rightSpin(rSpeed);
+   this->leftSpin(lSpeed);
    if(fabs(drive.error)<=100){ timesGood++; }
    if(timesGood >= 100){ moveComplete = true; }
-    task:: sleep(1);
+   vex:: task:: sleep(1);
  }
- Brake();
- task:: sleep(10);
+ this->Brake();
+ vex:: task:: sleep(10);
 }
 
 void base::driveBackPID(double maxLeftSpeed, double maxRightSpeed, double Distance){
@@ -233,6 +253,7 @@ void base::driveBackPID(double maxLeftSpeed, double maxRightSpeed, double Distan
 }
  
 void base::turnPID(double maxLeftSpeed, double maxRightSpeed, double Angle){ //450 Gyro units is about 90 degrees
+  baseInetrialReset;
   Angle = baseInetrial+Angle;
   turn.dt=0.0001;
   double speed = turn.speed(baseInetrial,Angle);
@@ -241,8 +262,8 @@ void base::turnPID(double maxLeftSpeed, double maxRightSpeed, double Angle){ //4
   int timesGood = 0;
   bool moveComplete = false;
   while(!moveComplete && turn.enabled && baseInetrial <= abs(int(Angle))){
-    printf("gyroVal: %ld\n",baseInetrial);
-    printf("Angle: %f\n",Angle);
+    //printf("gyroVal: %lf\n",baseInetrial);
+    //printf("Angle: %f\n",Angle);
     if(Angle>0){
       speed = turn.speed(baseInetrial,Angle);
       double lSpeed = (speed>=maxLeftSpeed) ? maxLeftSpeed : speed;
