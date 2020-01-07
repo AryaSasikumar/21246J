@@ -22,16 +22,31 @@ void AutonomusRoutines::currentTestAuton(){
   task::sleep(300);
   while(testEnableTog){
     myIntake.Spin(100);
-    myBase.drivePID(45, 45, 40);
+    myBase.drivePID(45, 45, 41);
     myBase.turnPID(100, 100, -35);
     task::sleep(100);
-    myBase.driveBackPID(80, 80, -37);
+    myBase.driveBackPID(80, 80, -38);
     task::sleep(200);
-    myBase.turnPID(100, 100, 36);
+    myBase.turnPID(100, 100, 39);
     task::sleep(100);
     myBase.drivePID(45, 45, 35);
-
+    task::sleep(100);
+     myIntake.Spin(30);
+    myBase.turnPID(100, 100, -127);
     myIntake.Stop();
+    myBase.drivePID(80, 80, 44);
+    task::sleep(100);
+    while(tiltSensor>=90){
+      myLift.Spin(100, -100);
+    }
+    while(tiltSensor>=48){
+      myLift.Spin(35, -35);
+    }
+    myLift.Stop(false);
+    myBase.driveBackPID(30, 30, -24);
+    while(tiltSensor<=90){
+      myLift.Spin(-100, 100);
+    }
     task::sleep(300);
     testEnableTog = false;
   }

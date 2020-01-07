@@ -265,8 +265,8 @@ void base::turnPID(double maxLeftSpeed, double maxRightSpeed, double Angle){ //4
   int timesGood = 0;
   bool moveComplete = false;
   while(!moveComplete && turn.enabled && baseInetrial <= abs(int(Angle))){
-    printf("gyroVal: %lf\n",baseInetrial);
-    printf("Angle: %f\n",Angle);
+    //printf("gyroVal: %lf\n",baseInetrial);
+    //printf("Angle: %f\n",Angle);
     if(Angle>0){
       speed = turn.speed(baseInetrial,Angle);
       double lSpeed = (speed>=maxLeftSpeed) ? maxLeftSpeed : speed;
