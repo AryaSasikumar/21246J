@@ -110,7 +110,7 @@ void lift::autoScore(){
 void lift::userControl(){
 
   if(liftUpBtn){
-    if(tiltSensor >= tiltAllTheWayDown-10){
+    if(tiltSensor >= (tiltAllTheWayDown-10) || liftSensor >= (liftAllTheWayDown+20)){
       Spin(90, liftSpeed);
     }else{
       Spin(-tiltSpeed, tiltSpeed);

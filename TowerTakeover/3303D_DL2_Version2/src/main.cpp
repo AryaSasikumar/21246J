@@ -40,6 +40,9 @@ competition Competition;
 /*---------------------------------------------------------------------------*/
 
 void pre_auton(void) {
+  baseEncoder.resetRotation();
+  TurnGyroSmart.resetHeading();
+  task::sleep(200);
   // Initializing Robot Configuration. DO NOT REMOVE!
   vexcodeInit();
   // All activities that occur before the competition starts
@@ -91,11 +94,10 @@ int main() {
 
   // Run the pre-autonomous function.
   pre_auton();
-
   // Prevent main from exiting with an infinite loop.
   while (true) {
     //printf("Lift: %f\n",liftSensor);
-    printf("Tilt: %f\n\n",tiltSensor);
+    //printf("Tilt: %f\n\n",tiltSensor);
     wait(100, msec);
   }
 }
