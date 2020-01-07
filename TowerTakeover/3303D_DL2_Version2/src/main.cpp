@@ -94,8 +94,8 @@ int main() {
 
   // Prevent main from exiting with an infinite loop.
   while (true) {
-    //printf("Base Encoder: %f\n",mainBaseEnc);
-    //printf("Tilt Pot: %f\n",tiltSensor);
+    //printf("Lift: %f\n",liftSensor);
+    //printf("Tilt: %f\n\n",tiltSensor);
     wait(100, msec);
   }
 }

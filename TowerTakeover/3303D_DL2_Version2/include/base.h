@@ -227,6 +227,8 @@ void base::drivePID(double maxLeftSpeed, double maxRightSpeed, double Distance){
 }
 
 void base::driveBackPID(double maxLeftSpeed, double maxRightSpeed, double Distance){
+ maxLeftSpeed = -maxLeftSpeed;
+ maxRightSpeed = -maxRightSpeed;
  Distance = distanceToTravel(Distance);
  baseEncoder.resetRotation();
  task::sleep(50);
@@ -253,8 +255,9 @@ void base::driveBackPID(double maxLeftSpeed, double maxRightSpeed, double Distan
 }
  
 void base::turnPID(double maxLeftSpeed, double maxRightSpeed, double Angle){ //450 Gyro units is about 90 degrees
-  //baseInetrialReset;
-  Angle = baseInetrial+Angle;
+  baseInetrialReset;
+  TurnGyroSmart.resetRotation();
+  //Angle = baseInetrial+Angle;
   turn.dt=0.0001;
   double speed = turn.speed(baseInetrial,Angle);
   turn.pre_error = Angle - baseInetrial;
@@ -262,8 +265,8 @@ void base::turnPID(double maxLeftSpeed, double maxRightSpeed, double Angle){ //4
   int timesGood = 0;
   bool moveComplete = false;
   while(!moveComplete && turn.enabled && baseInetrial <= abs(int(Angle))){
-    //printf("gyroVal: %lf\n",baseInetrial);
-    //printf("Angle: %f\n",Angle);
+    printf("gyroVal: %lf\n",baseInetrial);
+    printf("Angle: %f\n",Angle);
     if(Angle>0){
       speed = turn.speed(baseInetrial,Angle);
       double lSpeed = (speed>=maxLeftSpeed) ? maxLeftSpeed : speed;
@@ -275,8 +278,8 @@ void base::turnPID(double maxLeftSpeed, double maxRightSpeed, double Angle){ //4
       double rSpeed = (speed>=maxRightSpeed) ? maxRightSpeed : speed;
       Spin(-lSpeed,rSpeed);
     }
-    if(int(turn.error)<=3){ timesGood++; }
-    if(timesGood >= 100){ moveComplete = true; }
+    if(int(turn.error)<=1.5){ timesGood++; }
+    if(timesGood >= 150){ moveComplete = true; }
      task:: sleep(1);
   }
   Brake();

@@ -82,7 +82,7 @@ bool enableAutonTestButton = false;
 
 //---Sensor Definitions---//
 #define baseInetrial (TurnGyroSmart.rotation(degrees))
-#define baseInetrialReset (TurnGyroSmart.resetRotation())
+#define baseInetrialReset TurnGyroSmart.resetHeading()
 #define baseGyro (-Gyro.value(analogUnits::mV))
 #define baseGyroReset Gyro.startCalibration(1000)
 #define mainBaseEnc baseEncoder.rotation(rotationUnits::deg)

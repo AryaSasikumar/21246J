@@ -9,11 +9,11 @@ class lift{
     int slowSpeed = 20;
     void buttonReset();
 
-    const double tiltAllTheWayDown = 175.0;
-    const double tiltAllTheWayUp = 37.9;
-    const double tiltFullyLockedStart = 120.7; // Tilt fully locked: 124.6 to 37.9
+    const double tiltAllTheWayDown = 186;
+    const double tiltAllTheWayUp = 41.44;
+    const double tiltFullyLockedStart = 125.7; // Tilt fully locked: 124.6 to 37.9
     // Tilt partially locked: 124.6 to 176.3
-    const double tiltFullyOpenStart = 142.9; // Tilt fully open: 176.3 to 180.0
+    const double tiltFullyOpenStart = 156.37; // Tilt fully open: 176.3 to 180.0
     
     const double liftAllTheWayDown = 82.0;
     const double liftAllTheWayUp = 170.898;
@@ -109,54 +109,28 @@ void lift::autoScore(){
 
 void lift::userControl(){
 
-  // if(liftUpBtn){
-  //   if(tiltSensor >= tiltFullyOpenStart || tiltSensor <= tiltAllTheWayDown){
-  //     Spin(90, liftSpeed);
-  //   }else{
-  //     Spin(-tiltSpeed, tiltSpeed);
-  //   }
-  // }else if(liftDownBtn){
-  //   if(tiltSensor >= tiltFullyOpenStart || tiltSensor <= tiltAllTheWayDown){
-  //     Spin(-liftSpeed, -liftSpeed);
-  //   }else{
-  //     Spin(-tiltSpeed, tiltSpeed);
-  //   }
-  // }else if(angleUpBtn){
-  //   if(liftSensor >= liftAllTheWayDown+10){
-  //     Spin(-liftSpeed, -liftSpeed);
-  //   }else{
-  //     Spin(tiltSpeed, -tiltSpeed);
-  //   }
-  // }else if(angleDownBtn){
-  //   if(tiltSensor < tiltAllTheWayDown){
-  //     Spin(-tiltSpeed, tiltSpeed);
-  //   }
-  // }else if(angleSlowBtn){
-  //   Spin(slowSpeed, -slowSpeed);
-  // }else if(tiltMacroBtn){
-  //   if(tiltSensor>=90){
-  //     Spin(tiltSpeed-10, -tiltSpeed+10);
-  //   }else if(tiltSensor>=41){
-  //     Spin(slowSpeed, -slowSpeed);
-  //   }else{
-  //     Spin(10, -10);  
-  //   }
-  // }else{
-  //   Spin(0, 0);
-  // }
-
-
-  
-
-
   if(liftUpBtn){
-    Spin(90, liftSpeed);
+    if(tiltSensor >= tiltAllTheWayDown-10){
+      Spin(90, liftSpeed);
+    }else{
+      Spin(-tiltSpeed, tiltSpeed);
+    }
   }else if(liftDownBtn){
-    Spin(-liftSpeed, -liftSpeed);
+    if(tiltSensor >= tiltAllTheWayDown-10){
+      Spin(-liftSpeed, -liftSpeed);
+    }else{
+      Spin(-tiltSpeed, tiltSpeed);
+    }
   }else if(angleUpBtn){
-    Spin(tiltSpeed, -tiltSpeed);
+    if(liftSensor >= liftAllTheWayDown+2){
+      Spin(-liftSpeed, -liftSpeed);
+    }else{
+      Spin(tiltSpeed, -tiltSpeed);
+    }
   }else if(angleDownBtn){
-    Spin(-tiltSpeed, tiltSpeed);
+    if(tiltSensor <= tiltAllTheWayDown){
+      Spin(-tiltSpeed, tiltSpeed);
+    }
   }else if(angleSlowBtn){
     Spin(slowSpeed, -slowSpeed);
   }else if(tiltMacroBtn){
@@ -170,6 +144,32 @@ void lift::userControl(){
   }else{
     Spin(0, 0);
   }
+
+
+  
+
+
+  // if(liftUpBtn){
+  //   Spin(90, liftSpeed);
+  // }else if(liftDownBtn){
+  //   Spin(-liftSpeed, -liftSpeed);
+  // }else if(angleUpBtn){
+  //   Spin(tiltSpeed, -tiltSpeed);
+  // }else if(angleDownBtn){
+  //   Spin(-tiltSpeed, tiltSpeed);
+  // }else if(angleSlowBtn){
+  //   Spin(slowSpeed, -slowSpeed);
+  // }else if(tiltMacroBtn){
+  //   if(tiltSensor>=90){
+  //     Spin(tiltSpeed-10, -tiltSpeed+10);
+  //   }else if(tiltSensor>=41){
+  //     Spin(slowSpeed, -slowSpeed);
+  //   }else{
+  //     Spin(10, -10);  
+  //   }
+  // }else{
+  //   Spin(0, 0);
+  // }
 }
 
 lift myLift;

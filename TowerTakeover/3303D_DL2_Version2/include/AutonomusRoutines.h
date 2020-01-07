@@ -18,22 +18,20 @@ class AutonomusRoutines{
 //--//--//----CURRENT TEST AUTON---//--//--//
 void AutonomusRoutines::currentTestAuton(){
   baseEncoder.resetRotation();
-  baseInetrialReset;
+  TurnGyroSmart.resetHeading();
   task::sleep(300);
   while(testEnableTog){
-    myBase.turnPID(100, 100, 90);
-    // myIntake.Spin(100);
-    // myBase.drivePID(45, 45, 37);
-    // task::sleep(500);
-    // myBase.driveBackPID(100, 100, -7);
-    // task::sleep(150);
-    // myBase.turnPID(100, 100, -40);
-    // task::sleep(200);
-    // myBase.driveBackPID(100, 100, -32);
-    // task::sleep(200);
-    // myBase.turnPID(100, 100, 39);
-    // 
-    // myIntake.Stop();
+    myIntake.Spin(100);
+    myBase.drivePID(45, 45, 40);
+    myBase.turnPID(100, 100, -35);
+    task::sleep(100);
+    myBase.driveBackPID(80, 80, -37);
+    task::sleep(200);
+    myBase.turnPID(100, 100, 36);
+    task::sleep(100);
+    myBase.drivePID(45, 45, 35);
+
+    myIntake.Stop();
     task::sleep(300);
     testEnableTog = false;
   }
