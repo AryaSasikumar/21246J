@@ -81,9 +81,9 @@ bool enableAutonTestButton = false;
 //#define liftSensor ((liftA.rotation(rotationUnits::deg) + liftB.rotation(rotationUnits::deg))/2)
 #define liftSensor liftPot.value(rotationUnits::deg)
 #define tiltSensor tiltPot.value(rotationUnits::deg)
-#define leftLine LineSensorLeft.value(pct)
-#define midLine LineSensorMiddle.value(pct)
-#define rightLine LineSensorRight.value(pct)
+#define leftLine LineSensorLeft.value(range12bit)
+#define midLine LineSensorMiddle.value(range12bit)
+#define rightLine LineSensorRight.value(range12bit)
 
 #define waitUntil(condition)                                                   \
   do {                                                                         \

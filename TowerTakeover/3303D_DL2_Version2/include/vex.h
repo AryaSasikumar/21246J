@@ -43,7 +43,7 @@ motor liftA = motor(PORT6, ratio18_1, true);
 motor liftB = motor(PORT7, ratio18_1, true);
 
 motor rightIntake = motor(PORT3, ratio18_1, false);
-motor leftIntake = motor(PORT14, ratio18_1, true);
+motor leftIntake = motor(PORT11, ratio18_1, true);
 motor_group IntakeSmart = motor_group(rightIntake, leftIntake);
 
 encoder baseEncoder = encoder(Brain.ThreeWirePort.G);

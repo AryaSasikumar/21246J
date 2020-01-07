@@ -48,7 +48,7 @@ double pidController::speed(double currentVal, double desiredVal){
 
 //pidController(double min, double max, double Kp, double Ki, double Kd, double dt);
 pidController drive(-100.0, 100.0, 0.070, 0.0000600, 0.060, 0.0001);
-pidController turn(-100.0, 100.0, 0.700, 0.000600, 0.100, 0.0001);
+pidController turn(-100.0, 100.0, 0.600, 0.000600, 0.100, 0.0001);
 
 //pidController drive(-100.0, 100.0, 0.060, 0.0000300, 0.045, 0.0001);
 //pidController turn(-100.0, 100.0, 2.500, 0.0000300, 0.050, 0.0001);     //   NEWWWWW

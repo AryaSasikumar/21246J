@@ -253,7 +253,7 @@ void base::driveBackPID(double maxLeftSpeed, double maxRightSpeed, double Distan
 }
  
 void base::turnPID(double maxLeftSpeed, double maxRightSpeed, double Angle){ //450 Gyro units is about 90 degrees
-  baseInetrialReset;
+  //baseInetrialReset;
   Angle = baseInetrial+Angle;
   turn.dt=0.0001;
   double speed = turn.speed(baseInetrial,Angle);
@@ -275,7 +275,7 @@ void base::turnPID(double maxLeftSpeed, double maxRightSpeed, double Angle){ //4
       double rSpeed = (speed>=maxRightSpeed) ? maxRightSpeed : speed;
       Spin(-lSpeed,rSpeed);
     }
-    if(int(turn.error)<=50){ timesGood++; }
+    if(int(turn.error)<=3){ timesGood++; }
     if(timesGood >= 100){ moveComplete = true; }
      task:: sleep(1);
   }
