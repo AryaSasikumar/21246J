@@ -193,11 +193,11 @@ void base::driveInches_Enc(dirType mydirection, double travelTargetIN, int speed
 
 void base::smartDrive(double maxSpeed, double Distance){
   DriveTrainSmart.setDriveVelocity(maxSpeed, percent);
-  DriveTrainSmart.driveFor(Distance, inches, true);
+  DriveTrainSmart.driveFor(Distance, inches, false);
 }
 void base::smartTurn(double maxSpeed, double Angle){
   DriveTrainSmart.setTurnVelocity(maxSpeed, percent);
-  DriveTrainSmart.turnFor(Angle, degrees, true);
+  DriveTrainSmart.turnFor(Angle, degrees, false);
 }
 
 void base::drivePID(double maxLeftSpeed, double maxRightSpeed, double Distance){

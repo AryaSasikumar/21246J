@@ -17,8 +17,11 @@ class AutonomusRoutines{
 
 //--//--//----CURRENT TEST AUTON---//--//--//
 void AutonomusRoutines::currentTestAuton(){
+  myIntake.Spin(-100);
+  task::sleep(500);
   myIntake.Spin(100);
-  myBase.drivePID(45, 45, 42);
+  task::sleep(200);
+  myBase.drivePID(45, 45, 44);
   task::sleep(50);
   myBase.turnPID(100, 100, -35);
   task::sleep(50);
@@ -42,7 +45,7 @@ void AutonomusRoutines::currentTestAuton(){
   }
   myIntake.Stop();
   myLift.Stop(false);
-  myBase.drivePID(30, 30, 3);
+  myBase.smartDrive(30, 3);
   myBase.driveBackPID(-30, -30, -24);
   while(tiltSensor<=180){
     myLift.Spin(-100, 100);
