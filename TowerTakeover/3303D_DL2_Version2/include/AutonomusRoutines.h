@@ -18,26 +18,33 @@ class AutonomusRoutines{
 //--//--//----CURRENT TEST AUTON---//--//--//
 void AutonomusRoutines::currentTestAuton(){
   myIntake.Spin(100);
-  myBase.drivePID(45, 45, 41);
+  myBase.drivePID(45, 45, 42);
+  task::sleep(50);
   myBase.turnPID(100, 100, -35);
-  myBase.driveBackPID(100, 100, -38);
-  myBase.turnPID(100, 100, 39);
+  task::sleep(50);
+  myBase.driveBackPID(-75, -75, -38);
+  task::sleep(100);
+  myBase.turnPID(85, 85, 39);
+  task::sleep(50);
   myBase.drivePID(45, 45, 36);
   myIntake.Spin(30);
-  myBase.turnPID(100, 100, -127);
-  myBase.drivePID(100, 100, 38);
-  myBase.drivePID(80, 80, 7);
+  myBase.turnPID(90, 90, -132);
+  task::sleep(50);
+  myBase.drivePID(80, 80, 48);
+  task::sleep(100);
+  myIntake.Spin(-5);
   while(tiltSensor>=90){
-    myLift.Spin(100, -100);
+    myLift.Spin(90, -90);
   }
-  myIntake.Spin(-10);
-  while(tiltSensor>=48){
-    myLift.Spin(35, -35);
+  myIntake.Spin(-5);
+  while(tiltSensor>=44){
+    myLift.Spin(20, -20);
   }
   myIntake.Stop();
   myLift.Stop(false);
-  myBase.driveBackPID(30, 30, -24);
-  while(tiltSensor<=90){
+  myBase.drivePID(30, 30, 3);
+  myBase.driveBackPID(-30, -30, -24);
+  while(tiltSensor<=180){
     myLift.Spin(-100, 100);
   }
 }
@@ -49,7 +56,7 @@ void AutonomusRoutines::currentTestAuton(){
   myBase.drivePID(45, 45, 41);
   myBase.turnPID(100, 100, -35);
   task::sleep(50);
-  myBase.driveBackPID(80, 80, -38);
+  myBase.driveBackPID(-80, -80, -38);
   task::sleep(50);
   myBase.turnPID(100, 100, 39);
   task::sleep(50);
@@ -66,7 +73,7 @@ void AutonomusRoutines::currentTestAuton(){
   }
   myIntake.Stop();
   myLift.Stop(false);
-  myBase.driveBackPID(30, 30, -24);
+  myBase.driveBackPID(-30, -30, -24);
   while(tiltSensor<=90){
     myLift.Spin(-100, 100);
   }*/

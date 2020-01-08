@@ -223,12 +223,9 @@ void base::drivePID(double maxLeftSpeed, double maxRightSpeed, double Distance){
    vex:: task:: sleep(1);
  }
  this->Brake();
- vex:: task:: sleep(10);
 }
 
 void base::driveBackPID(double maxLeftSpeed, double maxRightSpeed, double Distance){
- maxLeftSpeed = -maxLeftSpeed;
- maxRightSpeed = -maxRightSpeed;
  Distance = distanceToTravel(Distance);
  baseEncoder.resetRotation();
  task::sleep(50);
@@ -251,7 +248,6 @@ void base::driveBackPID(double maxLeftSpeed, double maxRightSpeed, double Distan
   task:: sleep(1);
  }
  Brake();
- task:: sleep(10);
 }
  
 void base::turnPID(double maxLeftSpeed, double maxRightSpeed, double Angle){ //450 Gyro units is about 90 degrees
@@ -283,7 +279,6 @@ void base::turnPID(double maxLeftSpeed, double maxRightSpeed, double Angle){ //4
      task:: sleep(1);
   }
   Brake();
-   task:: sleep(10);
 }
 
 
