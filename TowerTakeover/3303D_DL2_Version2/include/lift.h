@@ -70,7 +70,7 @@ void lift::liftUp(int potValue, int speed, int waitTime){
 		Spin(speed, speed);
 	}
   Stop(false);
-	task::sleep(waitTime);
+  wait(waitTime, msec); 
 }
 
 void lift::liftDown(int potValue, int speed, int waitTime){
@@ -79,7 +79,7 @@ void lift::liftDown(int potValue, int speed, int waitTime){
 		Spin(-speed, -speed);
 	}
   Stop(false);
-	task::sleep(waitTime);
+	wait(waitTime, msec); 
 }
 
 void lift::tiltForward(int potValue, int speed, int waitTime){
@@ -88,7 +88,7 @@ void lift::tiltForward(int potValue, int speed, int waitTime){
 		Spin(speed, -speed);
 	}
   Stop(false);
-	task::sleep(waitTime);
+	wait(waitTime, msec); 
 }
 
 void lift::tiltBackward(int potValue, int speed, int waitTime){
@@ -97,7 +97,7 @@ void lift::tiltBackward(int potValue, int speed, int waitTime){
 		Spin(-speed, speed);
 	}
   Stop(false);
-	task::sleep(waitTime);
+	wait(waitTime, msec); 
 }
 
 void lift::autoScore(){
@@ -141,6 +141,16 @@ void lift::userControl(){
     }else{
       Spin(10, -10);  
     }
+  }else if(autoScoreBtn){
+    if(tiltSensor>=90){
+      Spin(100, -100);
+    }else if(tiltSensor>=44){
+      Spin(20, -20);
+    }
+    //myIntake.Stop();
+    //Stop(false);
+    //myBase.smartDrive(30, 3);
+    //myBase.driveBackPID(-30, -30, -12);
   }else{
     Spin(0, 0);
   }

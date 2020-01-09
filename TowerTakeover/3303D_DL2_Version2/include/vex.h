@@ -28,12 +28,12 @@ brain Brain;
 
 // VEXcode device constructors
 controller Controller1 = controller(primary);
-motor LF = motor(PORT16, ratio18_1, false);
+motor LF = motor(PORT13, ratio18_1, false);//16
 motor LB = motor(PORT19, ratio18_1, false);
 motor_group LeftDriveSmart = motor_group(LF, LB);
 
-motor RF = motor(PORT9, ratio18_1, true);
-motor RB= motor(PORT10, ratio18_1, true);
+motor RF = motor(PORT1, ratio18_1, true);//9
+motor RB= motor(PORT10, ratio18_1, true);//10
 motor_group RightDriveSmart = motor_group(RF, RB);
 
 inertial TurnGyroSmart = inertial(PORT12);
@@ -44,7 +44,6 @@ motor liftB = motor(PORT7, ratio18_1, true);
 
 motor rightIntake = motor(PORT3, ratio18_1, false);
 motor leftIntake = motor(PORT18, ratio18_1, true);
-motor_group IntakeSmart = motor_group(rightIntake, leftIntake);
 
 encoder baseEncoder = encoder(Brain.ThreeWirePort.G);
 gyro Gyro = gyro(Brain.ThreeWirePort.C);
@@ -63,8 +62,8 @@ pot tiltPot = pot(Brain.ThreeWirePort.A);
 #define X_rightJoy Controller1.Axis1.value()
 
 //---Button Definitions---//
-#define autoScoreBtn Controller1.ButtonA.pressing()
-#define baseLockBtn Controller1.ButtonB.pressing()
+#define slowDriveBackBtn Controller1.ButtonA.pressing()
+#define autoScoreBtn Controller1.ButtonB.pressing()
 #define tiltMacroBtn Controller1.ButtonX.pressing()
 
 #define autonTestButton Controller1.ButtonY.pressing()
@@ -82,9 +81,10 @@ bool enableAutonTestButton = false;
 
 //---Sensor Definitions---//
 #define baseInetrial (TurnGyroSmart.rotation(degrees))
-#define baseInetrialReset TurnGyroSmart.resetHeading()
+#define baseHeadingReset TurnGyroSmart.resetHeading()
+#define baseRotationReset TurnGyroSmart.resetRotation()
 #define baseGyro (-Gyro.value(analogUnits::mV))
-#define baseGyroReset Gyro.startCalibration(1000)
+#define baseGyroReset Gyro.startCalibration(1000) 
 #define mainBaseEnc baseEncoder.rotation(rotationUnits::deg)
 #define mainBaseEncReset baseEncoder.resetRotation()
 #define tiltBumpBtn Bumper.pressing()

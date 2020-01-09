@@ -6,6 +6,7 @@ class AutonomusRoutines{
   public:
     void currentTestAuton();
     void userControl();
+    void blueFront8CubePID();
     void blueFrontAuton();
     void blueBackAuton();
     void redFrontAuton();
@@ -17,27 +18,82 @@ class AutonomusRoutines{
 
 //--//--//----CURRENT TEST AUTON---//--//--//
 void AutonomusRoutines::currentTestAuton(){
+  blueFront8CubePID();
+  // myIntake.Spin(-100);
+  // task::sleep(400);
+  // myIntake.Spin(100);
+  // myBase.smartDrive(43, 44, true);
+  // task::sleep(50);
+  // myBase.smartTurn(100, -32, true);
+  // task::sleep(50);
+  // myBase.smartDrive(-90, -42, true);
+  // task::sleep(100); 
+  // myBase.smartTurn(90, 31, true);
+  // task::sleep(50);
+  // myBase.smartDrive(45, 36, true);
+  // myIntake.Spin(30);
+  // myBase.smartTurn(90, -136, true);
+  // task::sleep(50);
+  // myIntake.Spin(100);
+  // myBase.smartDrive(95, 46, true);
+  // task::sleep(250); 
+  // myIntake.Spin(-5);
+  // while(tiltSensor>=90){
+  //   myLift.Spin(100, -100);
+  // }
+  // myIntake.Spin(-5);
+  // while(tiltSensor>=44){
+  //   myLift.Spin(20, -20);
+  // }
+  // myIntake.Stop();
+  // myLift.Stop(false);
+  // myBase.smartDrive(30, 3,false);
+  // myBase.smartDrive(-30, -12, true);
+  // while(tiltSensor<=180){
+  //   myLift.Spin(-100, 100);
+  // }
+}
+//--//--//----CURRENT TEST AUTON---//--//--//
+
+void AutonomusRoutines::userControl(){
+  if(enableAutonTestButton && autonTestButton){
+    testEnableTog = !testEnableTog;
+    wait(300, msec); 
+  }
+  if(testEnableTog){
+    mainBaseEncReset;
+    baseHeadingReset;
+    baseRotationReset;
+    while(testEnableTog){
+      currentTestAuton();
+      wait(300, msec); 
+      testEnableTog = false;
+    }
+  }
+}
+
+void AutonomusRoutines::blueFront8CubePID(){ //By Jeffrey
   myIntake.Spin(-100);
-  task::sleep(500);
+  task::sleep(400);
   myIntake.Spin(100);
-  task::sleep(200);
-  myBase.drivePID(45, 45, 44);
+  myBase.drivePID(45, 45, 46);
   task::sleep(50);
-  myBase.turnPID(100, 100, -35);
+  myBase.turnPID(100, 100, -32);
   task::sleep(50);
-  myBase.driveBackPID(-75, -75, -38);
-  task::sleep(100);
-  myBase.turnPID(85, 85, 39);
+  myBase.driveBackPID(-90, -90, -42);
+  task::sleep(100); 
+  myBase.turnPID(90, 90, 31);
   task::sleep(50);
   myBase.drivePID(45, 45, 36);
   myIntake.Spin(30);
-  myBase.turnPID(90, 90, -132);
+  myBase.turnPID(90, 90, -133.5);
   task::sleep(50);
-  myBase.drivePID(80, 80, 48);
-  task::sleep(100);
+  myIntake.Spin(100);
+  myBase.drivePID(95, 95, 46);
+  task::sleep(250); 
   myIntake.Spin(-5);
   while(tiltSensor>=90){
-    myLift.Spin(90, -90);
+    myLift.Spin(100, -100);
   }
   myIntake.Spin(-5);
   while(tiltSensor>=44){
@@ -45,121 +101,10 @@ void AutonomusRoutines::currentTestAuton(){
   }
   myIntake.Stop();
   myLift.Stop(false);
-  myBase.smartDrive(30, 3);
-  myBase.driveBackPID(-30, -30, -24);
+  myBase.smartDrive(30, 3, false);
+  myBase.driveBackPID(-30, -30, -12);
   while(tiltSensor<=180){
     myLift.Spin(-100, 100);
-  }
-}
-//--//--//----CURRENT TEST AUTON---//--//--//
-
-//BLUE 8 CUBE
-  /*
-  myIntake.Spin(100);
-  myBase.drivePID(45, 45, 41);
-  myBase.turnPID(100, 100, -35);
-  task::sleep(50);
-  myBase.driveBackPID(-80, -80, -38);
-  task::sleep(50);
-  myBase.turnPID(100, 100, 39);
-  task::sleep(50);
-  myBase.drivePID(45, 45, 35);
-  myIntake.Spin(30);
-  myBase.turnPID(100, 100, -127);
-  myBase.drivePID(80, 80, 44);
-  while(tiltSensor>=90){
-    myLift.Spin(100, -100);
-  }
-  myIntake.Spin(-10);
-  while(tiltSensor>=48){
-    myLift.Spin(35, -35);
-  }
-  myIntake.Stop();
-  myLift.Stop(false);
-  myBase.driveBackPID(-30, -30, -24);
-  while(tiltSensor<=90){
-    myLift.Spin(-100, 100);
-  }*/
-
- //RED 8 CUBE
- /*
-  myIntake.Spin(100);
-  myBase.drivePID(45, 45, 41);
-  myBase.turnPID(100, 100, 35);
-  task::sleep(50);
-  myBase.driveBackPID(80, 80, -38);
-  task::sleep(50);
-  myBase.turnPID(100, 100, -39);
-  task::sleep(50);
-  myBase.drivePID(45, 45, 35);
-  myIntake.Spin(30);
-  myBase.turnPID(100, 100, 124);
-  myBase.drivePID(80, 80, 44);
-  while(tiltSensor>=90){
-    myLift.Spin(100, -100);
-  }
-  myIntake.Spin(-10);
-  while(tiltSensor>=48){
-    myLift.Spin(35, -35);
-  }
-  myIntake.Stop();
-  myLift.Stop(false);
-  myBase.driveBackPID(30, 30, -24);
-  while(tiltSensor<=90){
-    myLift.Spin(-100, 100);
-  }
-*/
-
-
-
-//SKILLS
-/*
-  myIntake.Spin(100);
-  myBase.drivePID(45, 45, 41);
-  myBase.turnPID(100, 100, -35);
-  task::sleep(50);
-  myBase.driveBackPID(100, 100, -38);
-  task::sleep(50);
-  myBase.turnPID(100, 100, 39);
-  task::sleep(50);
-  myBase.drivePID(45, 45, 35);
-  myIntake.Spin(30);
-  myBase.turnPID(100, 100, -127);
-  myBase.drivePID(100, 100, 38);
-  myBase.drivePID(80, 80, 7);
-  while(tiltSensor>=90){
-    myLift.Spin(100, -100);
-  }
-  myIntake.Spin(-10);
-  while(tiltSensor>=48){
-    myLift.Spin(35, -35);
-  }
-  myIntake.Stop();
-  myLift.Stop(false);
-  myBase.driveBackPID(100, 100, -44);
-  while(tiltSensor<=90){
-    myLift.Spin(-100, 100);
-  }
-  //END OF BLUE 
-  myBase.turnPID(100, 100, 127);
-  myIntake.Spin(100);
-  myBase.drivePID(80, 80, 72);
-  */
-
-void AutonomusRoutines::userControl(){
-  if(enableAutonTestButton && autonTestButton){
-    testEnableTog = !testEnableTog;
-    task::sleep(300);
-  }
-  if(testEnableTog){
-    baseEncoder.resetRotation();
-    TurnGyroSmart.resetHeading();
-    task::sleep(200);
-    while(testEnableTog){
-      currentTestAuton();
-      task::sleep(300);
-      testEnableTog = false;
-    }
   }
 }
 

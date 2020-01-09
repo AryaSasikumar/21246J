@@ -5,21 +5,6 @@
 /*    Description:  Competition Template                                      */
 /*----------------------------------------------------------------------------*/
 
-// ---- START VEXCODE CONFIGURED DEVICES ----
-// Robot Configuration:
-// [Name]               [Type]        [Port(s)]
-// Controller1          controller                    
-// Drivetrain           drivetrain    16, 19, 9, 10, 12
-// liftA                motor         6               
-// liftB                motor         7               
-// rightIntake          motor         15              
-// leftIntake           motor         20              
-// baseEncoder          encoder       G, H            
-// Gyro                 gyro          C               
-// Bumper               bumper        B               
-// liftPot              pot           A               
-// ---- END VEXCODE CONFIGURED DEVICES ----
-
 //#include "vex.h"
 #include "OverAllControl.h"
 
@@ -40,9 +25,7 @@ competition Competition;
 /*---------------------------------------------------------------------------*/
 
 void pre_auton(void) {
-  baseEncoder.resetRotation();
-  TurnGyroSmart.resetHeading();
-  task::sleep(200);
+  
   // Initializing Robot Configuration. DO NOT REMOVE!
   vexcodeInit();
   // All activities that occur before the competition starts
@@ -58,6 +41,10 @@ void pre_auton(void) {
 
 void autonomous(void) {
   myAuton.currentTestAuton();
+  //myAuton.blueFront8CubePID();
+  while(true){
+    wait(20, msec); 
+  }
 }
 
 
@@ -75,7 +62,7 @@ void usercontrol(void) {
   enableAutonTestButton = true; //Will enable Y button as an Auton Test Button
   ////////////////////////////////////////////////////////////////////////////
   ////////////////////////////////////////////////////////////////////////////
-  while (1) {
+  while (true) {
     wait(20, msec); // Sleep the task for a short amount of time to prevent wasted resources.
   }
 }
@@ -86,13 +73,12 @@ int main() {
   // Set up callbacks for autonomous and driver control periods.
   Competition.autonomous(autonomous);
   Competition.drivercontrol(usercontrol);
-
   // Run the pre-autonomous function.
   pre_auton();
   // Prevent main from exiting with an infinite loop.
   while (true) {
     //printf("Lift: %f\n",liftSensor);
     //printf("Tilt: %f\n\n",tiltSensor);
-    wait(100, msec);
+    vex::task::sleep(100);
   }
 }
