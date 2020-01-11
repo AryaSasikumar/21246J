@@ -40,8 +40,8 @@ void pre_auton(void) {
 /*---------------------------------------------------------------------------*/
 
 void autonomous(void) {
-  myAuton.currentTestAuton();
-  //myAuton.blueFront8CubePID();
+  //myAuton.currentTestAuton();
+  myAuton.blueFront8CubePID();
   while(true){
     wait(20, msec); 
   }
@@ -62,6 +62,7 @@ void usercontrol(void) {
   enableAutonTestButton = true; //Will enable Y button as an Auton Test Button
   ////////////////////////////////////////////////////////////////////////////
   ////////////////////////////////////////////////////////////////////////////
+  task rc_auto_loop_task_Controller1(rc_auto_loop_callback_Controller1);
   while (true) {
     wait(20, msec); // Sleep the task for a short amount of time to prevent wasted resources.
   }
@@ -77,7 +78,7 @@ int main() {
   pre_auton();
   // Prevent main from exiting with an infinite loop.
   while (true) {
-    //printf("Lift: %f\n",liftSensor);
+    printf("Lift: %f\n",liftSensor);
     //printf("Tilt: %f\n\n",tiltSensor);
     vex::task::sleep(100);
   }

@@ -42,7 +42,6 @@ void vexcodeInit(void) {
   // reset the screen now that the calibration is complete
   Brain.Screen.clearScreen();
   Brain.Screen.setCursor(1, 1);
-  task rc_auto_loop_task_Controller1(rc_auto_loop_callback_Controller1);
   wait(50, msec);
   Brain.Screen.clearScreen();
 }

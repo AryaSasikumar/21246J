@@ -13,12 +13,14 @@ class AutonomusRoutines{
     void redBackAuton();
     void simpleAuton();
     void score();
+    void skills();
 };
 
 
 //--//--//----CURRENT TEST AUTON---//--//--//
 void AutonomusRoutines::currentTestAuton(){
-  blueFront8CubePID();
+  skills();
+  //blueFront8CubePID();
   // myIntake.Spin(-100);
   // task::sleep(400);
   // myIntake.Spin(100);
@@ -70,6 +72,56 @@ void AutonomusRoutines::userControl(){
       testEnableTog = false;
     }
   }
+}
+
+void AutonomusRoutines::skills(){
+  myIntake.Spin(-100);
+  task::sleep(400);
+  myIntake.Spin(100);
+  myBase.drivePID(45, 45, 44);
+  task::sleep(50);
+  myBase.turnPID(100, 100, -32);
+  task::sleep(50);
+  myBase.driveBackPID(-90, -90, -41);
+  task::sleep(100); 
+  myBase.turnPID(90, 90, 37.5);
+  task::sleep(50);
+  myBase.drivePID(45, 45, 36);
+  myIntake.Spin(30);
+  myBase.turnPID(90, 90, -133);
+  task::sleep(50);
+  myIntake.Spin(100);
+  myBase.drivePID(95, 95, 46);
+  task::sleep(250); 
+  myIntake.Spin(-5);
+  while(tiltSensor>=90){
+    myLift.Spin(100, -100);
+  }
+  myIntake.Spin(-5);
+  while(tiltSensor>=44){
+    myLift.Spin(20, -20);
+  }
+  myIntake.Stop();
+  myLift.Stop(false);
+  myBase.smartDrive(30, 3, false);
+  myBase.driveBackPID(-30, -30, -8.5);
+  while(tiltSensor<=180){
+    myLift.Spin(-100, 100);
+  }
+  task::sleep(100);
+  myBase.turnPID(50, 50, -132);
+  task::sleep(50);
+  myIntake.Spin(100);
+  myBase.drivePID(45, 45, 28);  
+  task::sleep(50);
+  myBase.driveBackPID(-30, -30, -5);
+  task::sleep(50);
+  myLift.liftUp(168, 60, 50);
+  myBase.drivePID(30, 30, 16);  
+  myIntake.Spin(-60);
+  task::sleep(1000);
+  myBase.driveBackPID(-30, -30, -10);  
+  myLift.liftDown(83, -100, 50);
 }
 
 void AutonomusRoutines::blueFront8CubePID(){ //By Jeffrey
