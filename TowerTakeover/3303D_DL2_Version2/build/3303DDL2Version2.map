@@ -164,6 +164,10 @@ Discarded input sections
                 0x0000000000000000        0x4 build/src/main.o
  .ARM.exidx.text._ZN17AutonomusRoutines16currentTestAutonEv
                 0x0000000000000000        0x8 build/src/main.o
+ .text._ZN17AutonomusRoutines16blueBack7CubePIDEv
+                0x0000000000000000      0x648 build/src/main.o
+ .ARM.exidx.text._ZN17AutonomusRoutines16blueBack7CubePIDEv
+                0x0000000000000000        0x8 build/src/main.o
  .text._ZN17AutonomusRoutines6skillsEv
                 0x0000000000000000      0x7d0 build/src/main.o
  .ARM.exidx.text._ZN17AutonomusRoutines6skillsEv
@@ -962,8 +966,6 @@ Discarded input sections
                 0x0000000000000000        0x4 /Applications/VEXcode V5 Text.app/Contents/Resources/sdk/vexv5/libv5rt.a(vex_global.cpp.obj)
  .rodata._ZN3vex6mono20E
                 0x0000000000000000        0x4 /Applications/VEXcode V5 Text.app/Contents/Resources/sdk/vexv5/libv5rt.a(vex_global.cpp.obj)
- .rodata._ZN3vex5PORT2E
-                0x0000000000000000        0x4 /Applications/VEXcode V5 Text.app/Contents/Resources/sdk/vexv5/libv5rt.a(vex_global.cpp.obj)
  .rodata._ZN3vex23__sdk_cpp_version_majorE
                 0x0000000000000000        0x1 /Applications/VEXcode V5 Text.app/Contents/Resources/sdk/vexv5/libv5rt.a(vex_global.cpp.obj)
  .rodata._ZN3vex3dpsE
@@ -1025,6 +1027,8 @@ Discarded input sections
  .rodata._ZN3vex4leftE
                 0x0000000000000000        0x4 /Applications/VEXcode V5 Text.app/Contents/Resources/sdk/vexv5/libv5rt.a(vex_global.cpp.obj)
  .rodata._ZN3vex5pitchE
+                0x0000000000000000        0x4 /Applications/VEXcode V5 Text.app/Contents/Resources/sdk/vexv5/libv5rt.a(vex_global.cpp.obj)
+ .rodata._ZN3vex6PORT16E
                 0x0000000000000000        0x4 /Applications/VEXcode V5 Text.app/Contents/Resources/sdk/vexv5/libv5rt.a(vex_global.cpp.obj)
  .rodata._ZN3vex5turnsE
                 0x0000000000000000        0x4 /Applications/VEXcode V5 Text.app/Contents/Resources/sdk/vexv5/libv5rt.a(vex_global.cpp.obj)
@@ -2472,9 +2476,9 @@ Linker script and memory map
  .text._ZN4lift11userControlEv
                 0x0000000003800e50      0x330 build/src/main.o
                 0x0000000003800e50                lift::userControl()
- .text._ZN17AutonomusRoutines16blueBack8CubePIDEv
+ .text._ZN17AutonomusRoutines15redBack7CubePIDEv
                 0x0000000003801180      0x648 build/src/main.o
-                0x0000000003801180                AutonomusRoutines::blueBack8CubePID()
+                0x0000000003801180                AutonomusRoutines::redBack7CubePID()
  .text._ZN17AutonomusRoutines11userControlEv
                 0x00000000038017c8       0xc8 build/src/main.o
                 0x00000000038017c8                AutonomusRoutines::userControl()
@@ -3399,33 +3403,33 @@ Linker script and memory map
  .rodata._ZN3vex6PORT21E
                 0x00000000038066c0        0x4 /Applications/VEXcode V5 Text.app/Contents/Resources/sdk/vexv5/libv5rt.a(vex_global.cpp.obj)
                 0x00000000038066c0                vex::PORT21
- .rodata._ZN3vex5PORT6E
+ .rodata._ZN3vex5PORT2E
                 0x00000000038066c4        0x4 /Applications/VEXcode V5 Text.app/Contents/Resources/sdk/vexv5/libv5rt.a(vex_global.cpp.obj)
-                0x00000000038066c4                vex::PORT6
- .rodata._ZN3vex7primaryE
+                0x00000000038066c4                vex::PORT2
+ .rodata._ZN3vex5PORT6E
                 0x00000000038066c8        0x4 /Applications/VEXcode V5 Text.app/Contents/Resources/sdk/vexv5/libv5rt.a(vex_global.cpp.obj)
-                0x00000000038066c8                vex::primary
- .rodata._ZN3vex7percentE
+                0x00000000038066c8                vex::PORT6
+ .rodata._ZN3vex7primaryE
                 0x00000000038066cc        0x4 /Applications/VEXcode V5 Text.app/Contents/Resources/sdk/vexv5/libv5rt.a(vex_global.cpp.obj)
-                0x00000000038066cc                vex::percent
- .rodata._ZN3vex6PORT19E
+                0x00000000038066cc                vex::primary
+ .rodata._ZN3vex7percentE
                 0x00000000038066d0        0x4 /Applications/VEXcode V5 Text.app/Contents/Resources/sdk/vexv5/libv5rt.a(vex_global.cpp.obj)
-                0x00000000038066d0                vex::PORT19
- .rodata._ZN3vex7degreesE
+                0x00000000038066d0                vex::percent
+ .rodata._ZN3vex6PORT19E
                 0x00000000038066d4        0x4 /Applications/VEXcode V5 Text.app/Contents/Resources/sdk/vexv5/libv5rt.a(vex_global.cpp.obj)
-                0x00000000038066d4                vex::degrees
- .rodata._ZN3vex6PORT22E
+                0x00000000038066d4                vex::PORT19
+ .rodata._ZN3vex7degreesE
                 0x00000000038066d8        0x4 /Applications/VEXcode V5 Text.app/Contents/Resources/sdk/vexv5/libv5rt.a(vex_global.cpp.obj)
-                0x00000000038066d8                vex::PORT22
- .rodata._ZN3vex6PORT12E
+                0x00000000038066d8                vex::degrees
+ .rodata._ZN3vex6PORT22E
                 0x00000000038066dc        0x4 /Applications/VEXcode V5 Text.app/Contents/Resources/sdk/vexv5/libv5rt.a(vex_global.cpp.obj)
-                0x00000000038066dc                vex::PORT12
- .rodata._ZN3vex5PORT7E
+                0x00000000038066dc                vex::PORT22
+ .rodata._ZN3vex6PORT12E
                 0x00000000038066e0        0x4 /Applications/VEXcode V5 Text.app/Contents/Resources/sdk/vexv5/libv5rt.a(vex_global.cpp.obj)
-                0x00000000038066e0                vex::PORT7
- .rodata._ZN3vex6PORT16E
+                0x00000000038066e0                vex::PORT12
+ .rodata._ZN3vex5PORT7E
                 0x00000000038066e4        0x4 /Applications/VEXcode V5 Text.app/Contents/Resources/sdk/vexv5/libv5rt.a(vex_global.cpp.obj)
-                0x00000000038066e4                vex::PORT16
+                0x00000000038066e4                vex::PORT7
  .rodata._ZN3vex2mmE
                 0x00000000038066e8        0x4 /Applications/VEXcode V5 Text.app/Contents/Resources/sdk/vexv5/libv5rt.a(vex_global.cpp.obj)
                 0x00000000038066e8                vex::mm
@@ -3624,7 +3628,7 @@ Linker script and memory map
  .ARM.exidx.text._ZN4lift11userControlEv
                 0x0000000003806cac        0x0 build/src/main.o
                                           0x8 (size before relaxing)
- .ARM.exidx.text._ZN17AutonomusRoutines16blueBack8CubePIDEv
+ .ARM.exidx.text._ZN17AutonomusRoutines15redBack7CubePIDEv
                 0x0000000003806cac        0x0 build/src/main.o
                                           0x8 (size before relaxing)
  .ARM.exidx.text._ZN17AutonomusRoutines11userControlEv

@@ -43,7 +43,7 @@ motor liftA = motor(PORT6, ratio18_1, true);
 motor liftB = motor(PORT7, ratio18_1, true);
 
 motor rightIntake = motor(PORT10, ratio18_1, false);
-motor leftIntake = motor(PORT16, ratio18_1, true);
+motor leftIntake = motor(PORT2, ratio18_1, true);
 
 encoder baseEncoder = encoder(Brain.ThreeWirePort.G);
 gyro Gyro = gyro(Brain.ThreeWirePort.C);
