@@ -36,14 +36,14 @@ motor RF = motor(PORT1, ratio18_1, true);//9
 motor RB= motor(PORT21, ratio18_1, true);//10
 motor_group RightDriveSmart = motor_group(RF, RB);
 
-inertial TurnGyroSmart = inertial(PORT12);
+inertial TurnGyroSmart = inertial(PORT11);
 smartdrive DriveTrainSmart = smartdrive(LeftDriveSmart, RightDriveSmart, TurnGyroSmart, 319.19, 320, 165, mm, 1);
 
 motor liftA = motor(PORT6, ratio18_1, true);
 motor liftB = motor(PORT7, ratio18_1, true);
 
 motor rightIntake = motor(PORT10, ratio18_1, false);
-motor leftIntake = motor(PORT2, ratio18_1, true);
+motor leftIntake = motor(PORT3, ratio18_1, true);
 
 encoder baseEncoder = encoder(Brain.ThreeWirePort.G);
 gyro Gyro = gyro(Brain.ThreeWirePort.C);
