@@ -8,6 +8,7 @@ class AutonomusRoutines{
     void userControl();
     void blueFront8CubePID();
     void redFront8CubePID();
+    void SecureBlueFront7CubePID();
     void blueBack7CubePID();
     void redBack7CubePID();
     void blueFrontAuton();
@@ -323,6 +324,45 @@ void AutonomusRoutines::blueFront8CubePID(){ //By Jeffrey
   while(tiltSensor<=180){
     myLift.Spin(-100, 100);
   }
+}
+
+void AutonomusRoutines::SecureBlueFront7CubePID(){ //By Alex
+  myIntake.Spin(-100);
+  task::sleep(500);
+  myIntake.Spin(100);
+  //first row
+  myBase.drivePID(30, 30, 44);
+  task::sleep(50);
+  myBase.turnPID(100, 100, -23); //left turn
+  task::sleep(50);
+  myBase.driveBackPID(-45, -45, -41); //increase speed to -90 once antitip deploys consistently 
+  task::sleep(50); 
+  myBase.turnPID(-50, -50, -6);  //right turn
+  task::sleep(50);
+  //second row
+  myBase.drivePID(30, 30, 19); //reduced from 36 to 17
+  myIntake.Spin(30);
+  myBase.turnPID(88, 88, -82);
+  task::sleep(50);
+  myIntake.Spin(100);
+  myBase.drivePID(95, 95, 35);
+  task::sleep(250); 
+  myIntake.Spin(-5);
+  while(tiltSensor>=90){
+    myLift.Spin(100, -100);
+  }
+  myIntake.Spin(-5);
+  while(tiltSensor>=44){
+    myLift.Spin(20, -20);
+  }
+  myIntake.Stop();
+  myLift.Stop(false);
+  myBase.smartDrive(30, 3, false);
+  myBase.driveBackPID(-30, -30, -12);
+  while(tiltSensor<=180){
+    myLift.Spin(-100, 100);
+  }
+  
 }
 
 void AutonomusRoutines::blueFrontAuton(){

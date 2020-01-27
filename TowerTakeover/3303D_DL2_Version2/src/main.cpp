@@ -41,7 +41,8 @@ void pre_auton(void) {
 
 void autonomous(void) {
   //myAuton.currentTestAuton();
-  myAuton.redBack7CubePID();
+  myAuton.SecureBlueFront7CubePID();
+  //myAuton.redBack7CubePID();
   //myBase.turnPID(90, 90, 25);
   while(true){
     wait(20, msec); 
