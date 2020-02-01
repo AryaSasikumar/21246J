@@ -5,21 +5,6 @@
 /*    Description:  Competition Template                                      */
 /*----------------------------------------------------------------------------*/
 
-// ---- START VEXCODE CONFIGURED DEVICES ----
-// Robot Configuration:
-// [Name]               [Type]        [Port(s)]
-// Controller1          controller                    
-// Drivetrain           drivetrain    16, 19, 9, 10, 12
-// liftA                motor         6               
-// liftB                motor         7               
-// rightIntake          motor         15              
-// leftIntake           motor         20              
-// baseEncoder          encoder       G, H            
-// Gyro                 gyro          C               
-// Bumper               bumper        B               
-// liftPot              pot           A               
-// ---- END VEXCODE CONFIGURED DEVICES ----
-
 //#include "vex.h"
 #include "OverAllControl.h"
 
@@ -40,6 +25,7 @@ competition Competition;
 /*---------------------------------------------------------------------------*/
 
 void pre_auton(void) {
+  
   // Initializing Robot Configuration. DO NOT REMOVE!
   vexcodeInit();
   // All activities that occur before the competition starts
@@ -54,12 +40,13 @@ void pre_auton(void) {
 /*---------------------------------------------------------------------------*/
 
 void autonomous(void) {
-  // ..........................................................................
-  // Insert autonomous user code here.
-  // ..........................................................................
-  //Drivetrain.setTurnVelocity(100.0, percent);
-  //Drivetrain.turnFor(90.0,degrees,false);
-  myBase.turnPID(100.0, 100.0, 90.0);
+  //myAuton.currentTestAuton();
+  myAuton.SecureBlueFront7CubePID();
+  //myAuton.redBack7CubePID();
+  //myBase.turnPID(90, 90, 25);
+  while(true){
+    wait(20, msec); 
+  }
 }
 
 
@@ -74,10 +61,11 @@ void autonomous(void) {
 void usercontrol(void) {
   ////////////////////////////////////////////////////////////////////////////
   ////////////////////////////////////////////////////////////////////////////
-  enableAutonTestButton = true; //Will enable Y button as an Auton Test Button
+  enableAutonTestButton = false; //Will enable Y button as an Auton Test Button
   ////////////////////////////////////////////////////////////////////////////
   ////////////////////////////////////////////////////////////////////////////
-  while (1) {
+  task rc_auto_loop_task_Controller1(rc_auto_loop_callback_Controller1);
+  while (true) {
     wait(20, msec); // Sleep the task for a short amount of time to prevent wasted resources.
   }
 }
@@ -88,13 +76,13 @@ int main() {
   // Set up callbacks for autonomous and driver control periods.
   Competition.autonomous(autonomous);
   Competition.drivercontrol(usercontrol);
-
   // Run the pre-autonomous function.
   pre_auton();
-
   // Prevent main from exiting with an infinite loop.
   while (true) {
-    printf("LiftPot: %f\n",liftSensor);
-    wait(100, msec);
+    printf("Lift: %f\n",baseInetrial);
+    //printf("Lift: %f\n",liftSensor);
+    //printf("Tilt: %f\n\n",tiltSensor);
+    vex::task::sleep(100);
   }
 }

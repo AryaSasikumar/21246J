@@ -4,10 +4,6 @@
 // define variable for remote controller enable/disable
 bool RemoteControlCodeEnabled = true;
 // define variables used for controlling motors based on controller inputs
-bool leftDriveStop = true;
-bool rightDriveStop = true;
-bool intakeStop = true;
-
 
 // define a task that will handle monitoring inputs from Controller1
 int rc_auto_loop_callback_Controller1() {
@@ -16,14 +12,12 @@ int rc_auto_loop_callback_Controller1() {
       myBase.userControl();
       myLift.userControl();
       myIntake.userControl();
-      
       myAuton.userControl();
     }
     wait(20, msec);
   }
   return 0;
 }
-
 
 
 /**
@@ -40,12 +34,14 @@ void vexcodeInit(void) {
   Brain.Screen.print("Calibrating Gyro for Drivetrain");
   // wait for the gyro calibration process to finish
   while (TurnGyroSmart.isCalibrating()) {
-    wait(25, msec);
+    wait(10, msec);
   }
+  mainBaseEncReset;
+  baseHeadingReset;
+  baseRotationReset;
   // reset the screen now that the calibration is complete
   Brain.Screen.clearScreen();
   Brain.Screen.setCursor(1, 1);
-  task rc_auto_loop_task_Controller1(rc_auto_loop_callback_Controller1);
   wait(50, msec);
   Brain.Screen.clearScreen();
 }

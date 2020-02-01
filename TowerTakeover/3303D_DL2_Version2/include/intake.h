@@ -28,26 +28,20 @@ void intake::Stop(){
 }
 
 void intake::userControl(){
-  if (!intakeBtn && !outtakeBtn) {
-    if (!enabled) {
-      Stop();
-      enabled = true;
-    }
-  } else {
-    enabled = false;
-  }
-  if (!enabled) {
-    if(intakeBtn && outtakeBtn){
-      Spin(slowSpeed);
-    }else if(intakeBtn){ 
-      Spin((liftSensor >= 100) ? inSpeedWhileUp : inSpeed);
-    }else if(outtakeBtn){ 
-      Spin((liftSensor >= 100) ? outSpeedWhileUp : outSpeed);
-    }else if(macroDriveBtn){
-      Spin(outtakeBtn);
-    }else if(tiltMacroBtn && tiltSensor>=41 && tiltSensor<=90){
-      //Spin(-slowSpeed);
-    }
+  if(intakeBtn && outtakeBtn){
+    Spin(slowSpeed);
+  }else if(intakeBtn){ 
+    Spin((liftSensor >= 100) ? inSpeedWhileUp : inSpeed);
+  }else if(outtakeBtn){ 
+    Spin((liftSensor >= 100) ? outSpeedWhileUp : outSpeed);
+  }else if(macroDriveBtn){
+    Spin(outtakeBtn);
+  }else if(tiltMacroBtn && tiltSensor>=41 && tiltSensor<=90){
+    //Spin(-slowSpeed);
+  }else if(autoScoreBtn){
+    Spin(-5);
+  }else{
+    Stop();
   }
 }
 

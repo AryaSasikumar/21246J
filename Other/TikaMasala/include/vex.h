@@ -7,6 +7,8 @@
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 //
+// ---- START VEXCODE CONFIGURED DEVICES ----
+// VEXcode device constructors
 #include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -26,33 +28,23 @@ using code = vision::code;
 // A global instance of brain used for printing to the V5 Brain screen
 brain Brain;
 
-// VEXcode device constructors
 controller Controller1 = controller(primary);
-motor LF = motor(PORT13, ratio18_1, false);//16
-motor LB = motor(PORT19, ratio18_1, false);
+motor LF = motor(PORT12, ratio18_1, false);
+motor LB = motor(PORT2, ratio18_1, false);
 motor_group LeftDriveSmart = motor_group(LF, LB);
 
-motor RF = motor(PORT1, ratio18_1, true);//9
-motor RB= motor(PORT21, ratio18_1, true);//10
+motor RF = motor(PORT21, ratio18_1, true);
+motor RB= motor(PORT20, ratio18_1, true);
 motor_group RightDriveSmart = motor_group(RF, RB);
 
-inertial TurnGyroSmart = inertial(PORT11);
+inertial TurnGyroSmart = inertial(PORT12);
 smartdrive DriveTrainSmart = smartdrive(LeftDriveSmart, RightDriveSmart, TurnGyroSmart, 319.19, 320, 165, mm, 1);
 
-motor liftA = motor(PORT6, ratio18_1, true);
-motor liftB = motor(PORT7, ratio18_1, true);
+line LineSensorLeft = line(Brain.ThreeWirePort.A);
+line LineSensorMiddle = line(Brain.ThreeWirePort.B);
+line LineSensorRight = line(Brain.ThreeWirePort.C);
 
-motor rightIntake = motor(PORT10, ratio18_1, false);
-motor leftIntake = motor(PORT3, ratio18_1, true);
-
-encoder baseEncoder = encoder(Brain.ThreeWirePort.G);
-gyro Gyro = gyro(Brain.ThreeWirePort.C);
-bumper Bumper = bumper(Brain.ThreeWirePort.B);
-pot liftPot = pot(Brain.ThreeWirePort.F);
-pot tiltPot = pot(Brain.ThreeWirePort.A);
-
-//***---Controller1 Definitions---***//
-
+// ---- END VEXCODE CONFIGURED DEVICES ----
 //---Y Definitions---//
 #define Y_leftJoy Controller1.Axis3.value()
 #define Y_rightJoy Controller1.Axis2.value()
@@ -62,8 +54,8 @@ pot tiltPot = pot(Brain.ThreeWirePort.A);
 #define X_rightJoy Controller1.Axis1.value()
 
 //---Button Definitions---//
-#define slowDriveBackBtn Controller1.ButtonA.pressing()
-#define autoScoreBtn Controller1.ButtonB.pressing()
+#define autoScoreBtn Controller1.ButtonA.pressing()
+#define baseLockBtn Controller1.ButtonB.pressing()
 #define tiltMacroBtn Controller1.ButtonX.pressing()
 
 #define autonTestButton Controller1.ButtonY.pressing()
@@ -81,20 +73,17 @@ bool enableAutonTestButton = false;
 
 //---Sensor Definitions---//
 #define baseInetrial (TurnGyroSmart.rotation(degrees))
-#define baseHeadingReset TurnGyroSmart.resetHeading()
-#define baseRotationReset TurnGyroSmart.resetRotation()
 #define baseGyro (-Gyro.value(analogUnits::mV))
-#define baseGyroReset Gyro.startCalibration(1000) 
+#define baseGyroReset Gyro.startCalibration(1000)
 #define mainBaseEnc baseEncoder.rotation(rotationUnits::deg)
 #define mainBaseEncReset baseEncoder.resetRotation()
 #define tiltBumpBtn Bumper.pressing()
 //#define liftSensor ((liftA.rotation(rotationUnits::deg) + liftB.rotation(rotationUnits::deg))/2)
 #define liftSensor liftPot.value(rotationUnits::deg)
 #define tiltSensor tiltPot.value(rotationUnits::deg)
-
-const double wheelDiameterIN  = 4;
-const double baseDiameterIN  = 16.5;
-
+#define leftLine LineSensorLeft.value(range12bit)
+#define midLine LineSensorMiddle.value(range12bit)
+#define rightLine LineSensorRight.value(range12bit)
 
 #define waitUntil(condition)                                                   \
   do {                                                                         \
