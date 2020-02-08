@@ -41,7 +41,21 @@ void pre_auton(void) {
 
 void autonomous(void) {
   //myAuton.currentTestAuton();
-  myAuton.SecureRedFront7CubePID();
+  //myAuton.SecureRedFront7CubePID();
+  myLift.liftUp(157, 70, 50);
+  task::sleep(100); 
+  while(RangeFinderE.distance(inches) > 4) {
+    myBase.Spin(15, 15);
+    //Drivetrain.drive(forward);
+    //wait(5, msec);
+  }
+  task::sleep(1000); 
+  myIntake.Spin(100);
+  while(RangeFinderE.distance(inches) < 3) {
+    myBase.Spin(-5, -5);
+  }
+  myBase.Brake();
+
   //myAuton.redBack7CubePID();
   //myBase.turnPID(90, 90, 25);
   while(true){
@@ -80,9 +94,10 @@ int main() {
   pre_auton();
   // Prevent main from exiting with an infinite loop.
   while (true) {
-    printf("Lift: %f\n",baseInetrial);
+    //printf("Lift: %f\n",baseInetrial);
     //printf("Lift: %f\n",liftSensor);
     //printf("Tilt: %f\n\n",tiltSensor);
+    printf("Lift: %f\n",RangeFinderE.distance(inches));
     vex::task::sleep(100);
   }
 }

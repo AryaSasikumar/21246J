@@ -4,6 +4,7 @@ class AutonomusRoutines{
   private:
     bool testEnableTog = false;
   public:
+    void verticalStackFunction();
     void currentTestAuton();
     void userControl();
     void blueFront8CubePID();
@@ -79,6 +80,19 @@ void AutonomusRoutines::userControl(){
       testEnableTog = false;
     }
   }
+}
+
+void AutonomusRoutines::verticalStackFunction(){
+  while (RangeFinderE.distance(inches) > 3) {
+    myBase.Spin(15, 15);
+    //Drivetrain.drive(forward);
+    //Brain.Screen.print("%.2f", RangeFinderE.distance(inches));
+    //wait(200, msec);
+    //Brain.Screen.setCursor(1, 1);
+    //Brain.Screen.clearScreen();
+    //wait(5, msec);
+  }
+  myBase.Brake();
 }
 
 void AutonomusRoutines::redBack7CubePID(){

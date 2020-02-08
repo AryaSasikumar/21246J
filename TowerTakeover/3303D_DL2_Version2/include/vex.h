@@ -48,8 +48,9 @@ motor leftIntake = motor(PORT3, ratio18_1, true);
 encoder baseEncoder = encoder(Brain.ThreeWirePort.G);
 gyro Gyro = gyro(Brain.ThreeWirePort.C);
 bumper Bumper = bumper(Brain.ThreeWirePort.B);
-pot liftPot = pot(Brain.ThreeWirePort.F);
+pot liftPot = pot(Brain.ThreeWirePort.D);
 pot tiltPot = pot(Brain.ThreeWirePort.A);
+sonar RangeFinderE = sonar(Brain.ThreeWirePort.E);
 
 //***---Controller1 Definitions---***//
 

@@ -13,6 +13,7 @@ extern encoder baseEncoder;
 extern gyro Gyro;
 extern bumper Bumper;
 extern pot liftPot;
+extern sonar RangeFinderE;
 
 /**
  * Used to initialize code/tasks/devices added using tools in VEXcode Text.
