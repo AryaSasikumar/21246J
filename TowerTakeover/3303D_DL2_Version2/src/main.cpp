@@ -42,19 +42,24 @@ void pre_auton(void) {
 void autonomous(void) {
   //myAuton.currentTestAuton();
   //myAuton.SecureRedFront7CubePID();
-  myLift.liftUp(157, 70, 50);
-  task::sleep(100); 
+  //myIntake.Spin(100);
+  //myLift.liftUp(157, 70, 50);
+  //task::sleep(100); 
   while(RangeFinderE.distance(inches) > 4) {
     myBase.Spin(15, 15);
+    task::sleep(20); 
     //Drivetrain.drive(forward);
     //wait(5, msec);
   }
-  task::sleep(1000); 
-  myIntake.Spin(100);
-  while(RangeFinderE.distance(inches) < 3) {
-    myBase.Spin(-5, -5);
-  }
-  myBase.Brake();
+  myBase.Spin(0,0);
+  //task::sleep(500); 
+  //myBase.Spin(-2, -2);
+  //myLift.liftDown(83, 30, 50); 
+  //myBase.Spin(0,0);
+  // while(RangeFinderE.distance(inches) < 3) {
+  //   myBase.Spin(-5, -5);
+  // }
+  // myBase.Brake();
 
   //myAuton.redBack7CubePID();
   //myBase.turnPID(90, 90, 25);
