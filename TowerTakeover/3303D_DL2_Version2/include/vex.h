@@ -42,7 +42,7 @@ smartdrive DriveTrainSmart = smartdrive(LeftDriveSmart, RightDriveSmart, TurnGyr
 motor liftA = motor(PORT6, ratio18_1, true);
 motor liftB = motor(PORT7, ratio18_1, true);
 
-motor rightIntake = motor(PORT8, ratio18_1, false);
+motor rightIntake = motor(PORT15, ratio18_1, false);
 motor leftIntake = motor(PORT5, ratio18_1, true);
 
 encoder baseEncoder = encoder(Brain.ThreeWirePort.G);
