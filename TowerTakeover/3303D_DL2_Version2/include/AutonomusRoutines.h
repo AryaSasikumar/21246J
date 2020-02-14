@@ -11,6 +11,8 @@ class AutonomusRoutines{
     void redFront8CubePID();
     void SecureBlueFront7CubePID();
     void SecureRedFront7CubePID();
+    void SecureBlueBack7CubePID();
+    void SecureRedBack7CubePID();    
     void blueBack7CubePID();
     void redBack7CubePID();
     void blueFrontAuton();
@@ -341,7 +343,97 @@ void AutonomusRoutines::blueFront8CubePID(){ //By Jeffrey
   }
 }
 
-void AutonomusRoutines::SecureBlueFront7CubePID(){ //By Alex
+void AutonomusRoutines::SecureRedBack7CubePID(){ //change turn
+  myIntake.Spin(-100);
+  task::sleep(500);
+  myIntake.Spin(100);
+  myBase.drivePID(40, 40, 19);
+  task::sleep(50);
+  myLift.liftUp(157, 70, 50);
+  task::sleep(20); 
+  while(RangeFinderE.distance(inches) > 12) {
+    myBase.Spin(15, 15);
+    //task::sleep(20); 
+    //wait(5, msec);
+  }
+  myBase.Spin(0,0);
+  task::sleep(100); 
+  myBase.Spin(-3, -3);
+  myLift.liftDown(83, 30, 50); 
+  myBase.Spin(0,0);
+  myBase.drivePID(40, 40, 4);
+  mainBaseEncReset;
+  myBase.driveBackPID(-80, -80, -21);
+  task::sleep(50);   
+  myBase.turnPID(-90, -90, -41);
+
+  task::sleep(50);    
+  myBase.drivePID(90, 90, 23); 
+
+  task::sleep(100);    
+  myIntake.Spin(-5);
+  while(tiltSensor>=95){
+    myLift.Spin(100, -100);
+  }
+  myIntake.Spin(-5);
+  while(tiltSensor>=55){
+    myLift.Spin(25, -25);
+  }
+  myIntake.Stop();
+  myLift.Stop(false);
+  myBase.driveBackPID(-100, -100, -50);
+  //myBase.smartDrive(30, 3, false);
+  while(tiltSensor<=180){
+    myLift.Spin(-100, 100);
+  }
+}
+
+void AutonomusRoutines::SecureBlueBack7CubePID(){ 
+  myIntake.Spin(-100);
+  task::sleep(500);
+  myIntake.Spin(100);
+  myBase.drivePID(40, 40, 19);
+  task::sleep(50);
+  myLift.liftUp(157, 70, 50);
+  task::sleep(20); 
+  while(RangeFinderE.distance(inches) > 12) {
+    myBase.Spin(15, 15);
+    //task::sleep(20); 
+    //wait(5, msec);
+  }
+  myBase.Spin(0,0);
+  task::sleep(100); 
+  myBase.Spin(-3, -3);
+  myLift.liftDown(83, 30, 50); 
+  myBase.Spin(0,0);
+  myBase.drivePID(40, 40, 4);
+  mainBaseEncReset;
+  myBase.driveBackPID(-80, -80, -21);
+  task::sleep(50);   
+  myBase.turnPID(-90, -90, -41);
+
+  task::sleep(50);    
+  myBase.drivePID(90, 90, 23); 
+
+  task::sleep(100);    
+  myIntake.Spin(-5);
+  while(tiltSensor>=95){
+    myLift.Spin(100, -100);
+  }
+  myIntake.Spin(-5);
+  while(tiltSensor>=55){
+    myLift.Spin(25, -25);
+  }
+  myIntake.Stop();
+  myLift.Stop(false);
+  myBase.driveBackPID(-100, -100, -50);
+  //myBase.smartDrive(30, 3, false);
+  while(tiltSensor<=180){
+    myLift.Spin(-100, 100);
+  }
+}
+
+void AutonomusRoutines::SecureBlueFront7CubePID(){ 
   myIntake.Spin(-100);
   task::sleep(500);
   myIntake.Spin(100);
