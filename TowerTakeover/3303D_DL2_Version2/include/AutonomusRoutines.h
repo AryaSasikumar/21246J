@@ -442,18 +442,18 @@ void AutonomusRoutines::SecureBlueFront7CubePID(){
   task::sleep(50);
   myBase.turnPID(75, 75, -23); //left turn
   task::sleep(50);
-  myBase.driveBackPID(-80, -80, -36); //increase speed to -90 once antitip deploys consistently 
+  myBase.driveBackPID(-80, -80, -35); //increase speed to -90 once antitip deploys consistently 
   task::sleep(50); 
-  myBase.turnPID(-75, -75, -12);  //right turn
+  myBase.turnPID(-75, -75, -17);  //right turn
   task::sleep(50);
   //second row
   myBase.drivePID(35, 35, 16); //reduced from 36 to 17
   myIntake.Spin(30);
   task::sleep(250);   
-  myBase.turnPID(44, 44, -97);
+  myBase.turnPID(44, 44, -88);
   task::sleep(150);
   myIntake.Spin(100);
-  myBase.drivePID(95, 95, 33);
+  myBase.drivePID(95, 95, 32);
   //task::sleep(250); 
   
   //myIntake.Spin(-5);
@@ -484,15 +484,15 @@ void AutonomusRoutines::SecureRedFront7CubePID(){ //By Alex
   task::sleep(50);
   myBase.turnPID(-75, -75, -7); //right turn
   task::sleep(50);
-  myBase.driveBackPID(-80, -80, -38); //increase speed to -90 once antitip deploys consistently 
+  myBase.driveBackPID(-80, -80, -39); //increase speed to -90 once antitip deploys consistently 
   task::sleep(50); 
-  myBase.turnPID(75, 75, -30);  //left turn
+  myBase.turnPID(75, 75, -24);  //left turn
   task::sleep(50);
   //second row
   myBase.drivePID(35, 35, 16); //reduced from 36 to 17
   myIntake.Spin(30);
   task::sleep(250);   
-  myBase.turnPID(-44, -44, -56);
+  myBase.turnPID(-44, -44, -59);
   task::sleep(150);
   myIntake.Spin(100);
   myBase.drivePID(95, 95, 36);

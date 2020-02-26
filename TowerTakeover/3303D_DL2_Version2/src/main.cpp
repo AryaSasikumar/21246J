@@ -42,7 +42,7 @@ void pre_auton(void) {
 void autonomous(void) {
   //myAuton.currentTestAuton();
   //myAuton.SecureRedFront7CubePID();
-  myAuton.SecureRedBack7CubePID();
+  myAuton.SecureRedFront7CubePID();
 
   //task::sleep(500); 
   //myBase.Spin(-2, -2);
