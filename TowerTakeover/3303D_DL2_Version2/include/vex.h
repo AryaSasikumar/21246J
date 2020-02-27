@@ -46,10 +46,11 @@ motor rightIntake = motor(PORT20, ratio18_1, false);
 motor leftIntake = motor(PORT14, ratio18_1, true);
 
 encoder baseEncoder = encoder(Brain.ThreeWirePort.G);
-gyro Gyro = gyro(Brain.ThreeWirePort.C);
+//gyro Gyro = gyro(Brain.ThreeWirePort.C); get rid of
 bumper Bumper = bumper(Brain.ThreeWirePort.B);
 pot liftPot = pot(Brain.ThreeWirePort.D);
 pot tiltPot = pot(Brain.ThreeWirePort.A);
+pot navPot = pot(Brain.ThreeWirePort.C);
 sonar RangeFinderE = sonar(Brain.ThreeWirePort.E);
 
 //***---Controller1 Definitions---***//
@@ -92,6 +93,7 @@ bool enableAutonTestButton = false;
 //#define liftSensor ((liftA.rotation(rotationUnits::deg) + liftB.rotation(rotationUnits::deg))/2)
 #define liftSensor liftPot.value(rotationUnits::deg)
 #define tiltSensor tiltPot.value(rotationUnits::deg)
+#define navSensor navPot.value(rotationUnits::deg)
 
 const double wheelDiameterIN  = 4;
 const double baseDiameterIN  = 16.5;
