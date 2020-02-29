@@ -23,8 +23,24 @@ class base{
      80, 83, 84, 86, 86, 87, 87, 88, 88, 90,
      90, 90, 95, 95, 95,100,100,100};
 
+     const unsigned int halfSpeed[128] = {
+     0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
+     0 , 10, 10, 10, 11, 11, 11, 12, 12, 12,
+     13, 13, 13, 13, 13, 13, 14, 14, 14, 14,
+     14, 15, 15, 15, 15, 16, 16, 16, 16, 16,
+     17, 17, 17, 17, 17, 17, 17, 18, 18, 19,
+     19, 19, 19, 19, 19, 20, 20, 20, 20, 20,
+     21, 21, 21, 21, 22, 22, 22, 23, 23, 23,
+     23, 24, 24, 24, 24, 25, 25, 25, 26, 26,
+     26, 27, 27, 27, 28, 29, 29, 29, 30, 30,
+     31, 32, 32,32, 33, 33, 34, 34, 34, 35,
+     36, 36, 36, 37, 37, 38, 39, 39, 39, 39,
+     40, 42, 42, 43, 43, 44, 44, 44, 44, 45,
+     45, 45, 48, 48, 48,50,50,50};
+
   public:
     bool useTrueSpeed = true;
+    bool toggle = false;
     base();
     //General Drive Base Functions
     void leftSpin(int speed);
@@ -111,16 +127,39 @@ void base::moveFor(double degToRotate_Left, double degToRotate_Right, int speed)
   RB.rotateFor(degToRotate_Right,degrees,speed,velocityUnits::pct); 
 }
 
-
-void base::userControl(int bufferSize = 5, bool Stop = false){
+void base::userControl(int bufferSize = 5, bool Stop = false){//driveToggleBtn
  if(macroDriveBtn){
     Spin(45, 45);   
  }else if(slowDriveBackBtn){
    Spin(-30, -30);   
  }
+ else if(driveToggleBtn){
+   toggle=!toggle;
+   vex::task::sleep(300);
+ }
  else{
-   if(useTrueSpeed){
+   if(toggle==true){
      if(abs(Y_rightJoy)>bufferSize){
+       if(Y_rightJoy>0){
+         rightSpin(halfSpeed[abs(Y_rightJoy)]);
+       }else{
+         rightSpin(-halfSpeed[abs(Y_rightJoy)]);
+       }
+     }else{
+        rightSpin(0);
+     } 
+     if(abs(Y_leftJoy)>bufferSize){
+       if(Y_leftJoy>0){
+         leftSpin(halfSpeed[abs(Y_leftJoy)]);
+       }else{
+         leftSpin(-halfSpeed[abs(Y_leftJoy)]);
+       }
+     }else{
+       leftSpin(0);
+     } 
+   } 
+   else {
+      if(abs(Y_rightJoy)>bufferSize){
        if(Y_rightJoy>0){
          rightSpin(trueSpeed[abs(Y_rightJoy)]);
        }else{
@@ -138,21 +177,51 @@ void base::userControl(int bufferSize = 5, bool Stop = false){
      }else{
        leftSpin(0);
      } 
-   }else{
-     if(abs(Y_rightJoy)>bufferSize){
-       rightSpin(Y_rightJoy);
-     }else{
-       rightSpin(0);
-     } 
-     if(abs(Y_leftJoy)>bufferSize){
-       leftSpin(Y_leftJoy);
-     }else{
-       leftSpin(0);
-     } 
    }
-  
  }  
 }
+
+// void base::userControl(int bufferSize = 5, bool Stop = false){    OLD DRIVE FUNCTION
+//  if(macroDriveBtn){
+//     Spin(45, 45);   
+//  }else if(slowDriveBackBtn){
+//    Spin(-30, -30);   
+//  }
+//  else{
+//    if(useTrueSpeed){
+//      if(abs(Y_rightJoy)>bufferSize){
+//        if(Y_rightJoy>0){
+//          rightSpin(trueSpeed[abs(Y_rightJoy)]);
+//        }else{
+//          rightSpin(-trueSpeed[abs(Y_rightJoy)]);
+//        }
+//      }else{
+//         rightSpin(0);
+//      } 
+//      if(abs(Y_leftJoy)>bufferSize){
+//        if(Y_leftJoy>0){
+//          leftSpin(trueSpeed[abs(Y_leftJoy)]);
+//        }else{
+//          leftSpin(-trueSpeed[abs(Y_leftJoy)]);
+//        }
+//      }else{
+//        leftSpin(0);
+//      } 
+//    }else{
+//      if(abs(Y_rightJoy)>bufferSize){
+//        rightSpin(Y_rightJoy);
+//      }else{
+//        rightSpin(0);
+//      } 
+//      if(abs(Y_leftJoy)>bufferSize){
+//        leftSpin(Y_leftJoy);
+//      }else{
+//        leftSpin(0);
+//      } 
+//    }
+  
+//  }  
+// }
 
 double base::distanceToTravel(double inchesGiven){
   int wheelRadIN = 2;
