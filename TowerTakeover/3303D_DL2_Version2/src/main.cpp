@@ -116,8 +116,8 @@ int main() {
     }
 
     //printf("Gyro: %f\n",baseInetrial);
-    printf("Lift: %f\n",liftSensor);
-    //printf("Tilt: %f\n\n",tiltSensor);
+    //printf("Lift: %f\n",liftSensor);
+    printf("Tilt: %f\n\n",tiltSensor);
     //printf("Range: %f\n",RangeFinderE.distance(inches));
     vex::task::sleep(100);
   }

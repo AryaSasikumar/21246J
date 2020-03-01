@@ -39,10 +39,10 @@ motor_group RightDriveSmart = motor_group(RF, RB);
 inertial TurnGyroSmart = inertial(PORT11);
 smartdrive DriveTrainSmart = smartdrive(LeftDriveSmart, RightDriveSmart, TurnGyroSmart, 319.19, 320, 165, mm, 1);
 
-motor liftA = motor(PORT18, ratio18_1, true);
+motor liftA = motor(PORT4, ratio18_1, true);
 motor liftB = motor(PORT7, ratio18_1, true);
 
-motor rightIntake = motor(PORT20, ratio18_1, false);
+motor rightIntake = motor(PORT8, ratio18_1, false);
 motor leftIntake = motor(PORT14, ratio18_1, true);
  
 encoder baseEncoder = encoder(Brain.ThreeWirePort.G);
@@ -64,7 +64,7 @@ sonar RangeFinderE = sonar(Brain.ThreeWirePort.E);
 #define X_rightJoy Controller1.Axis1.value()
 
 //---Button Definitions---//
-#define slowDriveBackBtn Controller1.ButtonA.pressing()
+#define slowDriveBackBtn Controller1.ButtonY.pressing()
 #define autoScoreBtn Controller1.ButtonB.pressing()
 #define tiltMacroBtn Controller1.ButtonX.pressing()
 
@@ -78,7 +78,7 @@ bool enableAutonTestButton = false;
 #define angleDownBtn Controller1.ButtonDown.pressing()
 #define angleSlowBtn Controller1.ButtonRight.pressing()
 #define macroDriveBtn Controller1.ButtonLeft.pressing()
-#define driveToggleBtn Controller1.ButtonY.pressing()
+#define driveToggleBtn Controller1.ButtonA.pressing()
 
 #define intakeBtn Controller1.ButtonR2.pressing()
 #define outtakeBtn Controller1.ButtonR1.pressing()

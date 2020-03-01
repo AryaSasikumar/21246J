@@ -226,22 +226,26 @@ void AutonomusRoutines::skills(){
   task::sleep(500);
   myIntake.Spin(100);
   //first row
-  myBase.drivePID(30, 30, 44);
+  myBase.drivePID(30, 30, 41);
+  task::sleep(600);
+  myBase.turnPID(-50, -50, -21); //right turn
   task::sleep(50);
-  myBase.turnPID(-75, -75, -5); //right turn
-  task::sleep(50);
-  myBase.driveBackPID(-80, -80, -40); //increase speed to -90 once antitip deploys consistently 
+  myBase.driveBackPID(-50, -50, -38); //increase speed to -90 once antitip deploys consistently 
   task::sleep(50); 
-  myBase.turnPID(75, 75, -28);  //left turn
+  myBase.turnPID(50, 50, -42);  //left turn
   task::sleep(50);
   //second row
-  myBase.drivePID(35, 35, 16); //reduced from 36 to 17
+  myBase.drivePID(35, 35, 17); //reduced from 36 to 17
   myIntake.Spin(30);
-  task::sleep(250);   
-  myBase.turnPID(-44, -44, -59);
+  task::sleep(500);   
+  myBase.Spin(-50, -50);
+  task::sleep(3000);
+  myBase.Spin(0, 0);
+
+  myBase.turnPID(-30, -30, -94);
   task::sleep(150);
   myIntake.Spin(100);
-  myBase.drivePID(95, 95, 36);
+  myBase.drivePID(35, 35, 22);
   //task::sleep(250); 
   
   //myIntake.Spin(-5);
@@ -255,42 +259,189 @@ void AutonomusRoutines::skills(){
     myLift.Spin(20, -20);
   }
   myIntake.Stop();
-  myLift.Stop(false);
+  myLift.Stop(false); //INTEGRATIONNNNNNNNNNNNNN
   //myBase.smartDrive(30, 3, false);
+  task::sleep(50);   
+  myBase.driveBackPID(-30, -30, -13);
+  while(tiltSensor<=180){
+    myLift.Spin(-100, 100);
+  }
+  task::sleep(100);
+  myBase.turnPID(30, 30, -101);
+  task::sleep(50);
+  myBase.Spin(-50, -50);
+  myIntake.Spin(100);
+  task::sleep(2000);
+  myBase.Spin(0, 0);
+  myBase.drivePID(45, 45, 51);  
+  task::sleep(50);
+  myBase.driveBackPID(-30, -30, -7);
+  task::sleep(50);
+  myLift.liftUp(145, 60, 50);
+  myBase.drivePID(30, 30, 6);
+  myIntake.Spin(-60);
+  task::sleep(1000);
+  myBase.driveBackPID(-30, -30, -25);  
+  myLift.liftDown(84, 30, 50); 
+  myIntake.Spin(100);
+  myBase.Spin(-50, -50);
+  task::sleep(3000);
+  myBase.drivePID(45, 45, 18);  
+  myBase.turnPID(40, 40, -83); //left turn
+  myBase.drivePID(45, 45, 18);  
+  task::sleep(50);
+  myBase.driveBackPID(-30, -30, -5);
+  task::sleep(50);
+  myLift.liftUp(168, 60, 50);
+  myBase.drivePID(30, 30, 14);  
+  myIntake.Spin(-60);
+  task::sleep(1000);
+  mainBaseEncReset;
+  myBase.driveBackPID(-30, -30, -10); 
+  myLift.liftDown(84, 30, 50); 
+  myIntake.Stop();
+  myBase.turnPID(-40, -40, -114); //right turn
+  myIntake.Spin(100);
+  myBase.drivePID(45, 45, 42);  
+  myBase.driveBackPID(-30, -30, -22);
+  myBase.turnPID(-40, -40, -25); //right turn
+  myLift.liftUp(145, 60, 50);
+  task::sleep(50);
+  myBase.drivePID(45, 45, 14);  
+  myIntake.Spin(-60);
+  task::sleep(1000);
+  myBase.driveBackPID(-30, -30, -25);  
+  myLift.liftDown(84, 30, 50); 
+
+  // myBase.drivePID(45, 45, 26);  
+  // task::sleep(50);
+  // myBase.driveBackPID(-30, -30, -5);
+  // task::sleep(50);
+  // myLift.liftUp(168, 60, 50);
+  // myBase.drivePID(30, 30, 9);  
+  // myIntake.Spin(-60);
+  // task::sleep(1000);
+  // mainBaseEncReset;
+  // myBase.driveBackPID(-30, -30, -7); 
+  // myLift.liftDown(84, 30, 50); 
+  // myIntake.Stop();
+  // myBase.driveBackPID(-50, -50, -18);  
+  // task::sleep(250);
+  // myBase.turnPID(-40, -40, -73); //right turn
+  // task::sleep(50);
+  // myIntake.Spin(100);
+  // myBase.drivePID(30, 30, 27);  
+  // task::sleep(50);
+  // myBase.driveBackPID(-30, -30, -7);
+  // task::sleep(50);
+  // myLift.liftUp(145, 60, 50);
+  // myBase.drivePID(30, 30, 7);
+  // myIntake.Spin(-60);
+  // task::sleep(1000);
+  // myBase.driveBackPID(-30, -30, -25);  
+  // myLift.liftDown(84, 30, 50); 
+  // myIntake.Spin(100);
+  // myBase.turnPID(-50, -50, -20); //right turn
+  // myBase.drivePID(30, 30, 37);  
+  // task::sleep(150);
+  // myBase.driveBackPID(-30, -30, -28);  
+  // myBase.turnPID(-50, -50, -29); //right turn
+  // myLift.liftUp(145, 60, 50);
+  // myBase.drivePID(30, 30, 10); 
+  // myIntake.Spin(-60);
+  // task::sleep(1000);
+  // myBase.driveBackPID(-30, -30, -14);  
+  // myLift.liftDown(86, 30, 50); 
+
+//Previous auton
+/*
+myIntake.Spin(-100);
+  task::sleep(500);
+  myIntake.Spin(100);
+  //first row
+  myBase.drivePID(30, 30, 41);
+  task::sleep(600);
+  myBase.turnPID(-50, -50, -21); //right turn
+  task::sleep(50);
+  myBase.driveBackPID(-50, -50, -38); //increase speed to -90 once antitip deploys consistently 
+  task::sleep(50); 
+  myBase.turnPID(50, 50, -42);  //left turn
+  task::sleep(50);
+  //second row
+  myBase.drivePID(35, 35, 17); //reduced from 36 to 17
+  myIntake.Spin(30);
+  task::sleep(250);   
+  myBase.turnPID(-30, -30, -105);
+  task::sleep(150);
+  myIntake.Spin(100);
+  myBase.drivePID(50, 50, 36);
+  //task::sleep(250); 
+  
+  //myIntake.Spin(-5);
+  rightIntake.startRotateFor(-240,rotationUnits::deg,30,velocityUnits::pct);  
+  leftIntake.rotateFor(-240,rotationUnits::deg,30,velocityUnits::pct); 
+  while(tiltSensor>=90){
+    myLift.Spin(100, -100);
+  }
+  myIntake.Spin(-5);
+  while(tiltSensor>=44){
+    myLift.Spin(20, -20);
+  }
+  myIntake.Stop();
+  myLift.Stop(false); //INTEGRATIONNNNNNNNNNNNNN
+  //myBase.smartDrive(30, 3, false);
+  task::sleep(5000);   
   myBase.driveBackPID(-30, -30, -16);
   while(tiltSensor<=180){
     myLift.Spin(-100, 100);
   }
   task::sleep(100);
-  myBase.turnPID(-50, -50, -91);
+  myBase.turnPID(-30, -30, -132);
   task::sleep(50);
   myIntake.Spin(100);
-  myBase.drivePID(45, 45, 28);  
+  myBase.drivePID(45, 45, 26);  
   task::sleep(50);
   myBase.driveBackPID(-30, -30, -5);
   task::sleep(50);
   myLift.liftUp(168, 60, 50);
-  myBase.drivePID(30, 30, 7);  
+  myBase.drivePID(30, 30, 9);  
   myIntake.Spin(-60);
   task::sleep(1000);
-  myBase.driveBackPID(-30, -30, -14);  
-  myLift.liftDown(86, 30, 50); 
+  mainBaseEncReset;
+  myBase.driveBackPID(-30, -30, -7); 
+  myLift.liftDown(84, 30, 50); 
   myIntake.Stop();
-  myBase.driveBackPID(-30, -30, -11);
+  myBase.driveBackPID(-50, -50, -18);  
+  task::sleep(250);
+  myBase.turnPID(-40, -40, -73); //right turn
   task::sleep(50);
-  myBase.turnPID(-75, -75, -35); //right turn
+  myIntake.Spin(100);
+  myBase.drivePID(30, 30, 27);  
   task::sleep(50);
-  myIntake.Spin(-100);
-  myBase.drivePID(30, 30, 25);  
-  task::sleep(50);
-  myBase.driveBackPID(-30, -30, -5);
+  myBase.driveBackPID(-30, -30, -7);
   task::sleep(50);
   myLift.liftUp(145, 60, 50);
-  myBase.drivePID(30, 30, 7);  
+  myBase.drivePID(30, 30, 7);
+  myIntake.Spin(-60);
+  task::sleep(1000);
+  myBase.driveBackPID(-30, -30, -25);  
+  myLift.liftDown(84, 30, 50); 
+  myIntake.Spin(100);
+  myBase.turnPID(-50, -50, -20); //right turn
+  myBase.drivePID(30, 30, 37);  
+  task::sleep(150);
+  myBase.driveBackPID(-30, -30, -28);  
+  myBase.turnPID(-50, -50, -29); //right turn
+  myLift.liftUp(145, 60, 50);
+  myBase.drivePID(30, 30, 10); 
   myIntake.Spin(-60);
   task::sleep(1000);
   myBase.driveBackPID(-30, -30, -14);  
   myLift.liftDown(86, 30, 50); 
+
+*/
+
+
 }
 
 void AutonomusRoutines::redFront8CubePID(){ //By Jeffrey
@@ -363,6 +514,10 @@ void AutonomusRoutines::blueFront8CubePID(){ //By Jeffrey
   while(tiltSensor<=180){
     myLift.Spin(-100, 100);
   }
+
+
+
+
 }
 
 void AutonomusRoutines::SecureRedBack7CubePID(){ //change turn
