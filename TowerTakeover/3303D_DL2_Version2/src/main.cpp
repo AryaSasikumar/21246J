@@ -55,7 +55,13 @@ void autonomous(void) {
     myAuton.SecureBlueBack7CubePID();
   }
   else{
-    myAuton.skills();
+    //myAuton.skills();
+    myBase.drivePID(100, 100, 24);
+    task::sleep(1000); 
+    myBase.drivePID(100, 100, 24);
+    task::sleep(1000); 
+    myBase.drivePID(100, 100, 24);
+    task::sleep(1000); 
   }
   while(true){
     wait(20, msec); 
