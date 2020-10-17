@@ -33,7 +33,12 @@
  * For instance, you can do `4_mtr = 50` to set motor 4's target velocity to 50
  */
 #define PROS_USE_LITERALS
-
+// #include "vision/vision.hpp"
+// #include "vision/VisionController.hpp"
+// #include "vision/visionReader.hpp"
+// #include "vision/objDrawer.hpp"
+// #include "vision/objectSmoothing.hpp"
+// #include "vision/visionObj.hpp"
 #include "api.h"
 #include "ports.hpp"
 #include "motion/path/bezier.hpp"

@@ -33,7 +33,7 @@ namespace drive
     // ChassisScales integratedScale = std_initializer_list<ChassisScales>(4.125_in, 13.273906_in);
     // ChassisScales discreteScale = std_initializer_list<ChassisScales>(2.75_in, 7.402083_in);
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    SkidSteerModel ChassisModel(std::shared_ptr<MotorGroup>(&leftMotorGroup), std::shared_ptr<MotorGroup>(&rightMotorGroup), leftTrackingEncoder, rightTrackingEncoder, 600, 1200);
+    SkidSteerModel ChassisModel(std::shared_ptr<MotorGroup>(&leftMotorGroup), std::shared_ptr<MotorGroup>(&rightMotorGroup), std::shared_ptr<ContinuousRotarySensor>(&leftTrackingEncoder), std::shared_ptr<ContinuousRotarySensor>(&rightTrackingEncoder), 600, 1200);
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     ChassisScales drivenWheelScales({3.25_in, 11.5_in}, imev5BlueTPR);
 

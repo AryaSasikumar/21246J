@@ -12,7 +12,7 @@ const int INTAKE_L = 12;
 const int INTAKE_R = 19;
 
 // Other Systems
-
+const int VISION = 16;
 // Legacy Ports
 
 //Line Sensors
