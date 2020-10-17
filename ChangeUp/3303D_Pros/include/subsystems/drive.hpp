@@ -19,9 +19,10 @@ namespace drive
 
     extern driveStates currState;
     extern Motor driveR1, driveR2, driveR3, driveL1, driveL2, driveL3;
-    extern ChassisControllerIntegrated chassisController;
-    extern AsyncMotionProfileController profileController;
     extern pathfollowing::AdaptivePurePursuit appc;
+    extern ChassisControllerIntegrated chassisController;
+
+    extern AsyncMotionProfileController profileController;
 
     extern void update();
 

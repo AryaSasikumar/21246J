@@ -45,7 +45,7 @@ namespace drive
         AbstractMotor::gearset::blue, drivenWheelScales);
 
     AsyncMotionProfileController profileController(
-        chassisUtil, {1.05, 1.5, 5.0}, std::shared_ptr<SkidSteerModel>(&ChassisModel), drivenWheelScales, GearsetRatioPair
+        chassisUtil, {1, 2, 10}, std::shared_ptr<SkidSteerModel>(&ChassisModel), drivenWheelScales, GearsetRatioPair
         //AsyncControllerFactory::motionProfile(
         //     // 1.05, // Maximum linear velocity of the Chassis in m/s
         //     // 1.5, // Maximum linear acceleration of the Chassis in m/s/s
