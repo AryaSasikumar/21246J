@@ -11,8 +11,8 @@ namespace intake
 {
     intakeStates currState;
 
-    Motor intakeLeft(INTAKE_L, true, AbstractMotor::gearset::green);
-    Motor intakeRight(INTAKE_R, false, AbstractMotor::gearset::green);
+    Motor intakeLeft(INTAKE_L, true, AbstractMotor::gearset::green, AbstractMotor::encoderUnits::degrees);
+    Motor intakeRight(INTAKE_R, false, AbstractMotor::gearset::green, AbstractMotor::encoderUnits::degrees);
 
     Timer ballBrakeTimer;
 

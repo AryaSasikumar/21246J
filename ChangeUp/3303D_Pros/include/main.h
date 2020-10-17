@@ -36,6 +36,14 @@
 
 #include "api.h"
 #include "ports.hpp"
+#include "motion/path/bezier.hpp"
+#include "motion/path/line.hpp"
+#include "motion/path/path.hpp"
+#include "motion/path/pathgroup.hpp"
+
+#include "motion/odometry.hpp"
+#include "motion/structs.hpp"
+#include "motion/adaptivepurepursuit.hpp"
 
 #include "subsystems/drive.hpp"
 #include "subsystems/intake.hpp"
@@ -57,27 +65,14 @@
  */
 // using namespace pros;
 // using namespace pros::literals;
-using namespace okapi;
-using namespace okapi::literals;
+//using namespace okapi;
+//using namespace okapi::literals;
 
 /**
  * Prototypes for the competition control tasks are redefined here to ensure
  * that they can be called from user code (i.e. calling autonomous from a
  * button press in opcontrol() for testing purposes).
  */
-#ifdef __cplusplus
-extern "C"
-{
-#endif
-    void autonomous(void);
-    void initialize(void);
-    void disabled(void);
-    void competition_initialize(void);
-    void opcontrol(void);
-#ifdef __cplusplus
-}
-#endif
-
 #ifdef __cplusplus
 extern "C"
 {

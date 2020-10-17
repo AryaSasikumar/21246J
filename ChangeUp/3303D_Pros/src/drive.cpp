@@ -1,4 +1,5 @@
 #include "main.h"
+#include "okapi/api.hpp"
 
 using namespace okapi;
 
@@ -13,6 +14,9 @@ namespace drive
     Motor driveR2(DRIVE_R2, true, AbstractMotor::gearset::blue, AbstractMotor::encoderUnits::degrees);
     Motor driveR3(DRIVE_R3, false, AbstractMotor::gearset::blue, AbstractMotor::encoderUnits::degrees);
 
+    ADIEncoder leftTrackingEncoder(SPORT_LTOP, SPORT_LBOT, true);
+    ADIEncoder rightTrackingEncoder(SPORT_RTOP, SPORT_RBOT);
+
     TimeUtil chassisUtil = TimeUtilFactory::withSettledUtilParams(50, 5, 100_ms);
     TimeUtil profiledUtil = TimeUtilFactory::withSettledUtilParams(50, 5, 100_ms);
 
@@ -21,29 +25,35 @@ namespace drive
     okapi::MotorGroup rightMotorGroup(
         {driveR1, driveR2, driveR3});
 
-    AsyncPosIntegratedController leftController(std::shared_ptr<MotorGroup>(&leftMotorGroup), , 400, chassisUtil);
-    AsyncPosIntegratedController rightController(std::shared_ptr<MotorGroup>(&rightMotorGroup), 400, chassisUtil);
+    AbstractMotor::GearsetRatioPair GearsetRatioPair(AbstractMotor::gearset::blue);
+
+    AsyncPosIntegratedController leftController(std::shared_ptr<MotorGroup>(&leftMotorGroup), GearsetRatioPair, 400, chassisUtil);
+    AsyncPosIntegratedController rightController(std::shared_ptr<MotorGroup>(&rightMotorGroup), GearsetRatioPair, 400, chassisUtil);
 
     // ChassisScales integratedScale = std_initializer_list<ChassisScales>(4.125_in, 13.273906_in);
     // ChassisScales discreteScale = std_initializer_list<ChassisScales>(2.75_in, 7.402083_in);
-
-    ChassisScales drivenWheelsScales = {3.25_in, 12.676583_in};
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    SkidSteerModel ChassisModel(std::shared_ptr<MotorGroup>(&leftMotorGroup), std::shared_ptr<MotorGroup>(&rightMotorGroup), leftTrackingEncoder, rightTrackingEncoder, 600, 1200);
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    ChassisScales drivenWheelScales({3.25_in, 11.5_in}, imev5BlueTPR);
 
     ChassisControllerIntegrated chassisController(
         chassisUtil,
-        std::shared_ptr<SkidSteerModel>(&integratedChassisModel),
+        std::shared_ptr<SkidSteerModel>(&ChassisModel),
         std::unique_ptr<AsyncPosIntegratedController>(&leftController),
         std::unique_ptr<AsyncPosIntegratedController>(&rightController),
-        AbstractMotor::gearset::blue, drivenWheelsScales);
+        AbstractMotor::gearset::blue, drivenWheelScales);
 
-    AsyncMotionProfileController profileController = AsyncControllerFactory::motionProfile(
-        // 1.05, // Maximum linear velocity of the Chassis in m/s
-        // 1.5, // Maximum linear acceleration of the Chassis in m/s/s
-        // 5.0, // Maximum linear jerk of the Chassis in m/s/s/s
-        1,
-        2,
-        10.0,
-        chassisController // Chassis Controller
+    AsyncMotionProfileController profileController(
+        chassisUtil, {1.05, 1.5, 5.0}, std::shared_ptr<SkidSteerModel>(&ChassisModel), drivenWheelScales, GearsetRatioPair
+        //AsyncControllerFactory::motionProfile(
+        //     // 1.05, // Maximum linear velocity of the Chassis in m/s
+        //     // 1.5, // Maximum linear acceleration of the Chassis in m/s/s
+        //     // 5.0, // Maximum linear jerk of the Chassis in m/s/s/s
+        //     1,
+        //     2,
+        //     10.0,
+        // Chassis Controller
     );
 
     void update()
@@ -74,12 +84,12 @@ namespace drive
             switch (currState)
             {
             case notRunning: // the drive should not be moving; brake
-                chassisController.setBrakeMode(AbstractMotor::brakeMode::coast);
+                ChassisModel.setBrakeMode(AbstractMotor::brakeMode::coast);
                 chassisController.stop();
                 break;
 
             case running: // the drive moves according to joysticks
-                chassisController.tank(
+                ChassisModel.tank(
                     controller.getAnalog(ControllerAnalog::leftY) * 1.0,
                     controller.getAnalog(ControllerAnalog::rightY) * 1.0,
                     joyDeadband * 1.0);

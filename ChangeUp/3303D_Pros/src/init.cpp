@@ -1,5 +1,5 @@
 #include "main.h"
-
+#include "okapi/api.hpp"
 Controller controller;
 
 const double joyDeadband = .08;
@@ -19,9 +19,9 @@ void initActTasks()
 
 void waitUntilSettled(okapi::AbstractMotor &motor, double isAtTargetError = 50, double isAtTargetDerivative = 5, QTime isAtTargetTime = 250_ms)
 {
-    auto settledUtil = SettledUtilFactory::create(isAtTargetError, isAtTargetDerivative, isAtTargetTime);
+    SettledUtil settledUtil(std::unique_ptr<AbstractTimer> iatTargetTimer);
 
-    while (!settledUtil.isSettled(motor.getTargetPosition() - motor.getPosition()))
+    while (!isSettled(motor.getTargetPosition() - motor.getPosition()))
     {
         pros::delay(10);
     }

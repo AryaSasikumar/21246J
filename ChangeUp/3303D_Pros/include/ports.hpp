@@ -18,3 +18,8 @@ const int INTAKE_R = 19;
 //Line Sensors
 
 //Encoders
+const char SPORT_RTOP = 'C';
+const char SPORT_RBOT = 'D';
+
+const char SPORT_LTOP = 'G';
+const char SPORT_LBOT = 'H';
