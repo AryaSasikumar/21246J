@@ -6,27 +6,24 @@ namespace drive
 {
 
     driveStates currState;
-
-    Motor driveL1(DRIVE_L1, false, AbstractMotor::gearset::blue);
-    Motor driveL2(DRIVE_L2, true, AbstractMotor::gearset::blue);
-    Motor driveL3(DRIVE_L3, False, AbstractMotor::gearset::blue);
-    Motor driveR1(DRIVE_R1, false, AbstractMotor::gearset::blue);
-    Motor driveR2(DRIVE_R2, true, AbstractMotor::gearset::blue);
-    Motor driveR3(DRIVE_R3, false, AbstractMotor::gearset::blue);
+    Motor driveL1(DRIVE_L1, false, AbstractMotor::gearset::blue, AbstractMotor::encoderUnits::degrees);
+    Motor driveL2(DRIVE_L2, true, AbstractMotor::gearset::blue, AbstractMotor::encoderUnits::degrees);
+    Motor driveL3(DRIVE_L3, false, AbstractMotor::gearset::blue, AbstractMotor::encoderUnits::degrees);
+    Motor driveR1(DRIVE_R1, false, AbstractMotor::gearset::blue, AbstractMotor::encoderUnits::degrees);
+    Motor driveR2(DRIVE_R2, true, AbstractMotor::gearset::blue, AbstractMotor::encoderUnits::degrees);
+    Motor driveR3(DRIVE_R3, false, AbstractMotor::gearset::blue, AbstractMotor::encoderUnits::degrees);
 
     TimeUtil chassisUtil = TimeUtilFactory::withSettledUtilParams(50, 5, 100_ms);
     TimeUtil profiledUtil = TimeUtilFactory::withSettledUtilParams(50, 5, 100_ms);
 
-    okapi::MotorGroup leftMotorGroup({DRIVE_L1,
-                                      DRIVE_L2,
-                                      DRIVE_L3});
-    okapi::MotorGroup rightMotorGroup({DRIVE_R1, DRIVE_R2, DRIVE_R3});
+    okapi::MotorGroup leftMotorGroup(
+        {driveL1, driveL2, driveL3});
+    okapi::MotorGroup rightMotorGroup(
+        {driveR1, driveR2, driveR3});
 
-    AsyncPosIntegratedController leftController(std::shared_ptr<MotorGroup>(&leftMotorGroup), chassisUtil);
-    AsyncPosIntegratedController rightController(std::shared_ptr<MotorGroup>(&rightMotorGroup), chassisUtil);
+    AsyncPosIntegratedController leftController(std::shared_ptr<MotorGroup>(&leftMotorGroup), , 400, chassisUtil);
+    AsyncPosIntegratedController rightController(std::shared_ptr<MotorGroup>(&rightMotorGroup), 400, chassisUtil);
 
-    SkidSteerModel integratedChassisModel = ChassisModelFactory::create({DRIVE_L1, DRIVE_L2, DRIVE_L3}, {-DRIVE_R1, -DRIVE_R2, -DRIVE_R3}, 300);
-    SkidSteerModel discreteChassisModel = ChassisModelFactory::create({DRIVE_L1, DRIVE_L2, DRIVE_L3}, {-DRIVE_R1, -DRIVE_R2, -DRIVE_R3}, 300);
     // ChassisScales integratedScale = std_initializer_list<ChassisScales>(4.125_in, 13.273906_in);
     // ChassisScales discreteScale = std_initializer_list<ChassisScales>(2.75_in, 7.402083_in);
 
