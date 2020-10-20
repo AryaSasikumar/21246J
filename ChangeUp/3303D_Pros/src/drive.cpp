@@ -7,12 +7,12 @@ namespace drive
 {
 
     driveStates currState;
-    Motor driveL1(DRIVE_L1, false, AbstractMotor::gearset::blue, AbstractMotor::encoderUnits::degrees);
-    Motor driveL2(DRIVE_L2, true, AbstractMotor::gearset::blue, AbstractMotor::encoderUnits::degrees);
-    Motor driveL3(DRIVE_L3, false, AbstractMotor::gearset::blue, AbstractMotor::encoderUnits::degrees);
+    Motor driveL1(DRIVE_L1, true, AbstractMotor::gearset::blue, AbstractMotor::encoderUnits::degrees);
+    Motor driveL2(DRIVE_L2, false, AbstractMotor::gearset::blue, AbstractMotor::encoderUnits::degrees);
+    Motor driveL3(DRIVE_L3, true, AbstractMotor::gearset::blue, AbstractMotor::encoderUnits::degrees);
     Motor driveR1(DRIVE_R1, false, AbstractMotor::gearset::blue, AbstractMotor::encoderUnits::degrees);
-    Motor driveR2(DRIVE_R2, true, AbstractMotor::gearset::blue, AbstractMotor::encoderUnits::degrees);
-    Motor driveR3(DRIVE_R3, false, AbstractMotor::gearset::blue, AbstractMotor::encoderUnits::degrees);
+    Motor driveR2(DRIVE_R2, false, AbstractMotor::gearset::blue, AbstractMotor::encoderUnits::degrees);
+    Motor driveR3(DRIVE_R3, true, AbstractMotor::gearset::blue, AbstractMotor::encoderUnits::degrees);
 
     ADIEncoder leftTrackingEncoder(SPORT_LTOP, SPORT_LBOT, true);
     ADIEncoder rightTrackingEncoder(SPORT_RTOP, SPORT_RBOT);
@@ -27,15 +27,15 @@ namespace drive
 
     AbstractMotor::GearsetRatioPair GearsetRatioPair(AbstractMotor::gearset::blue);
 
-    AsyncPosIntegratedController leftController(std::shared_ptr<MotorGroup>(&leftMotorGroup), GearsetRatioPair, 400, chassisUtil);
-    AsyncPosIntegratedController rightController(std::shared_ptr<MotorGroup>(&rightMotorGroup), GearsetRatioPair, 400, chassisUtil);
+    AsyncPosIntegratedController leftController(std::shared_ptr<MotorGroup>(&leftMotorGroup), GearsetRatioPair, 600, chassisUtil);
+    AsyncPosIntegratedController rightController(std::shared_ptr<MotorGroup>(&rightMotorGroup), GearsetRatioPair, 600, chassisUtil);
 
     // ChassisScales integratedScale = std_initializer_list<ChassisScales>(4.125_in, 13.273906_in);
     // ChassisScales discreteScale = std_initializer_list<ChassisScales>(2.75_in, 7.402083_in);
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    SkidSteerModel ChassisModel(std::shared_ptr<MotorGroup>(&leftMotorGroup), std::shared_ptr<MotorGroup>(&rightMotorGroup), std::shared_ptr<ContinuousRotarySensor>(&leftTrackingEncoder), std::shared_ptr<ContinuousRotarySensor>(&rightTrackingEncoder), 600, 1200);
+    SkidSteerModel ChassisModel(std::shared_ptr<MotorGroup>(&leftMotorGroup), std::shared_ptr<MotorGroup>(&rightMotorGroup), std::shared_ptr<ContinuousRotarySensor>(&leftTrackingEncoder), std::shared_ptr<ContinuousRotarySensor>(&rightTrackingEncoder), 600, 12000);
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    ChassisScales drivenWheelScales({3.25_in, 11.5_in}, imev5BlueTPR);
+    ChassisScales drivenWheelScales({3.25_in, 16_in}, imev5BlueTPR); //11.25,15.25,16
 
     ChassisControllerIntegrated chassisController(
         chassisUtil,
@@ -45,7 +45,7 @@ namespace drive
         AbstractMotor::gearset::blue, drivenWheelScales);
 
     AsyncMotionProfileController profileController(
-        chassisUtil, {1, 2, 10}, std::shared_ptr<SkidSteerModel>(&ChassisModel), drivenWheelScales, GearsetRatioPair
+        chassisUtil, {1.05, 2, 10}, std::shared_ptr<SkidSteerModel>(&ChassisModel), drivenWheelScales, GearsetRatioPair
         //AsyncControllerFactory::motionProfile(
         //     // 1.05, // Maximum linear velocity of the Chassis in m/s
         //     // 1.5, // Maximum linear acceleration of the Chassis in m/s/s
@@ -69,7 +69,6 @@ namespace drive
 
     void act(void *)
     {
-
         // pros::delay(500);
         // vision::vis.set_exposure(150);
 
@@ -90,9 +89,9 @@ namespace drive
 
             case running: // the drive moves according to joysticks
                 ChassisModel.tank(
-                    controller.getAnalog(ControllerAnalog::leftY) * 1.0,
-                    controller.getAnalog(ControllerAnalog::rightY) * 1.0,
-                    joyDeadband * 1.0);
+                    controller.getAnalog(ControllerAnalog::leftY),
+                    controller.getAnalog(ControllerAnalog::rightY),
+                    joyDeadband);
                 currState = notRunning;
                 break;
 
@@ -105,7 +104,38 @@ namespace drive
 
     // Helper function to facilitate turning during auton
 } // namespace drive
-
+// void turn(QAngle angle, double maxVel, bool odom, bool async)
+// {
+//     auto pose = drive::odometry.getPose();
+//     drive::chassisController.setMaxVelocity(maxVel);
+//     if (async)
+//     {
+//         if (odom)
+//         {
+//             double angleError = std::atan2(sin(angle.convert(radian) - pose.heading.convert(radian)), cos((angle.convert(radian) - pose.heading.convert(radian))));
+//             drive::chassisController.turnAngleAsync(angleError * radian);
+//         }
+//         else
+//         {
+//             drive::chassisController.turnAngleAsync(angle);
+//         }
+//     }
+//     else
+//     {
+//         if (odom)
+//         {
+//             double angleError = std::atan2(sin(angle.convert(radian) - pose.heading.convert(radian)), cos((angle.convert(radian) - pose.heading.convert(radian))));
+//             drive::chassisController.turnAngle(angleError * radian);
+//             drive::chassisController.waitUntilSettled();
+//         }
+//         else
+//         {
+//             drive::chassisController.turnAngle(angle);
+//             drive::chassisController.waitUntilSettled();
+//         }
+//     }
+//     drive::chassisController.setMaxVelocity(200);
+// }
 // Remove path to clear up memory
 void removePaths(std::string path1)
 {

@@ -3,7 +3,7 @@
 #include "okapi/api/control/util/settledUtil.hpp"
 Controller controller;
 
-const double joyDeadband = .08;
+const double joyDeadband = 0;
 
 void initActTasks()
 {

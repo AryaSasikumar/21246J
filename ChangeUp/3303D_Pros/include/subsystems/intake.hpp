@@ -13,6 +13,7 @@ namespace intake
         intakeIn = 'i',
         intakeOut = 'o',
         filter = 'f',
+        redBall = 'r',
         shoot = 's',
         yield = 'y'
     };
