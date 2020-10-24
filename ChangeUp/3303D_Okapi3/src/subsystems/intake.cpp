@@ -6,17 +6,26 @@ ControllerButton shootBtn = controller[ControllerDigital::L1];
 ControllerButton filterBtn = controller[ControllerDigital::L2];
 ControllerButton intakeInBtn = controller[ControllerDigital::R1];
 ControllerButton stopBtn = controller[ControllerDigital::R2];
+pros::Vision vis(VISION, pros::E_VISION_ZERO_TOPLEFT);
+pros::vision_signature_s_t redBall = pros::Vision::signature_from_utility(4, 8097, 10251, 9174, -1541, 265, -638, 3, 0);
 
+pros::vision_signature_s_t blueBall = pros::Vision::signature_from_utility(5, -4191, -2375, -3283, 10347, 14337, 12342, 3, 0);
+pros::Vision setRed = vis.set_signature(1, &redBall);
+pros::Vision setBlue = vis.set_signature(2, &blueBall);
+pros::Vision setExp = vis.set_exposure(150);
 namespace intake
 {
     intakeStates currState;
 
     Motor intakeLeft(INTAKE_L, true, AbstractMotor::gearset::green);
     Motor intakeRight(INTAKE_R, false, AbstractMotor::gearset::green);
-
     Timer ballBrakeTimer;
 
-    // bool intakeHasBall;
+    ///////////////////////////////////////////////////////
+    // VISION CODE
+
+    bool intakeHasBall;
+
     // bool intakeHadBall;
 
     // const double kP = 0.0008;
@@ -53,8 +62,11 @@ namespace intake
     //     return false;
     // }
 
-    void update()
+    void
+    update()
     {
+        pros::vision_object_s_t ball = vis.get_by_size(0);
+
         if (shootBtn.isPressed())
         {
             currState = shoot;
@@ -69,8 +81,12 @@ namespace intake
         }
         if (stopBtn.changedToPressed())
             currState = notRunning;
-    }
 
+        if (ball.signature == 2 && ball.width >= 100)
+        {
+            currState = autofilter;
+        }
+    }
     void act(void *)
     {
         double power;
@@ -89,21 +105,27 @@ namespace intake
             case shoot:
                 // Run motors in same direction.
                 intakeLeft.moveVoltage(12000);
-                intakeRight.moveVoltage(12000);
+                intakeRight.moveVoltage(-12000);
                 currState = notRunning;
                 break;
 
             case intakeIn:
+
                 intakeLeft.moveVoltage(12000);
-                intakeRight.moveVoltage(-12000);
+                intakeRight.moveVoltage(12000);
                 break;
 
             case filter:
                 intakeLeft.moveVoltage(-12000);
-                intakeRight.moveVoltage(-12000);
+                intakeRight.moveVoltage(12000);
                 currState = notRunning;
                 break;
-
+            case autofilter:
+                intakeLeft.moveVoltage(-12000);
+                intakeRight.moveVoltage(12000);
+                pros::delay(2000);
+                currState = intakeIn;
+                break;
             case redBall:
                 currState = notRunning;
                 break;

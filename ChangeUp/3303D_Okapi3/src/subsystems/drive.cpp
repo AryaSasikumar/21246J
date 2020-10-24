@@ -7,12 +7,12 @@ namespace drive
 
     driveStates currState;
 
-    Motor driveL1(DRIVE_L1, true, AbstractMotor::gearset::blue);
-    Motor driveL2(DRIVE_L2, false, AbstractMotor::gearset::blue);
-    Motor driveL3(DRIVE_L3, true, AbstractMotor::gearset::blue);
-    Motor driveR1(DRIVE_R1, false, AbstractMotor::gearset::blue);
+    Motor driveL1(DRIVE_L1, false, AbstractMotor::gearset::blue);
+    Motor driveL2(DRIVE_L2, true, AbstractMotor::gearset::blue);
+    Motor driveL3(DRIVE_L3, false, AbstractMotor::gearset::blue);
+    Motor driveR1(DRIVE_R1, true, AbstractMotor::gearset::blue);
     Motor driveR2(DRIVE_R2, false, AbstractMotor::gearset::blue);
-    Motor driveR3(DRIVE_R3, true, AbstractMotor::gearset::blue);
+    Motor driveR3(DRIVE_R3, false, AbstractMotor::gearset::blue);
     ADIEncoder leftTrackingEncoder(SPORT_LTOP, SPORT_LBOT, true);
     ADIEncoder rightTrackingEncoder(SPORT_RTOP, SPORT_RBOT);
 
@@ -25,20 +25,19 @@ namespace drive
     AsyncPosIntegratedController leftController(std::shared_ptr<MotorGroup>(&leftMotorGroup), chassisUtil);
     AsyncPosIntegratedController rightController(std::shared_ptr<MotorGroup>(&rightMotorGroup), chassisUtil);
 
-    SkidSteerModel integratedChassisModel = ChassisModelFactory::create({DRIVE_L1, -DRIVE_L2, DRIVE_L3}, {-DRIVE_R1, -DRIVE_R2, DRIVE_R3}, 600);
-    SkidSteerModel discreteChassisModel = ChassisModelFactory::create({DRIVE_L1, -DRIVE_L2, DRIVE_L3}, {-DRIVE_R1, -DRIVE_R2, DRIVE_R3}, leftTrackingEncoder, rightTrackingEncoder, 600);
+    SkidSteerModel integratedChassisModel = ChassisModelFactory::create({-DRIVE_L1, DRIVE_L2, -DRIVE_L3}, {DRIVE_R1, DRIVE_R2, -DRIVE_R3}, 600);
+    SkidSteerModel discreteChassisModel = ChassisModelFactory::create({-DRIVE_L1, DRIVE_L2, -DRIVE_L3}, {DRIVE_R1, DRIVE_R2, -DRIVE_R3}, leftTrackingEncoder, rightTrackingEncoder, 600);
     // ChassisScales integratedScale = std_initializer_list<ChassisScales>(4.125_in, 13.273906_in);
     // ChassisScales discreteScale = std_initializer_list<ChassisScales>(2.75_in, 7.402083_in);
 
     ChassisScales trackingWheelsScales = {2.75_in, 7.300486_in};
-    ChassisScales drivenWheelsScales = {3.25_in, 12.676583_in};
+    ChassisScales drivenWheelsScales = {3.25_in, 11.5_in};
 
     ChassisControllerIntegrated chassisController(
         chassisUtil,
         std::shared_ptr<SkidSteerModel>(&integratedChassisModel),
         std::unique_ptr<AsyncPosIntegratedController>(&leftController),
-        std::unique_ptr<AsyncPosIntegratedController>(&rightController),
-        AbstractMotor::gearset::blue, drivenWheelsScales);
+        std::unique_ptr<AsyncPosIntegratedController>(&rightController), AbstractMotor::gearset::blue, drivenWheelsScales);
 
     RRLib::KinematicConstraints kinConst(1.0, 2, 10.0);
 
@@ -54,8 +53,8 @@ namespace drive
 
     RRLib::TwoWheelOdometry odometry(std::shared_ptr<SkidSteerModel>(&discreteChassisModel), trackingWheelsScales);
     std::shared_ptr<RRLib::PoseEstimator> poseEstimator = std::shared_ptr<RRLib::PoseEstimator>(&odometry);
-    RRLib::RamseteGains rgains{0.8, 5.0, 0.0};
-    RRLib::RamseteProfileController ramBoi(rgains, 2.0, std::shared_ptr<SkidSteerModel>(&discreteChassisModel), poseEstimator, kinConst, drivenWheelsScales, AbstractMotor::gearset::green);
+    RRLib::RamseteGains rgains{1, 5.0, 0.0};
+    RRLib::RamseteProfileController ramBoi(rgains, 2.0, std::shared_ptr<SkidSteerModel>(&discreteChassisModel), poseEstimator, kinConst, drivenWheelsScales, AbstractMotor::gearset::blue);
 
     AverageFilter<10> visionFilter;
 
@@ -66,7 +65,7 @@ namespace drive
         while (true)
         {
             const double TICKSINCH = 2.75 * PI / 360.0;
-            const double TICKSINCH2 = 4.125 * PI / 360.0;
+            const double TICKSINCH2 = 3.25 * PI / 360.0;
 
             pros::lcd::print(1, "l: %.2f, r: %.2f", leftTrackingEncoder.get(), rightTrackingEncoder.get());
             // poseEstimator->printPose();
@@ -160,7 +159,7 @@ namespace drive
                 drive::chassisController.waitUntilSettled();
             }
         }
-        drive::chassisController.setMaxVelocity(200);
+        drive::chassisController.setMaxVelocity(600);
     }
 
 } // namespace drive

@@ -14,6 +14,7 @@ namespace intake
         intakeIn = 'i',
         intakeOut = 'o',
         filter = 'f',
+        autofilter = 'k',
         redBall = 'r',
         shoot = 's',
         yield = 'y'
@@ -22,6 +23,8 @@ namespace intake
     extern intakeStates currState;
 
     extern Motor intakeLeft, intakeRight;
+
+    extern pros::Vision vision;
 
     extern pros::ADILineSensor line;
 

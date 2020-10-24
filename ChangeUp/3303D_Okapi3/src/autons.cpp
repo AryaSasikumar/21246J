@@ -158,11 +158,14 @@ void executeRedFar1()
 
 void executeRedFar2()
 {
-    // drive::odometry.setPose({36_in, -14.25_in, 90_deg});
+    drive::odometry.setPose({0_in, 0_in, 0_deg});
 
-    // drive::turn(270_deg, 100);
+    drive::ramBoi.moveTo({{30_in, 0_in, 0_deg}});
+    drive::ramBoi.setCorrectionMode(RRLib::RamseteProfileController::CorrectionMode::Heading);
 
-    // drive::ramBoi.moveTo({{12_in, -53_in, 270_deg}});
+    drive::ramBoi.moveTo({{0_in, 0_in, 0_deg}});
+
+    drive::turn(90_deg, 300);
 
     // drive::chassisController.setMaxVelocity(50);
     // drive::chassisController.moveDistanceAsync(-5_in);
