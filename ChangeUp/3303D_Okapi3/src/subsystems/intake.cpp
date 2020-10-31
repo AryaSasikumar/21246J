@@ -85,12 +85,14 @@ namespace intake
         if (ball.signature == 2 && ball.width >= 100)
         {
             currState = autofilter;
+            // intakeLeft.moveVoltage(-12000);
+            // intakeRight.moveVoltage(12000);
         }
     }
     void act(void *)
     {
         double power;
-
+        pros::vision_object_s_t ball = vis.get_by_size(0);
         while (true)
         {
 
@@ -123,7 +125,7 @@ namespace intake
             case autofilter:
                 intakeLeft.moveVoltage(-12000);
                 intakeRight.moveVoltage(12000);
-                pros::delay(2000);
+                pros::delay(600);
                 currState = intakeIn;
                 break;
             case redBall:
