@@ -11,10 +11,8 @@ void initActTasks()
     // Constructs and starts tasks for subsystems
     driveActTask = new pros::Task(drive::act, NULL, TASK_PRIORITY_DEFAULT,
                                   TASK_STACK_DEPTH_DEFAULT, "Act Drive");
-
     intakeActTask = new pros::Task(intake::act, NULL, TASK_PRIORITY_DEFAULT,
-                                   TASK_STACK_DEPTH_DEFAULT, "Act Diff");
-
+                                   TASK_STACK_DEPTH_DEFAULT, "Act Intake");
     updateTask = new pros::Task(updateFunc, NULL, TASK_PRIORITY_DEFAULT,
                                 TASK_STACK_DEPTH_DEFAULT, "Update");
 }
@@ -36,7 +34,6 @@ void updateFunc(void *)
 
         drive::update();
         intake::update();
-
         // printf("isLoaded: %d | hasBall: %d\n", puncher::puncherIsLoaded, differential::intakeHasBall);
 
         pros::delay(5);

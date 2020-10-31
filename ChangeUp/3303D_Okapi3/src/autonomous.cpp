@@ -20,46 +20,46 @@ void autonomous()
 
     drive::ramBoi.setCorrectionMode(RRLib::RamseteProfileController::CorrectionMode::Heading);
 
-    switch (autonRoutine) // Executes specific routine based on auton selector.
-    {
-    case notSelected:
-        break;
-    case progSkills:
-        executeProgSkills();
-        break;
+    // switch (autonRoutine) // Executes specific routine based on auton selector.
+    // {
+    // case notSelected:
+    //     break;
+    // case progSkills:
+    //     executeProgSkills();
+    //     break;
 
-    case redNear1:
-        executeRedNear1();
-        break;
+    // case redNear1:
+    //     executeRedNear1();
+    //     break;
 
-    case redNear2:
-        executeRedNear2();
-        break;
+    // case redNear2:
+    //     executeRedNear2();
+    //     break;
 
-    case redFar1:
-        executeRedFar1();
-        break;
+    // case redFar1:
+    //     executeRedFar1();
+    //     break;
 
-    case redFar2:
-        executeRedFar2();
-        break;
+    // case redFar2:
+    //     executeRedFar2();
+    //     break;
 
-    case blueNear1:
-        executeBlueNear1();
-        break;
+    // case blueNear1:
+    //     executeBlueNear1();
+    //     break;
 
-    case blueNear2:
-        executeBlueNear2();
-        break;
+    // case blueNear2:
+    //     executeBlueNear2();
+    //     break;
 
-    case blueFar1:
-        executeBlueFar1();
-        break;
+    // case blueFar1:
+    //     executeBlueFar1();
+    //     break;
 
-    case blueFar2:
-        executeBlueFar2();
-        break;
-    }
+    // case blueFar2:
+    //     executeBlueFar2();
+    //     break;
+    // }
 
     executeRedFar2();
 

@@ -30,9 +30,8 @@ namespace drive
     // ChassisScales integratedScale = std_initializer_list<ChassisScales>(4.125_in, 13.273906_in);
     // ChassisScales discreteScale = std_initializer_list<ChassisScales>(2.75_in, 7.402083_in);
 
-    ChassisScales trackingWheelsScales = {2.75_in, 2_in};
-    ChassisScales drivenWheelsScales = {
-        3.25_in, 22_in};
+    ChassisScales trackingWheelsScales = {2.75_in, 2.5_in};
+    ChassisScales drivenWheelsScales = {3.25_in, 22_in};
 
     ChassisControllerIntegrated chassisController(
         chassisUtil,
@@ -48,13 +47,13 @@ namespace drive
         // 5.0, // Maximum linear jerk of the Chassis in m/s/s/s
         1,
         2,
-        10,
+        10.0,
         chassisController // Chassis Controller
     );
 
     RRLib::TwoWheelOdometry odometry(std::shared_ptr<SkidSteerModel>(&discreteChassisModel), trackingWheelsScales);
     std::shared_ptr<RRLib::PoseEstimator> poseEstimator = std::shared_ptr<RRLib::PoseEstimator>(&odometry);
-    RRLib::RamseteGains rgains{0.8, 5.0, 0.0};
+    RRLib::RamseteGains rgains{1, 5.0, 0.0};
     RRLib::RamseteProfileController ramBoi(rgains, 2.0, std::shared_ptr<SkidSteerModel>(&discreteChassisModel), poseEstimator, kinConst, drivenWheelsScales, AbstractMotor::gearset::blue);
 
     AverageFilter<10> visionFilter;
@@ -76,7 +75,7 @@ namespace drive
             pros::lcd::print(4, "Y: %.2f", pose.position.getY().convert(inch));
             pros::lcd::print(5, "A: %.2f", pose.position.getTheta().convert(degree));
 
-            pros::lcd::print(2, "enc chassis: %f", (rightTrackingEncoder.get() * TICKSINCH - leftTrackingEncoder.get() * TICKSINCH) / (20 * PI));
+            pros::lcd::print(5, "enc chassis: %f", (rightTrackingEncoder.get() * TICKSINCH - leftTrackingEncoder.get() * TICKSINCH) / (20 * PI));
             pros::lcd::print(6, "motor chassis: %f", (((drive::driveR1.get_position() + drive::driveR2.get_position())) / 2 * TICKSINCH2 - ((drive::driveL1.get_position() + drive::driveL2.get_position()) / 2) * TICKSINCH2) / (20 * PI));
             pros::delay(2);
         }

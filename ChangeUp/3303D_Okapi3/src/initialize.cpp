@@ -8,15 +8,14 @@
  */
 
 pros::Task *driveActTask;
-
 pros::Task *intakeActTask;
-
 pros::Task *updateTask;
 
 void initialize()
 {
 	pros::lcd::initialize();
 	printf("before\n");
+
 	printf("after\n");
 	initActTasks();
 
@@ -29,6 +28,7 @@ void initialize()
 
 	// set all the states to not running by default
 	drive::currState = drive::yield;
+
 	intake::currState = intake::yield;
 }
 
