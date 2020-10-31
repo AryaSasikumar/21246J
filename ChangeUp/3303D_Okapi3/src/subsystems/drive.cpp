@@ -30,8 +30,8 @@ namespace drive
     // ChassisScales integratedScale = std_initializer_list<ChassisScales>(4.125_in, 13.273906_in);
     // ChassisScales discreteScale = std_initializer_list<ChassisScales>(2.75_in, 7.402083_in);
 
-    ChassisScales trackingWheelsScales = {2.75_in, 2.5_in};
-    ChassisScales drivenWheelsScales = {3.25_in, 22_in};
+    ChassisScales trackingWheelsScales = {2.75_in, 2.1_in};
+    ChassisScales drivenWheelsScales = {3.25_in, 22.3_in};
 
     ChassisControllerIntegrated chassisController(
         chassisUtil,
@@ -73,7 +73,7 @@ namespace drive
             auto pose = drive::odometry.getPose();
             pros::lcd::print(3, "X: %.2f", pose.position.getX().convert(inch));
             pros::lcd::print(4, "Y: %.2f", pose.position.getY().convert(inch));
-            pros::lcd::print(5, "A: %.2f", pose.position.getTheta().convert(degree));
+            pros::lcd::print(2, "A: %.2f", pose.position.getTheta().convert(degree));
 
             pros::lcd::print(5, "enc chassis: %f", (rightTrackingEncoder.get() * TICKSINCH - leftTrackingEncoder.get() * TICKSINCH) / (20 * PI));
             pros::lcd::print(6, "motor chassis: %f", (((drive::driveR1.get_position() + drive::driveR2.get_position())) / 2 * TICKSINCH2 - ((drive::driveL1.get_position() + drive::driveL2.get_position()) / 2) * TICKSINCH2) / (20 * PI));

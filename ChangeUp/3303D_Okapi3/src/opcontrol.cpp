@@ -25,10 +25,10 @@ void states()
 	printf("%f,%f\n", x, -y);
 
 	// pros::lcd::print(1, "Drive state: %c | Drive temp: %d", drive::currState, (int)drive::driveR1.getTemperature());
-	pros::lcd::print(2, "Drive state: %c | Drive temp: %d", drive::currState, (int)drive::driveR1.getTemperature());
-	pros::lcd::print(3, "X: %.2f", x);
-	pros::lcd::print(4, "Y: %.2f", y);
-	pros::lcd::print(5, "A: %.2f", angle);
+	// pros::lcd::print(2, "Drive state: %c | Drive temp: %d", drive::currState, (int)drive::driveR1.getTemperature());
+	// pros::lcd::print(3, "X: %.2f", x);
+	// pros::lcd::print(4, "Y: %.2f", y);
+	// pros::lcd::print(5, "A: %.2f", angle);
 	// pros::lcd::print(2, "Puncher state: %c | Puncher temp: %d", puncher::currState, (int)puncher::puncher.getTemperature());
 
 	// pros::lcd::print(4, "Diff state: %c | Diff Left temp: %d", differential::currState, (int)differential::diffLeft.getTemperature());
