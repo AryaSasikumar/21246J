@@ -25,7 +25,7 @@ namespace drive
     okapi::MotorGroup rightMotorGroup(
         {driveR1, driveR2, driveR3});
 
-    AbstractMotor::GearsetRatioPair GearsetRatioPair(AbstractMotor::gearset::blue);
+    AbstractMotor::GearsetRatioPair GearsetRatioPair(AbstractMotor::gearset::blue *(2.0 / 3.0));
 
     AsyncPosIntegratedController leftController(std::shared_ptr<MotorGroup>(&leftMotorGroup), GearsetRatioPair, 600, chassisUtil);
     AsyncPosIntegratedController rightController(std::shared_ptr<MotorGroup>(&rightMotorGroup), GearsetRatioPair, 600, chassisUtil);
@@ -37,12 +37,21 @@ namespace drive
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     ChassisScales drivenWheelScales({3.25_in, 16_in}, imev5BlueTPR); //11.25,15.25,16
 
-    ChassisControllerIntegrated chassisController(
-        chassisUtil,
-        std::shared_ptr<SkidSteerModel>(&ChassisModel),
-        std::unique_ptr<AsyncPosIntegratedController>(&leftController),
-        std::unique_ptr<AsyncPosIntegratedController>(&rightController),
-        AbstractMotor::gearset::blue, drivenWheelScales);
+    std::shared_ptr<OdomChassisController> chassis = ChassisControllerBuilder()
+                                                         .withMotors(std::shared_ptr<MotorGroup>(&leftMotorGroup), -(std::shared_ptr<MotorGroup>(&rightMotorGroup))) // left motor is 1, right motor is 2 (reversed)
+                                                         .withGains(
+                                                             {0.001, 0, 0.0001}, // distance controller gains
+                                                             {0.001, 0, 0.0001}, // turn controller gains
+                                                             {0.001, 0, 0.0001}  // angle controller gains (helps drive straight)
+                                                             )
+                                                         .withSensors(
+                                                             ADIEncoder{'C', 'D'},      // left encoder in ADI ports A & B
+                                                             ADIEncoder{'G', 'H', true} // right encoder in ADI ports C & D (reversed)
+                                                             )
+                                                         // green gearset, tracking wheel diameter (2.75 in), track (7 in), and TPR (360)
+                                                         .withDimensions(GeartsetRatioPair, {{2.75_in, 7_in}, quadEncoderTPR})
+                                                         .withOdometry()   // use the same scales as the chassis (above)
+                                                         .buildOdometry(); // build an odometry chassis
 
     AsyncMotionProfileController profileController(
         chassisUtil, {1.05, 2, 10}, std::shared_ptr<SkidSteerModel>(&ChassisModel), drivenWheelScales, GearsetRatioPair

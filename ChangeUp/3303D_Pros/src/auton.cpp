@@ -13,11 +13,12 @@ void executeProgSkills()
     // pros::delay(100);
 
     // drive::chassisController.turnAngleAsync(710_deg);
-
-    drive::profileController.generatePath({{0_ft, 0_ft, 0_deg}, {5_ft, 0_ft, 90_deg}}, "A");
-    drive::profileController.generatePath({{0_ft, 0_ft, 0_deg}, {3_ft, 0_ft, 0_deg}}, "B");
-    drive::profileController.setTarget("B");
-    drive::profileController.waitUntilSettled();
-    drive::profileController.setTarget("A");
-    drive::profileController.waitUntilSettled();
+    // set the state to zero
+    chassis->setState({0_in, 0_in, 0_deg});
+    // turn 45 degrees and drive approximately 1.4 ft
+    chassis->driveToPoint({1_ft, 1_ft});
+    // turn approximately 45 degrees to end up at 90 degrees
+    chassis->turnToAngle(90_deg);
+    // turn approximately -90 degrees to face {5_ft, 0_ft} which is to the north of the robot
+    chassis->turnToPoint({5_ft, 0_ft});
 }
