@@ -29,10 +29,10 @@ namespace drive
     SkidSteerModel integratedChassisModel = ChassisModelFactory::create({-DRIVE_L1, DRIVE_L2, -DRIVE_L3}, {DRIVE_R1, DRIVE_R2, -DRIVE_R3}, 600);
     SkidSteerModel discreteChassisModel = ChassisModelFactory::create({-DRIVE_L1, DRIVE_L2, -DRIVE_L3}, {DRIVE_R1, DRIVE_R2, -DRIVE_R3}, leftTrackingEncoder, rightTrackingEncoder, 600);
     // ChassisScales integratedScale = std_initializer_list<ChassisScales>(4.125_in, 13.273906_in);
-    ChassisScales discreteScale = std_initializer_list<ChassisScales>(3.25_in, 12.52093029348209348_in);
+    // ChassisScales discreteScale = std_initializer_list<ChassisScales>(3.25_in, 12.52093029348209348_in);
 
-    ChassisScales trackingWheelsScales = {2.75_in, 5_in};  // 2.2
-    ChassisScales drivenWheelsScales = {3.25_in, 15.5_in}; // 22.2
+    ChassisScales trackingWheelsScales = {2.75_in, 5.9_in};
+    ChassisScales drivenWheelsScales = {3.25_in, 14.88_in};
 
     ChassisControllerIntegrated chassisController(
         chassisUtil,
@@ -54,8 +54,8 @@ namespace drive
 
     RRLib::TwoWheelOdometry odometry(std::shared_ptr<SkidSteerModel>(&discreteChassisModel), trackingWheelsScales);
     std::shared_ptr<RRLib::PoseEstimator> poseEstimator = std::shared_ptr<RRLib::PoseEstimator>(&odometry);
-    RRLib::RamseteGains rgains{1, 1.75, 0.0};
-    RRLib::RamseteProfileController ramBoi(rgains, 1.8, std::shared_ptr<SkidSteerModel>(&discreteChassisModel), poseEstimator, kinConst, drivenWheelsScales, blue);
+    RRLib::RamseteGains rgains{0.105, 0.15, 0.0}; //0.8, 5.0, 0.0
+    RRLib::RamseteProfileController ramBoi(rgains, 0.07, std::shared_ptr<SkidSteerModel>(&discreteChassisModel), poseEstimator, kinConst, drivenWheelsScales, blue);
 
     pros::Task _odomt([](void *) {
         while (true)

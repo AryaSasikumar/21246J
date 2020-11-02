@@ -106,7 +106,7 @@ namespace intake
                 // Run motors in same direction.
                 intakeLeft.moveVoltage(12000);
                 intakeRight.moveVoltage(-12000);
-                currState = notRunning;
+                currState = intakeIn;
                 break;
 
             case intakeIn:
@@ -128,6 +128,10 @@ namespace intake
                 break;
             case redBall:
                 currState = notRunning;
+                break;
+            case autoShoot:
+                intakeLeft.moveVoltage(12000);
+                intakeRight.moveVoltage(-12000);
                 break;
             // case shoot:
             //     intakeLeft.moveVoltage(-12000);

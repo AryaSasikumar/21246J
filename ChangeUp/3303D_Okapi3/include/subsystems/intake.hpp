@@ -17,6 +17,7 @@ namespace intake
         autofilter = 'k',
         redBall = 'r',
         shoot = 's',
+        autoShoot = 'q',
         yield = 'y'
     };
 

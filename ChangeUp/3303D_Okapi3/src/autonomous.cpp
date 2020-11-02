@@ -61,7 +61,8 @@ void autonomous()
     //     break;
     // }
 
-    executeRedFar2();
+    // executeRedFar2();
+    executeProgSkills();
 
     // drive::ramBoi.setRamseteDisabled(true);
 
