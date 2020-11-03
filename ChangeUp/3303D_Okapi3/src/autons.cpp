@@ -20,17 +20,23 @@ void executeProgSkills()
     drive::odometry.setPose({0_in, 0_in, 0_deg});
     drive::ramBoi.moveTo({{14.5_in, 0_in, 0_deg}});
     intake::currState = intake::autoShoot;
-    if (intake::currState = intake::notRunning)
+    while (intake::currState != intake::autoShoot)
     {
         drive::odometry.setPose({45_in, 0_in, 0_deg});
         drive::ramBoi.moveTo({{0_in, 0_in, 0_deg}});
     }
-    else
-    {
-        pros::delay(1000);
-        drive::odometry.setPose({45_in, 0_in, 0_deg});
-        drive::ramBoi.moveTo({{0_in, 0_in, 0_deg}});
-    }
+
+    // if (intake::currState = intake::notRunning)
+    // {
+    //     drive::odometry.setPose({45_in, 0_in, 0_deg});
+    //     drive::ramBoi.moveTo({{0_in, 0_in, 0_deg}});
+    // }
+    // // else
+    // // {
+    // //     pros::delay(1000);
+    // //     drive::odometry.setPose({45_in, 0_in, 0_deg});
+    // //     drive::ramBoi.moveTo({{0_in, 0_in, 0_deg}});
+    // // }
 
     drive::odometry.setPose({0_in, 0_in, 0_deg});
     drive::turn(155_deg, 200);

@@ -84,7 +84,7 @@ namespace intake
 
         if (currState != autofilter && (ball.signature == 2 && ball.width >= 100))
         {
-            currState = redBall;
+            currState = notRunning;
         }
     }
     void act(void *)
