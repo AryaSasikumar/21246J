@@ -82,9 +82,9 @@ namespace intake
         if (stopBtn.changedToPressed())
             currState = notRunning;
 
-        if (ball.signature == 2 && ball.width >= 100)
+        if (currState != autofilter && (ball.signature == 2 && ball.width >= 100))
         {
-            currState = autofilter;
+            currState = redBall;
         }
     }
     void act(void *)
@@ -121,6 +121,7 @@ namespace intake
                 currState = notRunning;
                 break;
             case autofilter:
+
                 intakeLeft.moveVoltage(-12000);
                 intakeRight.moveVoltage(12000);
                 pros::delay(2000);
