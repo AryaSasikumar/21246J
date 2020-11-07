@@ -26,7 +26,7 @@ namespace intake
 
     bool intakeHasBall;
 
-    // bool intakeHadBall;
+    bool intakeHadBall;
 
     // const double kP = 0.0008;
     // const double kI = 0.00;
@@ -37,7 +37,7 @@ namespace intake
 
     // bool hasBall()
     // {
-    //     if (line.get_value() < 2200)
+    //     if (ball.signature == 2 && ball.width >= 100)
     //     {
     //         return true;
     //     }
@@ -80,9 +80,9 @@ namespace intake
             currState = intakeIn;
         }
         if (stopBtn.changedToPressed())
-            currState = notRunning;
+            currState = autofilter1;
 
-        if (currState != autofilter && (ball.signature == 2 && ball.width >= 100))
+        if (currState != autofilter1 && (ball.signature == 2 && ball.width >= 100))
         {
             currState = notRunning;
         }
@@ -90,13 +90,13 @@ namespace intake
     void act(void *)
     {
         double power;
-
         while (true)
         {
 
             switch (currState)
             {
             case notRunning:
+                pros::delay(150);
                 intakeLeft.setBrakeMode(AbstractMotor::brakeMode::coast);
                 intakeRight.setBrakeMode(AbstractMotor::brakeMode::coast);
                 intakeLeft.moveVoltage(0);
@@ -120,12 +120,10 @@ namespace intake
                 intakeRight.moveVoltage(12000);
                 currState = notRunning;
                 break;
-            case autofilter:
-                while (ball.signature == 2 && ball.width >= 100)
-                {
-                    intakeLeft.moveVoltage(-12000);
-                    intakeRight.moveVoltage(12000);
-                }
+            case autofilter1:
+                intakeLeft.moveVoltage(-12000);
+                intakeRight.moveVoltage(12000);
+                pros::delay(1250);
                 currState = intakeIn;
                 break;
             case redBall:

@@ -6,7 +6,7 @@ void executeProgSkills()
 {
     // Instant Tower score with hood
     intake::currState = intake::autoShoot;
-    pros::delay(1000);
+    pros::delay(500);
     intake::currState = intake::intakeIn;
 
     // Tower 1 Score
@@ -20,11 +20,12 @@ void executeProgSkills()
     drive::odometry.setPose({0_in, 0_in, 0_deg});
     drive::ramBoi.moveTo({{14.5_in, 0_in, 0_deg}});
     intake::currState = intake::autoShoot;
-    while (intake::currState != intake::autoShoot)
-    {
-        drive::odometry.setPose({45_in, 0_in, 0_deg});
-        drive::ramBoi.moveTo({{0_in, 0_in, 0_deg}});
-    }
+    pros::delay(1000);
+    // while (intake::currState != intake::autoShoot)
+    // {
+    //     drive::odometry.setPose({45_in, 0_in, 0_deg});
+    //     drive::ramBoi.moveTo({{0_in, 0_in, 0_deg}});
+    // }
 
     // if (intake::currState = intake::notRunning)
     // {
@@ -37,11 +38,12 @@ void executeProgSkills()
     // //     drive::odometry.setPose({45_in, 0_in, 0_deg});
     // //     drive::ramBoi.moveTo({{0_in, 0_in, 0_deg}});
     // // }
-
+    drive::odometry.setPose({45_in, 0_in, 0_deg});
+    drive::ramBoi.moveTo({{0_in, 0_in, 0_deg}});
     drive::odometry.setPose({0_in, 0_in, 0_deg});
     drive::turn(155_deg, 200);
     //Filter Right here
-    intake::currState = intake::autofilter;
+    intake::currState = intake::autofilter1;
     drive::odometry.setPose({0_in, 0_in, 0_deg});
     drive::ramBoi.moveTo({{22_in, 0_in, 0_deg}});
     drive::odometry.setPose({0_in, 0_in, 0_deg});
@@ -50,34 +52,100 @@ void executeProgSkills()
     //Scoring Tower 2
 
     drive::odometry.setPose({0_in, 0_in, 0_deg});
-    drive::ramBoi.moveTo({{28_in, 0_in, 0_deg}});
-    // intake::currState = intake::autoShoot;
+    drive::ramBoi.moveTo({{28.5_in, 0_in, 0_deg}});
+    intake::currState = intake::autoShoot;
+    pros::delay(1500);
     // //Vision Stop
-    // pros::delay(1500);
     // intake::currState = intake::intakeIn;
-    // drive::odometry.setPose({15_in, 0_in, 0_deg});
-    // drive::ramBoi.moveTo({{0_in, 0_in, 0_deg}});
-    // drive::odometry.setPose({0_in, 0_in, 0_deg});
-    // drive::turn(92_deg, 200);
+    drive::odometry.setPose({16_in, 0_in, 0_deg});
+    drive::ramBoi.moveTo({{0_in, 0_in, 0_deg}});
+    drive::odometry.setPose({0_in, 0_in, 0_deg});
+    drive::turn(94_deg, 200);
+    intake::currState = intake::autofilter1;
 
     // // Scoring Tower 3
 
-    // drive::odometry.setPose({0_in, 0_in, 0_deg});
-    // drive::ramBoi.moveTo({{46_in, 0_in, 0_deg}});
-    // drive::odometry.setPose({0_in, 0_in, 0_deg});
-    // drive::turn(317_deg, 200);
-    // drive::odometry.setPose({0_in, 0_in, 0_deg});
-    // drive::ramBoi.moveTo({{14.5_in, 0_in, 0_deg}});
-    // intake::currState = intake::autoShoot;
+    drive::odometry.setPose({0_in, 0_in, 0_deg});
+    drive::ramBoi.moveTo({{46_in, 0_in, 0_deg}});
+    pros::delay(0);
+    intake::currState = intake::autoShoot;
+    pros::delay(500);
+    intake::currState = intake::intakeIn;
+    drive::odometry.setPose({0_in, 0_in, 0_deg});
+    drive::turn(314_deg, 200);
+    drive::odometry.setPose({0_in, 0_in, 0_deg});
+    drive::ramBoi.moveTo({{22_in, 0_in, 0_deg}});
+    intake::currState = intake::autoShoot;
+    pros::delay(1000);
     // //Vision Stop
-    // pros::delay(1500);
     // intake::currState = intake::intakeIn;
-    // drive::odometry.setPose({12_in, 0_in, 0_deg});
-    // drive::ramBoi.moveTo({{0_in, 0_in, 0_deg}});
-    // drive::odometry.setPose({0_in, 0_in, 0_deg});
-    // drive::turn(145_deg, 200);
-    // drive::odometry.setPose({18_in, 0_in, 0_deg});
-    // drive::ramBoi.moveTo({{0_in, 0_in, 0_deg}});
+    drive::odometry.setPose({15_in, 0_in, 0_deg});
+    drive::ramBoi.moveTo({{0_in, 0_in, 0_deg}});
+    drive::odometry.setPose({0_in, 0_in, 0_deg});
+    drive::turn(145_deg, 200);
+    drive::odometry.setPose({21_in, 0_in, 0_deg});
+    drive::ramBoi.moveTo({{0_in, 0_in, 0_deg}});
+    intake::currState = intake::autofilter1;
+    drive::odometry.setPose({0_in, 26_in, 0_deg});
+    drive::ramBoi.moveTo({{72_in, 0_in, 0_deg}});
+    // // drive::odometry.setPose({0_in, 0_in, 0_deg});
+    // // drive::ramBoi.moveTo({{4_in, 0_in, 0_deg}});
+    drive::odometry.setPose({0_in, 0_in, 0_deg});
+    drive::turn(270_deg, 200);
+    drive::odometry.setPose({0_in, 0_in, 0_deg});
+    drive::ramBoi.moveTo({{31_in, 8_in, 0_deg}});
+    intake::currState = intake::autoShoot;
+    pros::delay(1500);
+    drive::odometry.setPose({40_in, 0_in, 0_deg});
+    drive::ramBoi.moveTo({{0_in, 0_in, 0_deg}});
+    intake::currState = intake::autofilter1;
+    drive::odometry.setPose({0_in, 53_in, 0_deg});
+    drive::ramBoi.moveTo({{19_in, 0_in, 112_deg}});
+    drive::odometry.setPose({0_in, 0_in, 0_deg});
+    drive::ramBoi.moveTo({{20_in, 0_in, 0_deg}});
+    intake::currState = intake::autoShoot;
+    pros::delay(1000);
+    // //Vision Stop
+    // intake::currState = intake::intakeIn;
+    drive::odometry.setPose({45_in, 0_in, 0_deg});
+    drive::ramBoi.moveTo({{0_in, 0_in, 0_deg}});
+    drive::odometry.setPose({0_in, 0_in, 0_deg});
+    drive::turn(130_deg, 200);
+    //Filter Right here
+    intake::currState = intake::autofilter1;
+    drive::odometry.setPose({0_in, 0_in, 0_deg});
+    drive::ramBoi.moveTo({{23_in, 0_in, 0_deg}});
+    drive::odometry.setPose({0_in, 0_in, 0_deg});
+    drive::turn(270_deg, 200);
+
+    //Scoring Tower 2
+
+    drive::odometry.setPose({0_in, 0_in, 0_deg});
+    drive::ramBoi.moveTo({{28.5_in, 0_in, 0_deg}});
+    intake::currState = intake::autoShoot;
+    pros::delay(1000);
+    // //Vision Stop
+    // intake::currState = intake::intakeIn;
+    drive::odometry.setPose({16_in, 0_in, 0_deg});
+    drive::ramBoi.moveTo({{0_in, 0_in, 0_deg}});
+    drive::odometry.setPose({0_in, 0_in, 0_deg});
+    drive::turn(94_deg, 200);
+    intake::currState = intake::autofilter1;
+
+    // // Scoring Tower 3
+
+    drive::odometry.setPose({0_in, 0_in, 0_deg});
+    drive::ramBoi.moveTo({{46_in, 0_in, 0_deg}});
+    pros::delay(0);
+    intake::currState = intake::autoShoot;
+    pros::delay(500);
+    intake::currState = intake::intakeIn;
+    drive::odometry.setPose({0_in, 0_in, 0_deg});
+    drive::turn(314_deg, 200);
+    drive::odometry.setPose({0_in, 0_in, 0_deg});
+    drive::ramBoi.moveTo({{21_in, 0_in, 0_deg}});
+    intake::currState = intake::autoShoot;
+    pros::delay(1000);
     // drive::odometry.setPose({0_in, 0_in, 0_deg});
     // drive::ramBoi.moveTo({45_in, 36_in, 0_deg});
     // drive::chassisController.turnAngle(-7_deg);
@@ -150,10 +218,37 @@ void executeProgSkills()
 /*-------------------------------------------------------------------*/
 void executeRedNear1()
 {
+    intake::currState = intake::autofilter1;
+    drive::odometry.setPose({0_in, 25_in, 0_deg});
+    drive::ramBoi.moveTo({{72_in, 0_in, 0_deg}});
+    intake::currState = intake::intakeIn;
+    // // drive::odometry.setPose({0_in, 0_in, 0_deg});
+    // // drive::ramBoi.moveTo({{4_in, 0_in, 0_deg}});
+    drive::odometry.setPose({0_in, 0_in, 0_deg});
+    drive::turn(270_deg, 200);
+    drive::odometry.setPose({0_in, 0_in, 0_deg});
+    drive::ramBoi.moveTo({{29_in, 8_in, 0_deg}});
+    intake::currState = intake::autoShoot;
+    pros::delay(1000);
+    drive::odometry.setPose({37_in, 0_in, 0_deg});
+    drive::ramBoi.moveTo({{0_in, 0_in, 0_deg}});
+    intake::currState = intake::autofilter1;
+    drive::odometry.setPose({0_in, 52_in, 0_deg});
+    drive::ramBoi.moveTo({{20_in, 0_in, 112_deg}});
+    drive::odometry.setPose({0_in, 0_in, 0_deg});
+    drive::ramBoi.moveTo({{21_in, 0_in, 0_deg}});
+    intake::currState = intake::autoShoot;
+    pros::delay(1000);
+    // //Vision Stop
+    // intake::currState = intake::intakeIn;
+    drive::odometry.setPose({12.5_in, 0_in, 0_deg});
+    drive::ramBoi.moveTo({{0_in, 0_in, 0_deg}});
 }
 
 void executeRedNear2() {}
-void executeRedFar1() {}
+void executeRedFar1()
+{
+}
 void executeRedFar2()
 {
     // drive::odometry.setPose({0_in, 0_in, 0_deg});
