@@ -153,7 +153,7 @@ void executeProgSkills()
     drive::chassisController.turnAngle(-33_deg);
     drive::odometry.setPose({0_in, 3_in, 0_deg});
     drive::ramBoi.moveTo({{25_in, 0_in, 0_deg}});
-    intake::currState = intake::autoShoot
+    intake::currState = intake::autoShoot;
 
     // drive::odometry.setPose({0_in, 0_in, 0_deg});
     // drive::ramBoi.moveTo({45_in, 36_in, 0_deg});
