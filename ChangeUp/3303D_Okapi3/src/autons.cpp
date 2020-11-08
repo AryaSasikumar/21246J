@@ -66,13 +66,13 @@ void executeProgSkills()
     // // Scoring Tower 3
 
     drive::odometry.setPose({0_in, 0_in, 0_deg});
-    drive::ramBoi.moveTo({{45_in, 0_in, 0_deg}});
+    drive::ramBoi.moveTo({{46_in, 0_in, 0_deg}});
     pros::delay(0);
     intake::currState = intake::autoShoot;
     pros::delay(500);
     intake::currState = intake::intakeIn;
     drive::odometry.setPose({0_in, 0_in, 0_deg});
-    drive::turn(305_deg, 200);
+    drive::turn(314_deg, 200);
     drive::odometry.setPose({0_in, 0_in, 0_deg});
     drive::ramBoi.moveTo({{22_in, 0_in, 0_deg}});
     intake::currState = intake::autoShoot;
@@ -101,7 +101,6 @@ void executeProgSkills()
     intake::currState = intake::autofilter1;
     drive::odometry.setPose({0_in, 52_in, 0_deg});
     drive::ramBoi.moveTo({{20_in, 0_in, 112_deg}});
-    drive::chassisController(-10_deg);
     drive::odometry.setPose({0_in, 0_in, 0_deg});
     drive::ramBoi.moveTo({{17.5_in, 0_in, 0_deg}});
     intake::currState = intake::autoShoot;
