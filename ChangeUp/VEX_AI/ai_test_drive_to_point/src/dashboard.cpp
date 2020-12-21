@@ -15,8 +15,7 @@ using namespace vex;
 //
 // Display various useful information about the Jetson
 //
-static void
-dashboardJetson( int ox, int oy, int width, int height ) {
+static void dashboardJetson( int ox, int oy, int width, int height ) {
   static int32_t     last_data = 0;
   static int32_t     last_packets = 0;
   static int32_t     total_data = 0;
@@ -169,8 +168,7 @@ dashboardVexlink( int ox, int oy, int width, int height ) {
 //
 // Task to update screen with status
 //
-int
-dashboardTask() {
+int dashboardTask() {
   while(true) {
     // status
     dashboardJetson(    0, 0, 280, 240 );

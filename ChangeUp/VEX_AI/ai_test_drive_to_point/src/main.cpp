@@ -39,6 +39,48 @@ ai::robot_link       link( PORT11, "robot_32456_1", linkType::worker );
 
 /*----------------------------------------------------------------------------*/
 
+void spin_right(int speed = 0){
+  if(speed != 0){
+    Drive_RF.spin(vex::directionType::fwd, speed, vex::velocityUnits::pct);
+    Drive_RM.spin(vex::directionType::fwd, speed, vex::velocityUnits::pct);
+    Drive_RB.spin(vex::directionType::fwd, speed, vex::velocityUnits::pct);
+  }else{
+    Drive_RF.stop(vex::brakeType::coast); 
+    Drive_RM.stop(vex::brakeType::coast); 
+    Drive_RB.stop(vex::brakeType::coast);
+  }
+}
+
+void leftSpin(int speed = 0){
+  if(speed != 0){
+    Drive_LF.spin(vex::directionType::fwd, speed, vex::velocityUnits::pct);
+    Drive_LM.spin(vex::directionType::fwd, speed, vex::velocityUnits::pct);
+    Drive_LB.spin(vex::directionType::fwd, speed, vex::velocityUnits::pct);
+  }else{
+    Drive_LF.stop(vex::brakeType::coast);  
+    Drive_LM.stop(vex::brakeType::coast);  
+    Drive_LB.stop(vex::brakeType::coast);  
+  }
+}
+
+
+
+
+bool point_to_heading(float final_x, float final_y){
+  float current_x, current_y, current_heading; 
+  float diff_x, diff_y, final_heading;
+
+  link.get_local_location(current_x, current_y, current_heading);
+  diff_x = (final_x - current_x);
+  diff_y = (final_y - current_y);
+
+  final_heading = ((atan2(diff_y, diff_x)*180.0)/PI);
+
+  
+
+  return false;
+}
+
 int main() {
     // Initializing Robot Configuration. DO NOT REMOVE!
     vexcodeInit();
@@ -67,7 +109,7 @@ int main() {
         // set our location to be sent to partner robot
         link.set_remote_location( local_map.pos.x, local_map.pos.y, local_map.pos.az );
 
-        //fprintf(fp, "%.2f %.2f %.2f\n", local_map.pos.x, local_map.pos.y, local_map.pos.az  );
+        //fprintf(fp, "%.2f %.2f %.2f\n", local_map.pos.x, local_map.pos.y, local_map.pos.az);
 
         // request new data        
         jetson_comms.request_map();

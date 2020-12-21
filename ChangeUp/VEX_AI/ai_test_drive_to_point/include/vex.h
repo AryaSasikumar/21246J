@@ -8,6 +8,8 @@
 /*----------------------------------------------------------------------------*/
 //
 #include <math.h>
+
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -17,6 +19,8 @@
 
 #include "ai_jetson.h"
 #include "ai_robot_link.h"
+
+#include "Subsystems/Drive.h"
 
 #include "robot-config.h"
 
@@ -32,3 +36,15 @@ extern ai::jetson      jetson_comms;
 extern ai::robot_link  link;
 
 extern int dashboardTask( void );
+
+#ifndef PI
+  #define PI 3.14159265
+#endif
+
+motor Drive_LF = motor(PORT10, ratio6_1, false);
+motor Drive_LM = motor(PORT5, ratio6_1, false);
+motor Drive_LB = motor(PORT1, ratio6_1, false);
+
+motor Drive_RF = motor(PORT20, ratio6_1, false);
+motor Drive_RM = motor(PORT15, ratio6_1, false);
+motor Drive_RB = motor(PORT12, ratio6_1, false);
