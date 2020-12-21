@@ -41,28 +41,9 @@ void pre_auton(void) {
 
 void autonomous(void) {
   //myAuton.currentTestAuton();
-
-  if(navSensor<=60){
-    myAuton.SecureRedFront7CubePID();
-  }
-  else if(navSensor<=120 && navSensor>=60){
-    myAuton.SecureRedBack7CubePID();
-  }
-  else if(navSensor<=180 && navSensor>=120){
-    myAuton.SecureBlueFront7CubePID();
-  }
-  else if(navSensor<=240 && navSensor>=180){
-    myAuton.SecureBlueBack7CubePID();
-  }
-  else{
-    //myAuton.skills();
-    myBase.drivePID(100, 100, 24);
-    task::sleep(1000); 
-    myBase.drivePID(100, 100, 24);
-    task::sleep(1000); 
-    myBase.drivePID(100, 100, 24);
-    task::sleep(1000); 
-  }
+  myAuton.SecureBlueFront7CubePID();
+  //myAuton.redBack7CubePID();
+  //myBase.turnPID(90, 90, 25);
   while(true){
     wait(20, msec); 
   }
@@ -70,7 +51,7 @@ void autonomous(void) {
 
 
 
-/*---------------------------------------h------------------------------------*/
+/*---------------------------------------------------------------------------*/
 /*                              User Control Task                            */
 /*  This task is used to control your robot during the user control phase of */
 /*  a VEX Competition.                                                       */
@@ -98,33 +79,10 @@ int main() {
   // Run the pre-autonomous function.
   pre_auton();
   // Prevent main from exiting with an infinite loop.
-
-
   while (true) {
-    Brain.Screen.setFont(mono40);
-    Brain.Screen.clearLine(1, black);
-    Brain.Screen.setCursor(Brain.Screen.row(), 1);
-    Brain.Screen.setCursor(1, 1);
-    if(navSensor<=60){
-      Brain.Screen.print("Red Front Secure");
-    }
-    else if(navSensor<=120 && navSensor>=60){
-      Brain.Screen.print("Red Back Secure");
-    }
-    else if(navSensor<=180 && navSensor>=120){
-      Brain.Screen.print("Blue Front Secure");
-    }
-    else if(navSensor<=240 && navSensor>=180){
-      Brain.Screen.print("Blue Back Secure");
-    }
-    else{
-      Brain.Screen.print("Skills");
-    }
-
-    //printf("Gyro: %f\n",baseInetrial);
+    printf("Lift: %f\n",baseInetrial);
     //printf("Lift: %f\n",liftSensor);
-    printf("Tilt: %f\n\n",tiltSensor);
-    //printf("Range: %f\n",RangeFinderE.distance(inches));
+    //printf("Tilt: %f\n\n",tiltSensor);
     vex::task::sleep(100);
   }
 }

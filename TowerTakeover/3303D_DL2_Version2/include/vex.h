@@ -39,19 +39,17 @@ motor_group RightDriveSmart = motor_group(RF, RB);
 inertial TurnGyroSmart = inertial(PORT11);
 smartdrive DriveTrainSmart = smartdrive(LeftDriveSmart, RightDriveSmart, TurnGyroSmart, 319.19, 320, 165, mm, 1);
 
-motor liftA = motor(PORT4, ratio18_1, true);
+motor liftA = motor(PORT6, ratio18_1, true);
 motor liftB = motor(PORT7, ratio18_1, true);
 
-motor rightIntake = motor(PORT8, ratio18_1, false);
-motor leftIntake = motor(PORT14, ratio18_1, true);
- 
+motor rightIntake = motor(PORT10, ratio18_1, false);
+motor leftIntake = motor(PORT3, ratio18_1, true);
+
 encoder baseEncoder = encoder(Brain.ThreeWirePort.G);
-//gyro Gyro = gyro(Brain.ThreeWirePort.C); get rid of
+gyro Gyro = gyro(Brain.ThreeWirePort.C);
 bumper Bumper = bumper(Brain.ThreeWirePort.B);
-pot liftPot = pot(Brain.ThreeWirePort.D);
+pot liftPot = pot(Brain.ThreeWirePort.F);
 pot tiltPot = pot(Brain.ThreeWirePort.A);
-pot navPot = pot(Brain.ThreeWirePort.C);
-sonar RangeFinderE = sonar(Brain.ThreeWirePort.E);
 
 //***---Controller1 Definitions---***//
 
@@ -64,10 +62,9 @@ sonar RangeFinderE = sonar(Brain.ThreeWirePort.E);
 #define X_rightJoy Controller1.Axis1.value()
 
 //---Button Definitions---//
-#define slowDriveBackBtn Controller1.ButtonY.pressing()
+#define slowDriveBackBtn Controller1.ButtonA.pressing()
 #define autoScoreBtn Controller1.ButtonB.pressing()
 #define tiltMacroBtn Controller1.ButtonX.pressing()
-
 
 #define autonTestButton Controller1.ButtonY.pressing()
 bool enableAutonTestButton = false;
@@ -78,7 +75,6 @@ bool enableAutonTestButton = false;
 #define angleDownBtn Controller1.ButtonDown.pressing()
 #define angleSlowBtn Controller1.ButtonRight.pressing()
 #define macroDriveBtn Controller1.ButtonLeft.pressing()
-#define driveToggleBtn Controller1.ButtonA.pressing()
 
 #define intakeBtn Controller1.ButtonR2.pressing()
 #define outtakeBtn Controller1.ButtonR1.pressing()
@@ -95,7 +91,6 @@ bool enableAutonTestButton = false;
 //#define liftSensor ((liftA.rotation(rotationUnits::deg) + liftB.rotation(rotationUnits::deg))/2)
 #define liftSensor liftPot.value(rotationUnits::deg)
 #define tiltSensor tiltPot.value(rotationUnits::deg)
-#define navSensor navPot.value(rotationUnits::deg)
 
 const double wheelDiameterIN  = 4;
 const double baseDiameterIN  = 16.5;
