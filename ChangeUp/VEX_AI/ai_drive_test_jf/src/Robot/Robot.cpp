@@ -14,7 +14,7 @@ int Robot::go_to_place(float x_new, float y_new, float heading_new){
   refresh_place();
   Place place_new = {{x_new, y_new}, heading_new};
   Move_Vector move_instruction= calc_move_vector(place_new);
-  Drivetrain.turnFor(right, move_instruction.heading , degrees); //TODO-----------------------
+  Drive.turnFor(right, move_instruction.heading , degrees); //TODO-----------------------
   //Drivetrain.driveFor(forward, move_instruction.distance, inches);
   return 1;
 }

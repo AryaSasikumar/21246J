@@ -40,6 +40,7 @@ ai::robot_link       link( PORT11, "robot_32456_1", linkType::manager );
 ai::robot_link       link( PORT11, "robot_32456_1", linkType::worker );
 #endif
 
+
 /*----------------------------------------------------------------------------*/
 
 int main() {
@@ -53,8 +54,10 @@ int main() {
     int32_t loop_time = 66;
 
     // start the status update display
-    thread t1(dashboardTask);
 
+
+    thread t1(dashboardTask);
+    thread t2(UsercontrolTask);
     // print through the controller to the terminal (vexos 1.0.12 is needed)
     // As USB is tied up with Jetson communications we cannot use
     // printf for debug.  If the controller is connected
@@ -62,7 +65,6 @@ int main() {
     // when using VEXcode.
     //
     //FILE *fp = fopen("/dev/serial2","wb");
-
     while(1) {
         // get last map data
         jetson_comms.get_data( &local_map );

@@ -1,25 +1,12 @@
-using namespace vex;
-
-extern brain Brain;
-
-// VEXcode devices
-extern controller Controller;
-
-extern motor_group LeftDrive;
-extern motor_group RightDrive;
-extern drivetrain Drive;
-
-
-
 //***---Controller Definitions---***//
  
 //---Y Definitions---//
-#define Y_Left_Joy Controller.Axis3.value()
-#define Y_Right_Joy Controller.Axis2.value()
+#define Y_leftJoy Controller.Axis3.value()
+#define Y_rightJoy Controller.Axis2.value()
  
 //---X Definitions---//
-#define X_Left_Joy Controller.Axis4.value()
-#define X_Right_Joy Controller.Axis1.value()
+#define X_leftJoy Controller.Axis4.value()
+#define X_rightJoy Controller.Axis1.value()
  
 //---Button Definitions---//
 #define macroDriveBtn Controller.ButtonLeft.pressing()
@@ -27,7 +14,7 @@ extern drivetrain Drive;
 #define slowDriveBackBtn Controller.ButtonY.pressing()
 
 #define autonTestButton Controller.ButtonDown.pressing()
-//bool enableAutonTestButton = true;
+bool enableAutonTestButton = true;
 
 #define shootBtn Controller.ButtonR1.pressing() 
 #define allUpBtn Controller.ButtonR2.pressing()
@@ -40,13 +27,11 @@ extern drivetrain Drive;
 #define driveToggleBtn Controller.ButtonA.pressing()
  
 //---Sensor Definitions---//
-//........
+#define mainBaseEnc ((LeftDrive.rotation(rotationUnits::deg)+RightDrive.rotation(rotationUnits::deg))/2)
+#define mainBaseLeftEncReset LeftDrive.resetRotation()
+#define mainBaseRightEncReset RightDrive.resetRotation()
 
+#define colorSensor colorChecker.reflectivity();
 
-
-/**
- * Used to initialize code/tasks/devices added using tools in VEXcode Pro.
- * 
- * This should be called at the start of your int main function.
- */
-void  vexcodeInit( void );
+const double wheelDiameterIN  = 4;
+const double BaseDiameterIN  = 16.5;

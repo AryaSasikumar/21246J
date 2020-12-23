@@ -11,18 +11,15 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <cmath>
 
 #include "v5.h"
 #include "v5_vcs.h"
+#include "vex_global.h"
 
 #include "robot-config.h"
 
-#include "AI/ai_jetson.h"
-#include "AI/ai_robot_link.h"
-
-#include "Robot/Robot.h" 
-#include "Robot/Base.h"
-
+using namespace vex;
 
 
 #define waitUntil(condition)                                                   \
@@ -32,9 +29,3 @@
 
 #define repeat(iterations)                                                     \
   for (int iterator = 0; iterator < iterations; iterator++)
-
-extern ai::jetson      jetson_comms;
-extern ai::robot_link  link;
-
-extern int dashboardTask( void );
-extern int UsercontrolTask( void );
