@@ -19,8 +19,13 @@
 enum direction_t {FORWARDS, BACKWARDS};
 enum turn_t {RIGHT, LEFT};
 
+
 /*---Other---*/
 #define FOREVER true
+
+#ifndef PI
+    #define PI 3.14159
+#endif
 
 
 #endif

@@ -21,11 +21,13 @@ class Robot{
     float dimensions[3] = {17.5, 17.5, 18.0}; 
 
     vex::distanceUnits primary_d_unit = vex::inches;
+    vex::velocityUnits primary_v_unit = vex::velocityUnits::pct;
+    
     vex::rotationUnits primary_a_unit = vex::degrees;
 
     Base base;
     Intake intake;
-    
+
   public: 
     Robot();
 

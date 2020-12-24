@@ -19,6 +19,7 @@
 #include "vex_global.h"
 
 #include "Configuration/robot-config.h"
+#include "Configuration/robot-definitions.h"
 #include "Configuration/control-definitions.h"
 #include "Configuration/general-definitions.h"
 

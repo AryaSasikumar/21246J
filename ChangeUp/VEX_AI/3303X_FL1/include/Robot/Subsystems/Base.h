@@ -16,8 +16,14 @@ const float BaseDiameterIN  = 16.5;
 
 class Base{
   private:
-    float distanceToTravel(float inchesGiven);
-    float default_drive_speed = 100;
+    float _wheel_diameter = 3.25;
+    float _wheel_travel = 10.21;
+    float _track_width = 17.5;
+    float _wheel_base = 13.5;
+    float externa;
+    vex::distanceUnits _distance_units;
+
+    int _default_speed = 100;
     const unsigned int true_speed[128] = {
       0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
       0 , 21, 21, 21, 22, 22, 22, 23, 24, 24,
@@ -47,7 +53,8 @@ class Base{
       36, 36, 36, 37, 37, 38, 39, 39, 39, 39,
       40, 42, 42, 43, 43, 44, 44, 44, 44, 45,
       45, 45, 48, 48, 48, 50, 50, 50};
-
+  protected:
+    float inches_to_ticks(float inchesGiven);
   public:
     PID_Controller myPID;
     bool useTrueSpeed = true;
@@ -56,22 +63,18 @@ class Base{
     bool leftFirst=false;
 
     //Constructors
-    Base();
+    Base(float wheel_diameter, float track_width, float wheel_base, vex::distanceUnits distance_units, int default_speed);
 
-    //General Drive Base Functions
-    void leftSpin(int speed);
-    void rightSpin(int speed);
-    void Spin(int leftSpeed, int rightSpeed);
+    //General Drive Functions
+    void left_spin(int speed, vex::breakType break_type);
+    void right_spin(int speed, vex::breakType break_type);
+    void drive_spin(int left_speed, int right_speed);
+    void drive_stop(vex::breakType break_type);
 
-    //Stop Functions
-    void Hold();
-    void Brake();
-    void Coast();
-
-    void moveFor(float degToRotate_Left, float degToRotate_Right, int speed);
+    void move_for_degrees(float left_deg, float right_deg, int speed);
 
     //User Control Functions
-    void userControl(int buffer_size = 20);
+    void user_control(int buffer_size = 20);
 
     //Autonomous Functions
     void turnPID(float maxLeftSpeed, float maxRightSpeed, float Angle); //NEWWWW

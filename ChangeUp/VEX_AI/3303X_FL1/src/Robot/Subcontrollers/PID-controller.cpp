@@ -10,16 +10,16 @@
 #include "vex.h"
 
 void PID_Controller::pidDriveLoop(int setpoint){
-  ResetDriveEncoders;
   bool moveComplete = false;
   int timesGood = 0;
   integral = 0;
   derivative = 0;
   prevError = 0;
-  while(!moveComplete && mainBaseEnc<=setpoint){
-    error = setpoint-mainBaseEnc;
+  ResetDriveEncoders;
+  while(!moveComplete && DriveEncoderRotation<=setpoint){
+    error = setpoint-DriveEncoderRotation;
     integral = integral +error;
-    if(error<=0 || mainBaseEnc>setpoint){
+    if(error<=0 || DriveEncoderRotation>setpoint){
       integral=0;
     }
     if(error > setpoint){
@@ -30,7 +30,7 @@ void PID_Controller::pidDriveLoop(int setpoint){
     speed=error*Kp + integral*Ki + derivative*Kd;
     vex::task::sleep(Dt);
 
-    LeftDrive.spin(fwd,speed,pct);
+    LeftDrive.spin(fwd,speed,pct);//TODO
     RB.spin(fwd,speed,pct);
     LF.spin(fwd,speed,pct);
     RF.spin(fwd,speed,pct);
