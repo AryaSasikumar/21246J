@@ -1,6 +1,11 @@
-#include "PID_Controller.h"
+/*---PID_CONTROLLER_CPP---*/
+/*----------------------------------------------------------------------------*/
+/*    Module:       PID-controller.cpp                                        */
+/*    Author:       Jeffrey Fisher II                                         */
+/*    Created:      23 Dec 2020                                               */
+/*----------------------------------------------------------------------------*/
+#include "Robot/Subcontrollers/PID-Controller.h"
 
-#include "vex.h"
 
 void PID_Controller::pidDriveLoop(int setpoint){
   mainBaseLeftEncReset;
@@ -177,3 +182,5 @@ void PID_Controller::pidDriveBackLoop(int setpoint){
 
 
 //PID_Controller drive(-100.0, 100.0, 0.07, 0.000001, 0.081, 0.0001); today test
+
+/*---PID_CONTROLLER_CPP---*/

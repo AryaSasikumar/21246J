@@ -1,4 +1,14 @@
-#include "Base.h"
+/*---BASE_CPP---*/
+/*----------------------------------------------------------------------------*/
+/*    Module:       Base.cpp                                                  */
+/*    Author:       Jeffrey Fisher II                                         */
+/*    Created:      23 Dec 2020                                               */
+/*----------------------------------------------------------------------------*/
+#include "Robot/Subsystems/Base.h"
+
+#include "vex.h"
+
+#include "Configuration/robot-config.h" 
 
 Base::Base(){
   printf("Base created");
@@ -92,14 +102,14 @@ double Base::distanceToTravel(double inchesGiven){
   return Distance; //Distance in ticks    
 }
 
-void Base::driveInches_Enc(dirType mydirection, double travelTargetIN, int speed){
+void Base::driveInches_Enc(direction_t mydirection, double travelTargetIN, int speed){
  double lSpeed = speed;
  double rSpeed = speed;
  double circumference = wheelDiameterIN * M_PI;
  double degreesToRotate = ((360.0 * travelTargetIN) / circumference)*2.5;
  mainBaseLeftEncReset;
  mainBaseRightEncReset;
- if(mydirection == forwards){
+ if(mydirection == Forwards){
    while(mainBaseEnc<degreesToRotate){  //|| BaseEncoder<degreesToRotate
      Spin(speed,speed);
    }
@@ -151,3 +161,5 @@ void Base::turnToPoint(double x, double y){
   double heading = (atan2(diff[1], diff[0])*180.0/3.14159265);
   //turnDegrees_MotorEnc
 }
+
+/*---BASE_CPP---*/

@@ -1,12 +1,13 @@
+/*---VEX_H---*/
+#ifndef VEX_H
+#define VEX_H
 /*----------------------------------------------------------------------------*/
-/*                                                                            */
 /*    Module:       vex.h                                                     */
-/*    Author:       Vex Robotics                                              */
-/*    Created:      1 Feb 2019                                                */
-/*    Description:  Default header for V5 projects                            */
-/*                                                                            */
+/*    Author:       Jeffrey Fisher II                                         */
+/*    Created:      23 Dec 2020                                               */
+/*    Description:  Primary Lib and Config Collection                         */
 /*----------------------------------------------------------------------------*/
-//
+
 #include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -17,15 +18,15 @@
 #include "v5_vcs.h"
 #include "vex_global.h"
 
-#include "robot-config.h"
+bool ENABLE_AUTON_TEST_BUTTON = false;
 
-using namespace vex;
+#define waitUntil(condition) \
+  do{                        \
+    wait(5, msec);           \
+  }while (!(condition))
 
-
-#define waitUntil(condition)                                                   \
-  do {                                                                         \
-    wait(5, msec);                                                             \
-  } while (!(condition))
-
-#define repeat(iterations)                                                     \
+#define repeat(iterations)                                  \
   for (int iterator = 0; iterator < iterations; iterator++)
+
+#endif
+/*---VEX_H---*/
