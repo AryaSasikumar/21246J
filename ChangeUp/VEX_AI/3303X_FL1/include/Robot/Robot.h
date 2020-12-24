@@ -8,6 +8,9 @@
 /*----------------------------------------------------------------------------*/
 #include "../Configuration/general-definitions.h"
 
+#include "Subsystems/Base.h"
+#include "Subsystems/Intake.h"
+
 int rc_auto_loop_task();
 
 class Robot{
@@ -19,6 +22,10 @@ class Robot{
 
     vex::distanceUnits primary_d_unit = vex::inches;
     vex::rotationUnits primary_a_unit = vex::degrees;
+
+    Base base;
+    Intake intake;
+    
   public: 
     Robot();
 

@@ -18,6 +18,10 @@
 #include "v5_vcs.h"
 #include "vex_global.h"
 
+#include "Configuration/robot-config.h"
+#include "Configuration/control-definitions.h"
+#include "Configuration/general-definitions.h"
+
 bool ENABLE_AUTON_TEST_BUTTON = false;
 
 #define waitUntil(condition) \
@@ -25,7 +29,7 @@ bool ENABLE_AUTON_TEST_BUTTON = false;
     wait(5, msec);           \
   }while (!(condition))
 
-#define repeat(iterations)                                  \
+#define repeat(iterations) \
   for (int iterator = 0; iterator < iterations; iterator++)
 
 #endif

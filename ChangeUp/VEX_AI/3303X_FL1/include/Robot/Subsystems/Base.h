@@ -71,7 +71,7 @@ class Base{
     void moveFor(float degToRotate_Left, float degToRotate_Right, int speed);
 
     //User Control Functions
-    void userControl(int bufferSize = 20, bool Stop = false);
+    void userControl(int buffer_size = 20);
 
     //Autonomous Functions
     void turnPID(float maxLeftSpeed, float maxRightSpeed, float Angle); //NEWWWW

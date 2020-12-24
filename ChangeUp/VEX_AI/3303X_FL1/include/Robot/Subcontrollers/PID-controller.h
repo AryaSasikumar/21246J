@@ -22,6 +22,7 @@ class PID_Controller{
     float derivative;
     float prevError;
   public:
+    PID_Controller(float Kp, float Ki, float Kd, int Dt);
     void pidDriveLoop(int setpoint);
     void pidDriveBackLoop(int setpoint);
     void pidTurnRightLoop(int setpoint);

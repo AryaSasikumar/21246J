@@ -6,10 +6,11 @@
 /*----------------------------------------------------------------------------*/
 #include "Robot/Subcontrollers/PID-Controller.h"
 
+/*---Configuration-Includes---*/
+#include "vex.h"
 
 void PID_Controller::pidDriveLoop(int setpoint){
-  mainBaseLeftEncReset;
-  mainBaseRightEncReset;
+  ResetDriveEncoders;
   bool moveComplete = false;
   int timesGood = 0;
   integral = 0;
@@ -49,8 +50,7 @@ void PID_Controller::pidDriveLoop(int setpoint){
 }
 
 void PID_Controller::pidDriveBackLoop(int setpoint){
-  mainBaseLeftEncReset;
-  mainBaseRightEncReset;
+  ResetDriveEncoders;
   bool moveComplete = false;
   int timesGood = 0;
   integral = 0;

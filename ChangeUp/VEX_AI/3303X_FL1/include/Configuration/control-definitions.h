@@ -55,7 +55,7 @@
 //---Sensor Definitions---//
 #define mainBaseEnc ((LeftDrive.rotation(rotationUnits::deg)+RightDrive.rotation(rotationUnits::deg))/2)
 #define ResetDriveEncoders \
-  LeftDrive.resetRotation(); \ 
+  LeftDrive.resetRotation(); \
   RightDrive.resetRotation()
 
 #endif

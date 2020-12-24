@@ -52,47 +52,23 @@ void Base::moveFor(double degToRotate_Left, double degToRotate_Right, int speed)
   RB.rotateFor(degToRotate_Right,degrees,speed,velocityUnits::pct); 
 }
 
-void Base::userControl(int bufferSize, bool Stop){//driveToggleBtn
-   if(toggle==true){
-     if(abs(Y_rightJoy)>bufferSize){
-       if(Y_rightJoy>0){
-         rightSpin(halfSpeed[abs(Y_rightJoy)]);
-       }else{
-         rightSpin(-halfSpeed[abs(Y_rightJoy)]);
-       }
-     }else{
-        rightSpin(0);
-     } 
-     if(abs(Y_leftJoy)>bufferSize){
-       if(Y_leftJoy>0){
-         leftSpin(halfSpeed[abs(Y_leftJoy)]);
-       }else{
-         leftSpin(-halfSpeed[abs(Y_leftJoy)]);
-       }
-     }else{
-       leftSpin(0);
-     } 
-   } 
-   else {
-      if(abs(Y_rightJoy)>bufferSize){
-       if(Y_rightJoy>0){
-         rightSpin(trueSpeed[abs(Y_rightJoy)]);
-       }else{
-         rightSpin(-trueSpeed[abs(Y_rightJoy)]);
-       }
-     }else{
-        rightSpin(0);
-     } 
-     if(abs(Y_leftJoy)>bufferSize){
-       if(Y_leftJoy>0){
-         leftSpin(trueSpeed[abs(Y_leftJoy)]);
-       }else{
-         leftSpin(-trueSpeed[abs(Y_leftJoy)]);
-       }
-     }else{
-       leftSpin(0);
-     } 
-   }
+void Base::userControl(int buffer_size){
+  unsigned int left_speed, right_speed;
+  if(toggle == true){
+    left_speed = half_speed[abs(Y_Left_Joy)];
+    right_speed = half_speed[abs(Y_Right_Joy)];
+  }else{
+    left_speed = true_speed[abs(Y_Left_Joy)];
+    right_speed = true_speed[abs(Y_Right_Joy)];
+  }
+  
+  if(Y_Right_Joy > buffer_size){ rightSpin(right_speed); }
+  else if(Y_Right_Joy < -buffer_size){ rightSpin(-right_speed); }
+  else{ rightSpin(0); } 
+
+  if(Y_Left_Joy > buffer_size){ leftSpin(left_speed); }
+  else if(Y_Left_Joy < -buffer_size){ leftSpin(-left_speed); }
+  else{ leftSpin(0); } 
 }
 
 double Base::distanceToTravel(double inchesGiven){

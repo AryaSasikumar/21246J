@@ -5,24 +5,19 @@
 /*    Created:      23 Dec 2020                                               */
 /*----------------------------------------------------------------------------*/
 
-/*-Configuration-Includes-*/
+/*---Configuration-Includes---*/
 #include "vex.h"
-#include "Configuration/robot-config.h"
-#include "Configuration/control-definitions.h"
-#include "Configuration/general-definitions.h"
-
-/*-----User-Includes-----*/
+/*-------User-Includes-------*/
 #include "Robot/Robot.h"
+
 
 vex::competition Competition;
 
-/*-----Pre-Autonomous-Functions-----*/
+/*---Pre-Autonomous---*/
 void pre_auton(void){ vexcodeInit(); }
-
-/*-----Autonomous-Task-----*/
+/*-----Autonomous-----*/
 void autonomous(void){ /*TODO*/ }
-
-/*-----User-Control-Task-----*/
+/*----User-Control----*/
 void usercontrol(void){
   //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!//
   ENABLE_AUTON_TEST_BUTTON = false;// ENABLE FOR Y-BUTTON AS AUTON TEST BUTTON!//
