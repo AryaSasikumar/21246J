@@ -9,164 +9,46 @@
 /*---Configuration-Includes---*/
 #include "vex.h"
 
-void PID_Controller::pidDriveLoop(int setpoint){
+PID_Controller::PID_Controller(float Kp = 0.05, float Ki = 0.0011, float Kd = 0.3, int Dt = 15){
+  _Kp = Kp;
+  _Ki = Ki;
+  _Kd = Kd;
+  _Dt = Dt;
+}
+
+void PID_Controller::move_loop(int setpoint, void (*move_func)(float speed), void (*stop_func)()){
   bool moveComplete = false;
   int timesGood = 0;
-  integral = 0;
-  derivative = 0;
-  prevError = 0;
+  _integral = 0;
+  _derivative = 0;
+  _prevError = 0;
   ResetDriveEncoders;
-  while(!moveComplete && DriveEncoderRotation<=setpoint){
-    error = setpoint-DriveEncoderRotation;
-    integral = integral +error;
-    if(error<=0 || DriveEncoderRotation>setpoint){
-      integral=0;
+  while(!moveComplete && DriveEncoderRotation <= setpoint){
+    _error = setpoint-DriveEncoderRotation;
+    _integral = _integral + _error;
+    if(_error <= 0 || DriveEncoderRotation > setpoint){
+      _integral = 0;
     }
-    if(error > setpoint){
-      integral = 0;
+    if(_error > setpoint){
+      _integral = 0;
     }
-    derivative=error-prevError;
-    prevError = error;
-    speed=error*Kp + integral*Ki + derivative*Kd;
-    vex::task::sleep(Dt);
+    _derivative = _error - _prevError;
+    _prevError = _error;
+    _speed = ((_error * _Kp) + (_integral * _Ki) + (_derivative * _Kd));
+    vex::task::sleep(_Dt);
 
-    LeftDrive.spin(fwd,speed,pct);//TODO
-    RB.spin(fwd,speed,pct);
-    LF.spin(fwd,speed,pct);
-    RF.spin(fwd,speed,pct);
+    move_func(_speed);//robot.spin(fwd,speed,pct);
 
-    if(error<=100){ 
+    if(_error <= 100){ 
       timesGood++;
     }
     if(timesGood >= 100){
       moveComplete = true;
     }
-    task::sleep(1); 
+    vex::task::sleep(1); 
   }
-  LF.stop(vex::brakeType::brake);
-  RB.stop(vex::brakeType::brake);
-  LB.stop(vex::brakeType::brake);
-  RF.stop(vex::brakeType::brake);
+  stop_func(); //robot.stop(vex::brakeType::brake);
 }
-
-void PID_Controller::pidDriveBackLoop(int setpoint){
-  ResetDriveEncoders;
-  bool moveComplete = false;
-  int timesGood = 0;
-  integral = 0;
-  derivative = 0;
-  prevError = 0;
-  while(!moveComplete && mainBaseEnc<=setpoint){
-    error = setpoint+mainBaseEnc;
-    integral = integral +error;
-    if(error<=0 || mainBaseEnc>setpoint){
-      integral=0;
-    }
-    if(error > setpoint){
-      integral = 0;
-    }
-    derivative=error-prevError;
-    prevError = error;
-    speed=error*Kp + integral*Ki + derivative*Kd;
-    vex::task::sleep(Dt);
-
-    LB.spin(fwd,-speed,pct);
-    RB.spin(fwd,-speed,pct);
-    LF.spin(fwd,-speed,pct);
-    RF.spin(fwd,-speed,pct);
-
-    if(error<=100){ 
-      timesGood++;
-    }
-    if(timesGood >= 100){
-      moveComplete = true;
-    }
-    task::sleep(1); 
-  }
-  LF.stop(vex::brakeType::brake);
-  RB.stop(vex::brakeType::brake);
-  LB.stop(vex::brakeType::brake);
-  RF.stop(vex::brakeType::brake);
-}
-
-// void PID_Controller::pidTurnRightLoop(int setpoint){//thanks geroge :D
-//   bool moveComplete = false;
-//   int timesGood = 0;
-//   integral = 0;
-//   derivative = 0;
-//   prevError = 0;
-//   while(!moveComplete && baseInetrial<=setpoint){
-//     error = setpoint-baseInetrial;
-//     integral = integral +error;
-//     if(error<=0 || baseInetrial>setpoint){
-//       integral=0;
-//     }
-//     if(error > setpoint){
-//       integral = 0;
-//     }
-//     derivative=error-prevError;
-//     prevError = error;
-//     speed=error*turnKp + integral*turnKi + derivative*turnKd;
-//     vex::task::sleep(4);
-
-//     LB.spin(fwd,speed,pct);
-//     RB.spin(fwd,-speed,pct);
-//     LF.spin(fwd,speed,pct);
-//     RF.spin(fwd,-speed,pct);
-
-//     if(error<=100){ 
-//       timesGood++;
-//     }
-//     if(timesGood >= 100){
-//       moveComplete = true;
-//     }
-//     task::sleep(1); 
-//   }
-//   LF.stop(vex::brakeType::brake);
-//   RB.stop(vex::brakeType::brake);
-//   LB.stop(vex::brakeType::brake);
-//   RF.stop(vex::brakeType::brake);
-// }
-
-// void PID_Controller::pidTurnLeftLoop(int setpoint){//thanks geroge :D
-//   bool moveComplete = false;
-//   int timesGood = 0;
-//   integral = 0;
-//   derivative = 0;
-//   prevError = 0;
-//   while(!moveComplete && baseInetrial<=setpoint){
-//     error = setpoint+baseInetrial;
-//     integral = integral +error;
-//     if(error<=0 || baseInetrial>setpoint){
-//       integral=0;
-//     }
-//     if(error > setpoint){
-//       integral = 0;
-//     }
-//     derivative=error-prevError;
-//     prevError = error;
-//     speed=error*turnKp + integral*turnKi + derivative*turnKd;
-//     vex::task::sleep(4);
-
-//     LB.spin(fwd,-speed,pct);
-//     RB.spin(fwd,speed,pct);
-//     LF.spin(fwd,-speed,pct);
-//     RF.spin(fwd,speed,pct);
-
-//     if(error<=100){ 
-//       timesGood++;
-//     }
-//     if(timesGood >= 100){
-//       moveComplete = true;
-//     }
-//     task::sleep(1); 
-//   }
-//   LF.stop(vex::brakeType::brake);
-//   RB.stop(vex::brakeType::brake);
-//   LB.stop(vex::brakeType::brake);
-//   RF.stop(vex::brakeType::brake);
-// }
-
 
 //PID_Controller(double min, double max, double Kp, double Ki, double Kd, double dt);
 // PID_Controller drive(-100.0, 100.0, 0.070, 0.0000600, 0.060, 0.0001);   LAST YEAR BOT

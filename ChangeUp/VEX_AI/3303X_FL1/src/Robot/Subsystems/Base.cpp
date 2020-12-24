@@ -10,29 +10,47 @@
 
 #include "Configuration/robot-config.h" 
 
-Base::Base(float wheel_diameter = 3.25, float track_width = 17.5, float wheel_base = 13.5, vex::distanceUnits d_units = vex::distanceUnits::in, int default_speed = 100){
-  _wheel_diameter = wheel_diameter;
-  _wheel_travel = wheel_diameter * PI;
-  _track_width = track_width;
-  _wheel_base = wheel_base;
-  _distance_units = d_units;
-  _default_speed = default_speed;
+Base::Base(){
+  _wheel_diameter = WHEEL_DIAMETER;
+  _wheel_travel = _wheel_diameter * PI;
+  _track_width = TRACK_WIDTH;
+  _wheel_base = WHEEL_BASE;
+  _distance_units = DEFAULT_DIST_UNITS;
+  _default_speed = DEFAULT_SPEED;
+
+  PID_forward = PID_Controller(FWD_KP, FWD_KI, FWD_KD, FWD_DT);
+  PID_backward = PID_Controller(BWD_KP, BWD_KI, BWD_KD, BWD_DT);
+  PID_left = PID_Controller(LEFT_KP, LEFT_KI, LEFT_KD, LEFT_DT);
+  PID_right = PID_Controller(RIGHT_KP, RIGHT_KI, RIGHT_KD, RIGHT_DT);
 }
 
-void Base::right_spin(int speed = 0, vex::breakType break_type = vex::brakeType::coast){
+void Base::right_spin(int speed = 0){
+  right_spin(speed, DEFAULT_DRIVE_STOP_TYPE);
+}
+
+void Base::right_spin(int speed, vex::breakType break_type){
   if(speed != 0){
-    RightDrive.spin(vex::directionType::fwd, speed, vex::velocityUnits::pct);
+    RightDrive.spin(DEFAULT_DIRECTION_TYPE, speed, DEFAULT_VEL_UNITS);
   }else{
     RightDrive.stop(break_type); 
   }
 }
 
-void Base::left_spin(int speed = 0, vex::breakType break_type = vex::brakeType::coast){
+
+void Base::left_spin(int speed = 0){
+  left_spin(speed, DEFAULT_DRIVE_STOP_TYPE);
+}
+
+void Base::left_spin(int speed, vex::breakType break_type){
   if(speed != 0){
-    LeftDrive.spin(vex::directionType::fwd, speed, vex::velocityUnits::pct);
+    LeftDrive.spin(DEFAULT_DIRECTION_TYPE, speed, DEFAULT_VEL_UNITS);
   }else{
     LeftDrive.stop(break_type);  
   }
+}
+
+void Base::drive_spin(int speed){
+  drive_spin(speed);
 }
 
 void Base::drive_spin(int left_speed, int right_speed){
@@ -40,14 +58,14 @@ void Base::drive_spin(int left_speed, int right_speed){
   right_spin(right_speed);
 }
 
-void Base::drive_stop(vex::breakType break_type = vex::brakeType::coast) {
+void Base::drive_stop(vex::breakType break_type = DEFAULT_STOP_TYPE) {
   LeftDrive.stop(break_type);
   RightDrive.stop(break_type);
 }
 
 void Base::move_for_degrees(float left_degrees, float right_degrees, int speed){
-  LeftDrive.rotateFor(left_deg,degrees,speed,velocityUnits::percent);
-  RightDrive.rotateFor(right_deg,degrees,speed,velocityUnits::percent);
+  LeftDrive.rotateFor(left_deg,degrees,speed,DEFAULT_VEL_UNITS);
+  RightDrive.rotateFor(right_deg,degrees,speed,DEFAULT_VEL_UNITS);
 }
 
 void Base::user_control(int buffer_size){

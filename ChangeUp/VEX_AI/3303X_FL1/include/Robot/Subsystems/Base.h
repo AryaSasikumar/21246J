@@ -16,14 +16,14 @@ const float BaseDiameterIN  = 16.5;
 
 class Base{
   private:
-    float _wheel_diameter = 3.25;
-    float _wheel_travel = 10.21;
-    float _track_width = 17.5;
-    float _wheel_base = 13.5;
-    float externa;
+    float _wheel_diameter;
+    float _wheel_travel;
+    float _track_width;
+    float _wheel_base;
     vex::distanceUnits _distance_units;
+    int _default_speed;
 
-    int _default_speed = 100;
+    
     const unsigned int true_speed[128] = {
       0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
       0 , 21, 21, 21, 22, 22, 22, 23, 24, 24,
@@ -54,21 +54,29 @@ class Base{
       40, 42, 42, 43, 43, 44, 44, 44, 44, 45,
       45, 45, 48, 48, 48, 50, 50, 50};
   protected:
+    PID_Controller PID_forward;
+    PID_Controller PID_backward;
+    PID_Controller PID_left;
+    PID_Controller PID_right;
+
     float inches_to_ticks(float inchesGiven);
   public:
-    PID_Controller myPID;
     bool useTrueSpeed = true;
     bool toggle = false;
-    bool rightFirst=false;
-    bool leftFirst=false;
 
     //Constructors
     Base(float wheel_diameter, float track_width, float wheel_base, vex::distanceUnits distance_units, int default_speed);
 
     //General Drive Functions
+    void left_spin(int speed);
     void left_spin(int speed, vex::breakType break_type);
+
+    void right_spin(int speed);
     void right_spin(int speed, vex::breakType break_type);
+
+    void drive_spin(int speed);
     void drive_spin(int left_speed, int right_speed);
+
     void drive_stop(vex::breakType break_type);
 
     void move_for_degrees(float left_deg, float right_deg, int speed);
