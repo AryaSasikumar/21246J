@@ -3,127 +3,41 @@
 /*    Module:       Base.cpp                                                  */
 /*    Author:       Jeffrey Fisher II                                         */
 /*    Created:      23 Dec 2020                                               */
+/*    Description:  This class is meant to be a flexible way to control any   */
+/*                  robot base with maximum ease.                             */
 /*----------------------------------------------------------------------------*/
 #include "Robot/Subsystems/Base.h"
 
 #include "vex.h"
 
-#include "Configuration/robot-config.h" 
-
-Base::Base(){
+Base::Base(){ 
   _wheel_diameter = WHEEL_DIAMETER;
   _wheel_travel = _wheel_diameter * PI;
   _track_width = TRACK_WIDTH;
   _wheel_base = WHEEL_BASE;
-  _distance_units = DEFAULT_DIST_UNITS;
   _default_speed = DEFAULT_SPEED;
 
-  PID_forward = PID_Controller(FWD_KP, FWD_KI, FWD_KD, FWD_DT);
-  PID_backward = PID_Controller(BWD_KP, BWD_KI, BWD_KD, BWD_DT);
-  PID_left = PID_Controller(LEFT_KP, LEFT_KI, LEFT_KD, LEFT_DT);
-  PID_right = PID_Controller(RIGHT_KP, RIGHT_KI, RIGHT_KD, RIGHT_DT);
+  PID_forward.set_constants(FWD_KP, FWD_KI, FWD_KD, FWD_DT);
+  PID_backward.set_constants(BWD_KP, BWD_KI, BWD_KD, BWD_DT);
+  PID_left.set_constants(LEFT_KP, LEFT_KI, LEFT_KD, LEFT_DT);
+  PID_right.set_constants(RIGHT_KP, RIGHT_KI, RIGHT_KD, RIGHT_DT);
 }
 
-void Base::right_spin(int speed = 0){
-  right_spin(speed, DEFAULT_DRIVE_STOP_TYPE);
+/*---User-Control-Loop---*/
+void Base::user_control(){
+  double velocity_divider = 1; 
+  if(toggle == true){ velocity_divider = 2; }
+  if(abs(Y_RIGHT_JOY) > Y_RIGHT_JOY_BUFFER){ right_spin(Y_RIGHT_JOY/velocity_divider); }
+  else{ right_spin(0); } 
+  if(abs(Y_LEFT_JOY) > Y_LEFT_JOY_BUFFER){ left_spin(Y_LEFT_JOY/velocity_divider); }
+  else{ left_spin(0); } 
 }
 
-void Base::right_spin(int speed, vex::breakType break_type){
-  if(speed != 0){
-    RightDrive.spin(DEFAULT_DIRECTION_TYPE, speed, DEFAULT_VEL_UNITS);
-  }else{
-    RightDrive.stop(break_type); 
-  }
-}
+//---------------------------------------------------------------//
+//↓↓↓↓↓---------ULTRA-SMART-DRIVE-CONTROL-FUNCTIONS---------↓↓↓↓↓//
 
-
-void Base::left_spin(int speed = 0){
-  left_spin(speed, DEFAULT_DRIVE_STOP_TYPE);
-}
-
-void Base::left_spin(int speed, vex::breakType break_type){
-  if(speed != 0){
-    LeftDrive.spin(DEFAULT_DIRECTION_TYPE, speed, DEFAULT_VEL_UNITS);
-  }else{
-    LeftDrive.stop(break_type);  
-  }
-}
-
-void Base::drive_spin(int speed){
-  drive_spin(speed);
-}
-
-void Base::drive_spin(int left_speed, int right_speed){
-  left_spin(left_speed);
-  right_spin(right_speed);
-}
-
-void Base::drive_stop(vex::breakType break_type = DEFAULT_STOP_TYPE) {
-  LeftDrive.stop(break_type);
-  RightDrive.stop(break_type);
-}
-
-void Base::move_for_degrees(float left_degrees, float right_degrees, int speed){
-  LeftDrive.rotateFor(left_deg,degrees,speed,DEFAULT_VEL_UNITS);
-  RightDrive.rotateFor(right_deg,degrees,speed,DEFAULT_VEL_UNITS);
-}
-
-void Base::user_control(int buffer_size){
-  unsigned int left_speed, right_speed;
-  if(toggle == true){
-    left_speed = half_speed[abs(Y_Left_Joy)];
-    right_speed = half_speed[abs(Y_Right_Joy)];
-  }else{
-    left_speed = true_speed[abs(Y_Left_Joy)];
-    right_speed = true_speed[abs(Y_Right_Joy)];
-  }
-
-  if(Y_Right_Joy > buffer_size){ rightSpin(right_speed); }
-  else if(Y_Right_Joy < -buffer_size){ rightSpin(-right_speed); }
-  else{ rightSpin(0); } 
-
-  if(Y_Left_Joy > buffer_size){ leftSpin(left_speed); }
-  else if(Y_Left_Joy < -buffer_size){ leftSpin(-left_speed); }
-  else{ leftSpin(0); } 
-}
-
-float Base::inches_to_ticks(float inchesGiven){
-  int wheelRadIN = 2; //TODO: CHANGE
-  float floatDiv = (float)95.0/36.0;
-  float Distance = ((inchesGiven/(M_PI*wheelRadIN))*(360*floatDiv))/4;
-  return Distance; //Distance in ticks    
-}
-
-
-void Base::drive_inches(direction_t mydirection, float travelTargetIN, int speed){
-  float circumference = wheelDiameterIN * M_PI;
-  float degreesToRotate = (360 * travelTargetIN) / circumference;
-  if(mydirection == forwards){
-    moveFor(degreesToRotate,degreesToRotate, speed);
-  }else if(mydirection == backwards){
-    moveFor(degreesToRotate*-1,degreesToRotate*-1, speed);
-  }
-}
-
-void Base::turn_degrees(turn_t mydirection, float travelTargetDEG, int speed){
-  float BaseCircumference = BaseDiameterIN * M_PI; //51.81
-  float degreesToRotate = ((360 * travelTargetDEG) / BaseCircumference)/2; // 32,400
-  if(mydirection == Right){
-    moveFor(degreesToRotate,degreesToRotate*-1, speed);
-  }
-  else if(mydirection == Left){
-    moveFor(degreesToRotate*-1,degreesToRotate, speed);
-  }
-}
-
-void Base::drive(float degrees, int speed){
-  moveFor(degrees, degrees, speed);
-}
-
-void Base::turn(float leftDegrees, float rightDegrees,int speed){
-  moveFor(leftDegrees, rightDegrees, speed);
-}
-
+//TODO: Absolute-Field-Position-Movement
+/*---Absolute-Field-Position-Movement---*/
 void Base::turnToPoint(float x, float y){
   float place[3]; 
   //link.get_local_location(place[0], place[1], place[2]);
@@ -133,5 +47,75 @@ void Base::turnToPoint(float x, float y){
   float heading = (atan2(diff[1], diff[0])*180.0/3.14159265);
   //turnDegrees_MotorEnc
 }
+
+//↑↑↑↑↑---------ULTRA-SMART-DRIVE-CONTROL-FUNCTIONS---------↑↑↑↑↑//
+//---------------------------------------------------------------//
+//↓↓↓↓↓------------SMART-DRIVE-CONTROL-FUNCTIONS------------↓↓↓↓↓//
+
+//TODO: PID
+
+//↑↑↑↑↑------------SMART-DRIVE-CONTROL-FUNCTIONS------------↑↑↑↑↑//
+//---------------------------------------------------------------//
+//↓↓↓↓↓---------SEMI-SMART-DRIVE-CONTROL-FUNCTIONS----------↓↓↓↓↓//
+
+/*---Full-Drive-Movement---*/
+void Base::drive_for(double distance, double velocity, bool do_finish = true){
+  Drive.driveFor(distance,DEFAULT_DIST_UNITS,velocity,DEFAULT_VEL_UNITS,do_finish);
+}
+void Base::turn_for(double angle, double velocity, bool do_finish = true){
+  Drive.turnFor(angle,DEFAULT_ROT_UNITS,velocity,DEFAULT_VEL_UNITS,do_finish);
+}
+
+//↑↑↑↑↑---------SEMI-SMART-DRIVE-CONTROL-FUNCTIONS----------↑↑↑↑↑//
+//---------------------------------------------------------------//
+//↓↓↓↓↓----------SEMI-DUMB-DRIVE-CONTROL-FUNCTIONS----------↓↓↓↓↓//
+
+/*---Raw-Motor-Movement---*/
+void Base::rotate_motors_for(double left_value, double right_value, double velocity, bool do_finish = true){
+  LeftDrive.rotateFor(left_value,DEFAULT_ROT_UNITS,velocity,DEFAULT_VEL_UNITS, false); //TODO: Test to make sure works. Might need startRotateFor
+  RightDrive.rotateFor(right_value,DEFAULT_ROT_UNITS,velocity,DEFAULT_VEL_UNITS, do_finish);
+}
+
+//↑↑↑↑↑----------SEMI-DUMB-DRIVE-CONTROL-FUNCTIONS----------↑↑↑↑↑//
+//---------------------------------------------------------------//
+//↓↓↓↓↓-------------DUMB-DRIVE-CONTROL-FUNCTIONS------------↓↓↓↓↓//
+
+/*---Left-Drive-Spin---*/
+void Base::left_spin(double velocity = 0.0){ left_spin(velocity, DEFAULT_DRIVE_STOP_TYPE); }
+void Base::left_spin(double velocity, vex::breakType break_type){
+  if(velocity != 0.0){ LeftDrive.spin(DEFAULT_DIRECTION_TYPE, velocity, DEFAULT_VEL_UNITS); } 
+  else{ LeftDrive.stop(break_type); }
+}
+/*---Right-Drive-Spin---*/
+void Base::right_spin(double velocity = 0.0){ right_spin(velocity, DEFAULT_DRIVE_STOP_TYPE); }
+void Base::right_spin(double velocity, vex::breakType break_type){
+  if(velocity != 0.0){ RightDrive.spin(DEFAULT_DIRECTION_TYPE, velocity, DEFAULT_VEL_UNITS); }
+  else{ RightDrive.stop(break_type); }
+}
+/*---Full-Drive-Spin---*/
+void Base::drive_spin(double velocity){ drive_spin(velocity); }
+void Base::drive_spin(double left_velocity, double right_velocity){
+  left_spin(left_velocity);
+  right_spin(right_velocity);
+}
+void Base::drive_stop(vex::breakType break_type = DEFAULT_STOP_TYPE){
+  LeftDrive.stop(break_type);
+  RightDrive.stop(break_type);
+}
+
+//↑↑↑↑↑-------------DUMB-DRIVE-CONTROL-FUNCTIONS------------↑↑↑↑↑//
+//---------------------------------------------------------------//
+//↓↓↓↓↓--------------UNIT-CONVERSION-FUNCTIONS--------------↓↓↓↓↓//
+
+/*---Unit-Conversion---*/
+// float Base::inches_to_ticks(float inchesGiven){ //TODO: MAKE WORK
+//   int wheelRadIN = 2; //TODO: CHANGE
+//   float floatDiv = (float)95.0/36.0;
+//   float Distance = ((inchesGiven/(M_PI*wheelRadIN))*(360*floatDiv))/4;
+//   return Distance; //Distance in ticks    
+// }
+
+//↑↑↑↑↑--------------UNIT-CONVERSION-FUNCTIONS--------------↑↑↑↑↑//
+
 
 /*---BASE_CPP---*/

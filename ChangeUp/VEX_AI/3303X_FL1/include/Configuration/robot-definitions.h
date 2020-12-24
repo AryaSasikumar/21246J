@@ -14,30 +14,30 @@
 #define WHEEL_BASE 13.5
 
 //---PID-Control---//
-float FWD_KP = 0.05;
-float FWD_KI = 0.0011;
-float FWD_KD = 0.3;
-int FWD_DT = 15;
+const double FWD_KP = 0.05;
+const double FWD_KI = 0.0011;
+const double FWD_KD = 0.3;
+const int FWD_DT = 15;
 
-float BWD_KP = FWD_KP;
-float BWD_KI = FWD_KI;
-float BWD_KD = FWD_KD;
-int BWD_DT = FWD_DT;
+const double BWD_KP = FWD_KP;
+const double BWD_KI = FWD_KI;
+const double BWD_KD = FWD_KD;
+const int BWD_DT = FWD_DT;
 
-float LEFT_KP = 0.7;
-float LEFT_KI = 0.0006;
-float LEFT_KD = 0.5;
-int LEFT_DT = 15;
+const double LEFT_KP = 0.7;
+const double LEFT_KI = 0.0006;
+const double LEFT_KD = 0.5;
+const int LEFT_DT = 15;
 
-float RIGHT_KP = LEFT_KP;
-float RIGHT_KI = LEFT_KI;
-float RIGHT_KD = LEFT_KD;
-int RIGHT_DT = LEFT_DT;
+const double RIGHT_KP = LEFT_KP;
+const double RIGHT_KI = LEFT_KI;
+const double RIGHT_KD = LEFT_KD;
+const int RIGHT_DT = LEFT_DT;
 
 
 //---Default-Units---//
 #define DEFAULT_DIST_UNITS vex::distanceUnits::in
-#define DEFAULT_ANGL_UNITS vex::rotationUnits::deg
+#define DEFAULT_ROT_UNITS vex::rotationUnits::deg
 #define DEFAULT_VEL_UNITS vex::velocityUnits::pct
 
 #define DEFAULT_TIME_UNITS vex::timeUnits::msec
@@ -46,6 +46,6 @@ int RIGHT_DT = LEFT_DT;
 
 #define DEFAULT_DIRECTION_TYPE vex::directionType::fwd
 
-#define DEFAULT_SPEED 100
+#define DEFAULT_SPEED 100.0
 #endif
 /*---ROBOT_DEFINITIONS_H---*/

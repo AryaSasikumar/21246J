@@ -28,12 +28,18 @@
 /*                                                */
 /*              V5 CONTROLLER LAYOUT              */
 
+//---Joystick-Buffer-Definitions---//
+#define X_LEFT_JOY_BUFFER 20
+#define Y_LEFT_JOY_BUFFER 20
+#define X_RIGHT_JOY_BUFFER X_LEFT_JOY_BUFFER
+#define Y_RIGHT_JOY_BUFFER Y_LEFT_JOY_BUFFER
+
 //---Left-Joystick-Definitions---//
-#define X_Left_Joy Controller.Axis4.value()              /*  Axis4  */
-#define Y_Left_Joy Controller.Axis3.value()              /*  Axis3  */
+#define X_LEFT_JOY Controller.Axis4.position()           /*  Axis4  */
+#define Y_LEFT_JOY Controller.Axis3.position()           /*  Axis3  */
 //---Right-Joystick-Definitions---//
-#define X_Right_Joy Controller.Axis1.value()             /*  Axis1  */
-#define Y_Right_Joy Controller.Axis2.value()             /*  Axis2  */
+#define X_RIGHT_JOY Controller.Axis1.position()          /*  Axis1  */
+#define Y_RIGHT_JOY Controller.Axis2.position()          /*  Axis2  */
 
 //---Button-Definitions---//
 //#define NOT_ASSIGNED Controller.ButtonL1.pressing()    /*  L1  */

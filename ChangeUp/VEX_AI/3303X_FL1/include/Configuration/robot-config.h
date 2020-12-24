@@ -6,6 +6,7 @@
 /*    Author:       Jeffrey Fisher II                                         */
 /*    Created:      23 Dec 2020                                               */
 /*----------------------------------------------------------------------------*/
+#include "robot-definitions.h"
 
 //---Core-Hardware---//
 vex::brain Brain;
@@ -19,7 +20,7 @@ vex::motor RB_Drive = vex::motor(vex::PORT6, vex::ratio18_1, true);
 //---Drive-Motor-Groups---//
 vex::motor_group LeftDrive = vex::motor_group(LF_Drive, LB_Drive);
 vex::motor_group RightDrive = vex::motor_group(RF_Drive, RB_Drive);
-vex::drivetrain Drive = vex::drivetrain(LeftDrive, RightDrive, 10.21, 17.5, 13.5, vex::inches, 1); //TODO: Input Correct Numbers
+vex::drivetrain Drive = vex::drivetrain(LeftDrive, RightDrive, 10.21, 17.5, 13.5, DEFAULT_DIST_UNITS, 1); //TODO: Input Correct Numbers
 //(leftDrive, rightDrive, wheel_travel, track_width, wheel_base, distanceUnits::in, external_gear_ratio);
 
 //---Intake-Motors---//-----------TODO

@@ -9,25 +9,16 @@
 
 class PID_Controller{
   private:
-    float _Kp = 0.05;
-    float _Ki = 0.0011;
-    float _Kd = 0.3;
-    float _turnKp = 0.7;
-    float _turnKi = 0.0006;
-    float _turnKd = 0.5;
-    int _Dt = 15;
-    float _error;
-    float _speed;
-    float _integral;
-    float _derivative;
-    float _prevError;
+    double _Kp, _Ki, _Kd;
+    double _error, _prevError;
+    double _integral, _derivative;
+    double _speed;
+    int _Dt;
   public:
-    PID_Controller(float Kp, float Ki, float Kd, int Dt);
-    void move_loop(int setpoint, void (*move_func)(float speed), void (*stop_func)());
-    //void pidDriveBackLoop(int setpoint);
-    //void pidTurnRightLoop(int setpoint);
-    //void pidTurnLeftLoop(int setpoint);
-    //bool pidRun;
+    PID_Controller();
+    PID_Controller(double Kp, double Ki, double Kd, int Dt);
+    void set_constants(double Kp, double Ki, double Kd, int Dt);
+    bool move_loop(int setpoint, void (*move_func)(double speed), void (*stop_func)());
 };
 
 #endif

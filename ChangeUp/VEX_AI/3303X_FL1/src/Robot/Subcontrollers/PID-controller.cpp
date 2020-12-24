@@ -9,19 +9,27 @@
 /*---Configuration-Includes---*/
 #include "vex.h"
 
-PID_Controller::PID_Controller(float Kp = 0.05, float Ki = 0.0011, float Kd = 0.3, int Dt = 15){
+PID_Controller::PID_Controller(){ 
+  set_constants(0.0, 0.0, 0.0, 0);
+}
+
+PID_Controller::PID_Controller(double Kp, double Ki, double Kd, int Dt){
+  set_constants(Kp,Ki,Kd,Dt);
+}
+
+void PID_Controller::set_constants(double Kp, double Ki, double Kd, int Dt){
   _Kp = Kp;
   _Ki = Ki;
   _Kd = Kd;
   _Dt = Dt;
 }
 
-void PID_Controller::move_loop(int setpoint, void (*move_func)(float speed), void (*stop_func)()){
+bool PID_Controller::move_loop(int setpoint, void (*move_func)(double speed), void (*stop_func)()){
   bool moveComplete = false;
   int timesGood = 0;
-  _integral = 0;
-  _derivative = 0;
-  _prevError = 0;
+  _integral = 0.0;
+  _derivative = 0.0;
+  _prevError = 0.0;
   ResetDriveEncoders;
   while(!moveComplete && DriveEncoderRotation <= setpoint){
     _error = setpoint-DriveEncoderRotation;
@@ -47,7 +55,8 @@ void PID_Controller::move_loop(int setpoint, void (*move_func)(float speed), voi
     }
     vex::task::sleep(1); 
   }
-  stop_func(); //robot.stop(vex::brakeType::brake);
+  stop_func();
+  return SUCCESS;
 }
 
 //PID_Controller(double min, double max, double Kp, double Ki, double Kd, double dt);
