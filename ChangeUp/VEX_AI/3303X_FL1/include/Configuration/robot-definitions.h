@@ -12,6 +12,7 @@
 #define WHEEL_TRAVEL 10.21
 #define TRACK_WIDTH 17.5
 #define WHEEL_BASE 13.5
+#define EXTERAL_GEAR_RATIO 1
 
 //---PID-Control---//
 const double FWD_KP = 0.05;

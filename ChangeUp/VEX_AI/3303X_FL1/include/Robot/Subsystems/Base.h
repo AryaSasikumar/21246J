@@ -5,51 +5,50 @@
 /*    Module:       Base.h                                                    */
 /*    Author:       Jeffrey Fisher II                                         */
 /*    Created:      23 Dec 2020                                               */
+/*    Description:  This class is meant to be a flexible way to control any   */
+/*                  robot base with maximum ease.                             */
 /*----------------------------------------------------------------------------*/
 
 #include "../../Configuration/general-definitions.h"
 
+#include "Subsystem.h"
 #include "../Subcontrollers/PID-controller.h"
 
-const double wheelDiameterIN  = 4;
-const double BaseDiameterIN  = 16.5;
-
-class Base{
+class Base : public Subsystem{
   private:
-    double _wheel_diameter;
-    double _wheel_travel;
-    double _track_width;
-    double _wheel_base;
+    double _wheel_diameter, _wheel_travel;
+    double _track_width, _wheel_base, _robot_radius;
+    double _external_gear_ratio;
     double _default_speed;
 
     PID_Controller PID_forward;
     PID_Controller PID_backward;
     PID_Controller PID_left;
     PID_Controller PID_right;
-  //protected:
-    //TODO: Unit Conversion
+
+    double _velocity_divider = 1;
   public:
-    bool toggle = false;
-
-    //Constructors
-    Base();
-    //User-Control-Loop
-    void user_control();
-
+    /*---Base-Constructors---*/
+    Base(); //Default Constructor
+    /*---User-Control-Loop---*/
+    void user_control_tank_drive(); //Tank Drive User Control
+    //void user_control_x_drive();  //X Drive User Control
+    //void user_control_h_drive();  //H Drive User Control
+    //TODO: ADD OTHER USER CONTROL TYPES AS NEEDED HERE!
+    /*---Absolute-Field-Position-Movement---*/
     void turnToPoint(double x, double y);
-
-    //TODO: PID
-    //Autonomous Functions
-    void drivePID(double max_left_velocity, double max_right_velocity, double distance);
-    void turnPID(double max_left_velocity, double max_right_velocity, double angle);
-
+    /*---PID-Drive-Movement---*/
+    virtual int move_func(double velocity);
+    virtual int stop_func();
+    void pid_drive_for(double distance, double timeout_ms);
+    void pid_drive_for(double distance, double max_velocity, double timeout_ms);
+    void pid_turn_for(double angle, double timeout_ms);
+    void pid_turn_for(double angle, double max_velocity, double timeout_ms);
     /*---Full-Drive-Movement---*/
     void drive_for(double distance, double velocity, bool do_finish);
     void turn_for(double angle, double velocity, bool do_finish);
-
     /*---Raw-Motor-Movement---*/
     void rotate_motors_for(double left_value, double right_value, double velocity, bool do_finish);
-
     /*---Left-Drive-Spin---*/
     void left_spin(double velocity);
     void left_spin(double velocity, vex::breakType break_type);
@@ -59,7 +58,14 @@ class Base{
     /*---Full-Drive-Spin---*/
     void drive_spin(double velocity);
     void drive_spin(double left_velocity, double right_velocity);
+    void turn_spin(double velocity);
     void drive_stop(vex::breakType break_type);
+    void drive_coast();
+    void drive_brake();
+    void drive_hold();
+    /*---Unit-Conversion---*/
+    double travel_distance_to_motor_degrees(double distance);
+    double travel_angle_to_motor_degrees(double angle);
 };
 
 #endif

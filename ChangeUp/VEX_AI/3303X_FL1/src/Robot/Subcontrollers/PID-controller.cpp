@@ -7,7 +7,9 @@
 #include "Robot/Subcontrollers/PID-Controller.h"
 
 /*---Configuration-Includes---*/
+#include <vex_timer.h>
 #include "vex.h"
+
 
 PID_Controller::PID_Controller(){ 
   set_constants(0.0, 0.0, 0.0, 0);
@@ -24,54 +26,46 @@ void PID_Controller::set_constants(double Kp, double Ki, double Kd, int Dt){
   _Dt = Dt;
 }
 
-bool PID_Controller::move_loop(int setpoint, void (*move_func)(double speed), void (*stop_func)()){
-  bool moveComplete = false;
-  int timesGood = 0;
+int PID_Controller::base_move_loop(double setpoint, double max_velocity, double timeout_ms, void (Base::*move_func)(double), void (Base::*stop_func)()){
+  bool move_complete = false;
+  int times_good = 0;
   _integral = 0.0;
   _derivative = 0.0;
   _prevError = 0.0;
+  stop_func();
+  vex::task::sleep(5);
   ResetDriveEncoders;
-  while(!moveComplete && DriveEncoderRotation <= setpoint){
-    _error = setpoint-DriveEncoderRotation;
+  vex::timer::clear();	
+  while(!move_complete && DriveEncoderRotation <= setpoint){
+    _error = setpoint - DriveEncoderRotation;
     _integral = _integral + _error;
-    if(_error <= 0 || DriveEncoderRotation > setpoint){
-      _integral = 0;
+    if(_error <= 0.0 || DriveEncoderRotation > setpoint){
+      _integral = 0.0;
     }
     if(_error > setpoint){
-      _integral = 0;
+      _integral = 0.0;
     }
     _derivative = _error - _prevError;
     _prevError = _error;
-    _speed = ((_error * _Kp) + (_integral * _Ki) + (_derivative * _Kd));
+    _velocity = ((_error * _Kp) + (_integral * _Ki) + (_derivative * _Kd));
     vex::task::sleep(_Dt);
-
-    move_func(_speed);//robot.spin(fwd,speed,pct);
-
-    if(_error <= 100){ 
-      timesGood++;
+    if(_velocity > max_velocity){
+      _velocity = max_velocity;
     }
-    if(timesGood >= 100){
-      moveComplete = true;
+    move_func(_velocity);
+    if(_error <= 100.0){ 
+      times_good++;
+    }
+    if(times_good >= 100){
+      move_complete = true;
     }
     vex::task::sleep(1); 
+    if(vex::timer::time(vex::timeUnits::msec) > timeout_ms){
+      return FAILURE;
+    }
   }
   stop_func();
   return SUCCESS;
 }
-
-//PID_Controller(double min, double max, double Kp, double Ki, double Kd, double dt);
-// PID_Controller drive(-100.0, 100.0, 0.070, 0.0000600, 0.060, 0.0001);   LAST YEAR BOT
-// PID_Controller turn(-100.0, 100.0, 0.750, 0.0000080, 0.200, 0.0001);    LAST YEAR BOT
-
-//PID_Controller drive(-100.0, 100.0, 0.060, 0.0000300, 0.045, 0.0001);
-//PID_Controller turn(-100.0, 100.0, 2.500, 0.0000300, 0.050, 0.0001);     //   NEWWWWW
-
-// PID_Controller drive(-100.0, 100.0, 0.07, 0.0003, 0.006, 0);
-// PID_Controller turn(-100.0, 100.0, 0.750, 0.0000080, 0.200, 0.0001); LATEST
-
-
-
-
-//PID_Controller drive(-100.0, 100.0, 0.07, 0.000001, 0.081, 0.0001); today test
 
 /*---PID_CONTROLLER_CPP---*/

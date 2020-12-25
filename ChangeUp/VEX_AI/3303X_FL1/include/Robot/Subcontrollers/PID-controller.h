@@ -12,13 +12,13 @@ class PID_Controller{
     double _Kp, _Ki, _Kd;
     double _error, _prevError;
     double _integral, _derivative;
-    double _speed;
+    double _velocity;
     int _Dt;
   public:
     PID_Controller();
     PID_Controller(double Kp, double Ki, double Kd, int Dt);
     void set_constants(double Kp, double Ki, double Kd, int Dt);
-    bool move_loop(int setpoint, void (*move_func)(double speed), void (*stop_func)());
+    int base_move_loop(double setpoint, double max_velocity, double timeout_ms, void (Base::*move_func)(double), void (Base::*stop_func)());
 };
 
 #endif

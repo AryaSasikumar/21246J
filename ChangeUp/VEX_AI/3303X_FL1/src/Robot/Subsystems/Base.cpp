@@ -15,8 +15,11 @@ Base::Base(){
   _wheel_travel = _wheel_diameter * PI;
   _track_width = TRACK_WIDTH;
   _wheel_base = WHEEL_BASE;
-  _default_speed = DEFAULT_SPEED;
+  _external_gear_ratio = EXTERAL_GEAR_RATIO;
+  _robot_radius = (sqrt(pow((_track_width/2),2)+pow((_wheel_base/2),2)));
 
+  _default_speed = DEFAULT_SPEED;
+  
   PID_forward.set_constants(FWD_KP, FWD_KI, FWD_KD, FWD_DT);
   PID_backward.set_constants(BWD_KP, BWD_KI, BWD_KD, BWD_DT);
   PID_left.set_constants(LEFT_KP, LEFT_KI, LEFT_KD, LEFT_DT);
@@ -24,14 +27,14 @@ Base::Base(){
 }
 
 /*---User-Control-Loop---*/
-void Base::user_control(){
-  double velocity_divider = 1; 
-  if(toggle == true){ velocity_divider = 2; }
-  if(abs(Y_RIGHT_JOY) > Y_RIGHT_JOY_BUFFER){ right_spin(Y_RIGHT_JOY/velocity_divider); }
+void Base::user_control_tank_drive(){ 
+  if(abs(Y_RIGHT_JOY) > Y_RIGHT_JOY_BUFFER){ right_spin(Y_RIGHT_JOY/_velocity_divider); }
   else{ right_spin(0); } 
-  if(abs(Y_LEFT_JOY) > Y_LEFT_JOY_BUFFER){ left_spin(Y_LEFT_JOY/velocity_divider); }
+  if(abs(Y_LEFT_JOY) > Y_LEFT_JOY_BUFFER){ left_spin(Y_LEFT_JOY/_velocity_divider); }
   else{ left_spin(0); } 
 }
+//TODO: ADD OTHER USER CONTROL TYPES AS NEEDED HERE!
+//  EX) XDRIVE, HDRIVE, etc
 
 //---------------------------------------------------------------//
 //↓↓↓↓↓---------ULTRA-SMART-DRIVE-CONTROL-FUNCTIONS---------↓↓↓↓↓//
@@ -52,7 +55,30 @@ void Base::turnToPoint(float x, float y){
 //---------------------------------------------------------------//
 //↓↓↓↓↓------------SMART-DRIVE-CONTROL-FUNCTIONS------------↓↓↓↓↓//
 
-//TODO: PID
+/*---PID-Drive-Movement---*/
+void Base::pid_drive_for(double distance, double timeout_ms){
+  pid_drive_for(distance, _default_speed, timeout_ms);
+}
+void Base::pid_drive_for(double distance, double max_velocity, double timeout_ms){
+  double setpoint = travel_distance_to_motor_degrees(distance);
+  if(distance > 0.0){
+    PID_forward.base_move_loop(setpoint, max_velocity, timeout_ms, this);
+  }else if(distance < 0.0){
+    PID_backward.base_move_loop(setpoint, max_velocity, timeout_ms, drive_spin, drive_brake);
+  }
+}
+void Base::pid_turn_for(double angle, double timeout_ms){
+  pid_turn_for(angle, _default_speed, timeout_ms);
+}
+void Base::pid_turn_for(double angle, double max_velocity, double timeout_ms){
+  //TODO: Calculate Setpoint 
+  double setpoint = travel_angle_to_motor_degrees(angle);
+  if(angle > 0.0){
+    PID_right.base_move_loop(setpoint, max_velocity, timeout_ms, turn_spin, drive_brake);
+  }else if(angle < 0.0){
+    PID_left.base_move_loop(setpoint, max_velocity, timeout_ms,turn_spin, drive_brake);
+  }
+}
 
 //↑↑↑↑↑------------SMART-DRIVE-CONTROL-FUNCTIONS------------↑↑↑↑↑//
 //---------------------------------------------------------------//
@@ -98,24 +124,27 @@ void Base::drive_spin(double left_velocity, double right_velocity){
   left_spin(left_velocity);
   right_spin(right_velocity);
 }
+void Base::turn_spin(double velocity){ drive_spin(velocity, -velocity); }
 void Base::drive_stop(vex::breakType break_type = DEFAULT_STOP_TYPE){
   LeftDrive.stop(break_type);
   RightDrive.stop(break_type);
 }
+void Base::drive_coast(){ drive_stop(vex::brakeType::coast); }
+void Base::drive_brake(){ drive_stop(vex::brakeType::brake); }
+void Base::drive_hold(){ drive_stop(vex::brakeType::hold); }
 
 //↑↑↑↑↑-------------DUMB-DRIVE-CONTROL-FUNCTIONS------------↑↑↑↑↑//
 //---------------------------------------------------------------//
 //↓↓↓↓↓--------------UNIT-CONVERSION-FUNCTIONS--------------↓↓↓↓↓//
 
 /*---Unit-Conversion---*/
-// float Base::inches_to_ticks(float inchesGiven){ //TODO: MAKE WORK
-//   int wheelRadIN = 2; //TODO: CHANGE
-//   float floatDiv = (float)95.0/36.0;
-//   float Distance = ((inchesGiven/(M_PI*wheelRadIN))*(360*floatDiv))/4;
-//   return Distance; //Distance in ticks    
-// }
+double Base::travel_distance_to_motor_degrees(double distance){
+  return (distance*_wheel_travel)/(360.0*_external_gear_ratio);   
+}
+double Base::travel_angle_to_motor_degrees(double angle){
+  return travel_distance_to_motor_degrees(PI*_robot_radius*angle/180.0);
+}
 
 //↑↑↑↑↑--------------UNIT-CONVERSION-FUNCTIONS--------------↑↑↑↑↑//
-
 
 /*---BASE_CPP---*/
