@@ -6,7 +6,7 @@
 /*    Author:       Jeffrey Fisher II                                         */
 /*    Created:      24 Dec 2020                                               */
 /*----------------------------------------------------------------------------*/
-#include "../../Configuration/general-definitions.h"
+#include "vex.h"
 
 class Subsystem{
     public:
@@ -16,7 +16,6 @@ class Subsystem{
         Subsystem(){
             _default_speed = 100.0;
             _velocity_divider = 1.0;
-            encoder_reset();
         }
         virtual ~Subsystem(){}
         

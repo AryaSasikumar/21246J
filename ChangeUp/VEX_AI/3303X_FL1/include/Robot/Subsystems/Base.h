@@ -36,7 +36,7 @@ class Base : public Subsystem{
     //void user_control_h_drive();  //H Drive User Control
     //TODO: ADD OTHER USER CONTROL TYPES AS NEEDED HERE!
     /*---Absolute-Field-Position-Movement---*/
-    void turnToPoint(double x, double y);
+    //void turnToPoint(double x, double y);
 
 
 
@@ -57,15 +57,15 @@ class Base : public Subsystem{
     void rotate_motors_for(double left_value, double right_value, double velocity, bool do_finish);
     /*---Left-Drive-Spin---*/
     void left_spin(double velocity);
-    void left_spin(double velocity, vex::breakType break_type);
+    void left_spin(double velocity, vex::brakeType stop_type);
     /*---Right-Drive-Spin---*/
     void right_spin(double velocity);
-    void right_spin(double velocity, vex::breakType break_type);
+    void right_spin(double velocity, vex::brakeType stop_type);
     /*---Full-Drive-Spin---*/
     void drive_spin(double velocity);
     void drive_spin(double left_velocity, double right_velocity);
     void turn_spin(double velocity);
-    void drive_stop(vex::breakType break_type);
+    void drive_stop(vex::brakeType stop_type);
     void drive_coast();
     void drive_brake();
     void drive_hold();

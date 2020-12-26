@@ -8,7 +8,7 @@
 /*---Configuration-Includes---*/
 #include "vex.h"
 /*-------User-Includes-------*/
-#include "Robot/Robot.h"
+//include "Robot/Robot.h"
 
 
 vex::competition Competition;
@@ -22,7 +22,7 @@ void usercontrol(void){
   //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!//
   ENABLE_AUTON_TEST_BUTTON = false;// ENABLE FOR Y-BUTTON AS AUTON TEST BUTTON!//
   //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!//
-  vex::task drive_task(rc_auto_loop_task);
+  //vex::task drive_task(rc_auto_loop_task);
   while(FOREVER){ wait(20, vex::msec); }// Sleep to prevent wasted resources.
 }
 

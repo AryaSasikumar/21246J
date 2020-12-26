@@ -6,6 +6,7 @@
 /*    Author:       Jeffrey Fisher II                                         */
 /*    Created:      23 Dec 2020                                               */
 /*----------------------------------------------------------------------------*/
+#include "Subsystem.h"
 
 class Intake : public Subsystem{
   private:

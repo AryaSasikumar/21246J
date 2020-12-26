@@ -7,9 +7,10 @@
 #include "Robot/Subcontrollers/PID-Controller.h"
 
 /*---Configuration-Includes---*/
-#include <vex_timer.h>
+
 #include "vex.h"
 
+//include <vex_timer.h>
 
 PID_Controller::PID_Controller(){ 
   set_constants(0.0, 0.0, 0.0, 0);
@@ -37,7 +38,8 @@ int PID_Controller::base_move_loop(double setpoint, double max_velocity, double 
   subsystem->pid_stop_func();
   vex::task::sleep(5);
   subsystem->encoder_reset();
-  vex::timer::clear();	
+  vex::timer timeout_clock;
+  timeout_clock.clear();
   while(!move_complete && subsystem->get_encoder_rotation() <= setpoint){
     _error = setpoint - subsystem->get_encoder_rotation();
     _integral = _integral + _error;
@@ -62,7 +64,7 @@ int PID_Controller::base_move_loop(double setpoint, double max_velocity, double 
       move_complete = true;
     }
     vex::task::sleep(1); 
-    if(vex::timer::time(vex::timeUnits::msec) > timeout_ms){
+    if(timeout_clock.time(vex::timeUnits::msec) > timeout_ms){
       return FAILURE;
     }
   }

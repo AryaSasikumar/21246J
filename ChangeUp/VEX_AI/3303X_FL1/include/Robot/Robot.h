@@ -1,5 +1,5 @@
 /*---ROBOT_H---*/
-#ifndef ROBOT_H
+#ifdef ROBOT_H
 #define ROBOT_H
 /*----------------------------------------------------------------------------*/
 /*    Module:       Robot.h                                                   */

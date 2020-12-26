@@ -6,9 +6,10 @@
 /*    Description:  This class is meant to be a flexible way to control any   */
 /*                  robot base with maximum ease.                             */
 /*----------------------------------------------------------------------------*/
+#include "vex.h"
+
 #include "Robot/Subsystems/Base.h"
 
-#include "vex.h"
 
 Base::Base(){ 
   _wheel_diameter = WHEEL_DIAMETER;
@@ -24,16 +25,24 @@ Base::Base(){
   PID_backward.set_constants(BWD_KP, BWD_KI, BWD_KD, BWD_DT);
   PID_left.set_constants(LEFT_KP, LEFT_KI, LEFT_KD, LEFT_DT);
   PID_right.set_constants(RIGHT_KP, RIGHT_KI, RIGHT_KD, RIGHT_DT);
+  encoder_reset();
 }
 
 Base::~Base(){}
 
 /*---User-Control-Loop---*/
 void Base::user_control_tank_drive(){ 
-  if(abs(Y_RIGHT_JOY) > Y_RIGHT_JOY_BUFFER){ right_spin(Y_RIGHT_JOY/_velocity_divider); }
-  else{ right_spin(0); } 
-  if(abs(Y_LEFT_JOY) > Y_LEFT_JOY_BUFFER){ left_spin(Y_LEFT_JOY/_velocity_divider); }
-  else{ left_spin(0); } 
+  if(abs(Y_RIGHT_JOY) > Y_RIGHT_JOY_BUFFER){ 
+    right_spin(Y_RIGHT_JOY/_velocity_divider, DEFAULT_DRIVE_STOP_TYPE); 
+  }else{ 
+    right_spin(0, DEFAULT_DRIVE_STOP_TYPE); 
+  } 
+  if(abs(Y_LEFT_JOY) > Y_LEFT_JOY_BUFFER){ 
+    left_spin(Y_LEFT_JOY/_velocity_divider, DEFAULT_DRIVE_STOP_TYPE); 
+  }
+  else{ 
+    left_spin(0.0, DEFAULT_DRIVE_STOP_TYPE); 
+  } 
 }
 //TODO: ADD OTHER USER CONTROL TYPES AS NEEDED HERE!
 //  EX) XDRIVE, HDRIVE, etc
@@ -43,21 +52,19 @@ void Base::user_control_tank_drive(){
 
 //TODO: Absolute-Field-Position-Movement
 /*---Absolute-Field-Position-Movement---*/
-void Base::turnToPoint(float x, float y){
-  float place[3]; 
-  //link.get_local_location(place[0], place[1], place[2]);
-  float diff[] = {x - place[0], y - place[1]};
+// void Base::turnToPoint(float x, float y){
+//   float place[3]; 
+//   //link.get_local_location(place[0], place[1], place[2]);
+//   float diff[] = {x - place[0], y - place[1]};
 
-  float distance = sqrt(pow(diff[0],2) + pow(diff[1],2) * 1.0);
-  float heading = (atan2(diff[1], diff[0])*180.0/3.14159265);
-  //turnDegrees_MotorEnc
-}
+//   float distance = sqrt(pow(diff[0],2) + pow(diff[1],2) * 1.0);
+//   float heading = (atan2(diff[1], diff[0])*180.0/3.14159265);
+//   //turnDegrees_MotorEnc
+// }
 
 //↑↑↑↑↑---------ULTRA-SMART-DRIVE-CONTROL-FUNCTIONS---------↑↑↑↑↑//
 //---------------------------------------------------------------//
 //↓↓↓↓↓------------SMART-DRIVE-CONTROL-FUNCTIONS------------↓↓↓↓↓//
-
-void Base::turn_spin(double velocity){ drive_spin(velocity, -velocity); }
 
 int Base::pid_move_func(double velocity){
   if(pid_mode == PID_TURN){
@@ -65,10 +72,12 @@ int Base::pid_move_func(double velocity){
   }else{
     turn_spin(velocity);
   }
+  return SUCCESS;
 }
 
 int Base::pid_stop_func(){
   drive_brake();
+  return SUCCESS;
 }
 
 int encoder_reset(){
@@ -134,27 +143,27 @@ void Base::rotate_motors_for(double left_value, double right_value, double veloc
 //↓↓↓↓↓-------------DUMB-DRIVE-CONTROL-FUNCTIONS------------↓↓↓↓↓//
 
 /*---Left-Drive-Spin---*/
-void Base::left_spin(double velocity = 0.0){ left_spin(velocity, DEFAULT_DRIVE_STOP_TYPE); }
-void Base::left_spin(double velocity, vex::breakType break_type){
+void Base::left_spin(double velocity){ left_spin(velocity, DEFAULT_DRIVE_STOP_TYPE); }
+void Base::left_spin(double velocity, vex::brakeType stop_type){
   if(velocity != 0.0){ LeftDrive.spin(DEFAULT_DIRECTION_TYPE, velocity, DEFAULT_VEL_UNITS); } 
-  else{ LeftDrive.stop(break_type); }
+  else{ LeftDrive.stop(stop_type); }
 }
 /*---Right-Drive-Spin---*/
-void Base::right_spin(double velocity = 0.0){ right_spin(velocity, DEFAULT_DRIVE_STOP_TYPE); }
-void Base::right_spin(double velocity, vex::breakType break_type){
+void Base::right_spin(double velocity){ right_spin(velocity, DEFAULT_DRIVE_STOP_TYPE); }
+void Base::right_spin(double velocity, vex::brakeType stop_type){
   if(velocity != 0.0){ RightDrive.spin(DEFAULT_DIRECTION_TYPE, velocity, DEFAULT_VEL_UNITS); }
-  else{ RightDrive.stop(break_type); }
+  else{ RightDrive.stop(stop_type); }
 }
 /*---Full-Drive-Spin---*/
-void Base::drive_spin(double velocity){ drive_spin(velocity); }
-void Base::turn_spin(double velocity){ drive_spin(velocity, -velocity); }
+void Base::drive_spin(double velocity){ drive_spin(velocity, velocity); }
 void Base::drive_spin(double left_velocity, double right_velocity){
   left_spin(left_velocity);
   right_spin(right_velocity);
 }
-void Base::drive_stop(vex::breakType break_type = DEFAULT_STOP_TYPE){
-  LeftDrive.stop(break_type);
-  RightDrive.stop(break_type);
+void Base::turn_spin(double velocity){ drive_spin(velocity, -velocity); }
+void Base::drive_stop(vex::brakeType stop_type = DEFAULT_DRIVE_STOP_TYPE){
+  LeftDrive.stop(stop_type);
+  RightDrive.stop(stop_type);
 }
 void Base::drive_coast(){ drive_stop(vex::brakeType::coast); }
 void Base::drive_brake(){ drive_stop(vex::brakeType::brake); }
