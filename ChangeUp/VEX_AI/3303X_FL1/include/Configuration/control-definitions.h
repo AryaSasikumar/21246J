@@ -59,10 +59,6 @@
 #define driveToggleBtn Controller.ButtonA.pressing()     /*  A  */
 
 //---Sensor Definitions---//
-#define DriveEncoderRotation ((LeftDrive.rotation(DEFAULT_ROT_UNITS)+RightDrive.rotation(DEFAULT_ROT_UNITS))/2)
-#define ResetDriveEncoders \
-  LeftDrive.resetRotation(); \
-  RightDrive.resetRotation()
 
 #endif
 /*---CONTROL_DEFINITIONS_H---*/

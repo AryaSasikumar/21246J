@@ -6,6 +6,7 @@
 /*    Author:       Jeffrey Fisher II                                         */
 /*    Created:      23 Dec 2020                                               */
 /*----------------------------------------------------------------------------*/
+#include "../Subsystems/Subsystem.h"
 
 class PID_Controller{
   private:
@@ -17,8 +18,9 @@ class PID_Controller{
   public:
     PID_Controller();
     PID_Controller(double Kp, double Ki, double Kd, int Dt);
+    ~PID_Controller();
     void set_constants(double Kp, double Ki, double Kd, int Dt);
-    int base_move_loop(double setpoint, double max_velocity, double timeout_ms, void (Base::*move_func)(double), void (Base::*stop_func)());
+    int base_move_loop(double setpoint, double max_velocity, double timeout_ms, Subsystem *subsystem);
 };
 
 #endif

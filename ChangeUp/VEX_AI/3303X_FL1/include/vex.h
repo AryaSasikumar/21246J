@@ -8,6 +8,8 @@
 /*    Description:  Primary Lib and Config Collection                         */
 /*----------------------------------------------------------------------------*/
 
+//V5 Reference: https://api.vexcode.cloud/v5/html/index.html
+
 #include <math.h>
 #include <stdio.h>
 #include <stdlib.h>

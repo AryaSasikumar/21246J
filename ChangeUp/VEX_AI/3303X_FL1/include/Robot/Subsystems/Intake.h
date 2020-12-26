@@ -7,9 +7,8 @@
 /*    Created:      23 Dec 2020                                               */
 /*----------------------------------------------------------------------------*/
 
-class Intake{
+class Intake : public Subsystem{
   private:
-    float default_intake_speed = 100;
   public:
     Intake();
 

@@ -30,7 +30,7 @@ class Robot{
 
   public: 
     Robot();
-
+    ~Robot();
     float get_x();
     float get_y();
     float get_heading();

@@ -19,17 +19,17 @@ class Base : public Subsystem{
     double _wheel_diameter, _wheel_travel;
     double _track_width, _wheel_base, _robot_radius;
     double _external_gear_ratio;
-    double _default_speed;
 
     PID_Controller PID_forward;
     PID_Controller PID_backward;
     PID_Controller PID_left;
     PID_Controller PID_right;
 
-    double _velocity_divider = 1;
+    PID_BASE_MODE pid_mode = PID_DRIVE;
   public:
     /*---Base-Constructors---*/
     Base(); //Default Constructor
+    ~Base();
     /*---User-Control-Loop---*/
     void user_control_tank_drive(); //Tank Drive User Control
     //void user_control_x_drive();  //X Drive User Control
@@ -37,9 +37,15 @@ class Base : public Subsystem{
     //TODO: ADD OTHER USER CONTROL TYPES AS NEEDED HERE!
     /*---Absolute-Field-Position-Movement---*/
     void turnToPoint(double x, double y);
+
+
+
     /*---PID-Drive-Movement---*/
-    virtual int move_func(double velocity);
-    virtual int stop_func();
+    virtual int pid_move_func(double velocity);
+    virtual int pid_stop_func();
+    virtual int encoder_reset();
+    virtual double get_encoder_rotation();
+
     void pid_drive_for(double distance, double timeout_ms);
     void pid_drive_for(double distance, double max_velocity, double timeout_ms);
     void pid_turn_for(double angle, double timeout_ms);

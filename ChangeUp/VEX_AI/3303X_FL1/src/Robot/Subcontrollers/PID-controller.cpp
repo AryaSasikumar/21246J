@@ -19,6 +19,8 @@ PID_Controller::PID_Controller(double Kp, double Ki, double Kd, int Dt){
   set_constants(Kp,Ki,Kd,Dt);
 }
 
+PID_Controller::~PID_Controller(){}
+
 void PID_Controller::set_constants(double Kp, double Ki, double Kd, int Dt){
   _Kp = Kp;
   _Ki = Ki;
@@ -26,20 +28,20 @@ void PID_Controller::set_constants(double Kp, double Ki, double Kd, int Dt){
   _Dt = Dt;
 }
 
-int PID_Controller::base_move_loop(double setpoint, double max_velocity, double timeout_ms, void (Base::*move_func)(double), void (Base::*stop_func)()){
+int PID_Controller::base_move_loop(double setpoint, double max_velocity, double timeout_ms,  Subsystem *subsystem){
   bool move_complete = false;
   int times_good = 0;
   _integral = 0.0;
   _derivative = 0.0;
   _prevError = 0.0;
-  stop_func();
+  subsystem->pid_stop_func();
   vex::task::sleep(5);
-  ResetDriveEncoders;
+  subsystem->encoder_reset();
   vex::timer::clear();	
-  while(!move_complete && DriveEncoderRotation <= setpoint){
-    _error = setpoint - DriveEncoderRotation;
+  while(!move_complete && subsystem->get_encoder_rotation() <= setpoint){
+    _error = setpoint - subsystem->get_encoder_rotation();
     _integral = _integral + _error;
-    if(_error <= 0.0 || DriveEncoderRotation > setpoint){
+    if(_error <= 0.0 || subsystem->get_encoder_rotation() > setpoint){
       _integral = 0.0;
     }
     if(_error > setpoint){
@@ -52,7 +54,7 @@ int PID_Controller::base_move_loop(double setpoint, double max_velocity, double 
     if(_velocity > max_velocity){
       _velocity = max_velocity;
     }
-    move_func(_velocity);
+    subsystem->pid_move_func(_velocity);
     if(_error <= 100.0){ 
       times_good++;
     }
@@ -64,7 +66,7 @@ int PID_Controller::base_move_loop(double setpoint, double max_velocity, double 
       return FAILURE;
     }
   }
-  stop_func();
+  subsystem->pid_stop_func();
   return SUCCESS;
 }
 

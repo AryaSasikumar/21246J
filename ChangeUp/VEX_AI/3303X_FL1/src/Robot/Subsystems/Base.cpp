@@ -26,6 +26,8 @@ Base::Base(){
   PID_right.set_constants(RIGHT_KP, RIGHT_KI, RIGHT_KD, RIGHT_DT);
 }
 
+Base::~Base(){}
+
 /*---User-Control-Loop---*/
 void Base::user_control_tank_drive(){ 
   if(abs(Y_RIGHT_JOY) > Y_RIGHT_JOY_BUFFER){ right_spin(Y_RIGHT_JOY/_velocity_divider); }
@@ -55,28 +57,53 @@ void Base::turnToPoint(float x, float y){
 //---------------------------------------------------------------//
 //↓↓↓↓↓------------SMART-DRIVE-CONTROL-FUNCTIONS------------↓↓↓↓↓//
 
+void Base::turn_spin(double velocity){ drive_spin(velocity, -velocity); }
+
+int Base::pid_move_func(double velocity){
+  if(pid_mode == PID_TURN){
+    drive_spin(velocity);
+  }else{
+    turn_spin(velocity);
+  }
+}
+
+int Base::pid_stop_func(){
+  drive_brake();
+}
+
+int encoder_reset(){
+  LeftDrive.resetRotation();
+  RightDrive.resetRotation();
+  return SUCCESS;
+}
+
+double get_encoder_rotation(){
+  return ((LeftDrive.rotation(DEFAULT_ROT_UNITS)+RightDrive.rotation(DEFAULT_ROT_UNITS))/2);
+}
+
 /*---PID-Drive-Movement---*/
 void Base::pid_drive_for(double distance, double timeout_ms){
   pid_drive_for(distance, _default_speed, timeout_ms);
 }
 void Base::pid_drive_for(double distance, double max_velocity, double timeout_ms){
+  pid_mode = PID_DRIVE;
   double setpoint = travel_distance_to_motor_degrees(distance);
   if(distance > 0.0){
     PID_forward.base_move_loop(setpoint, max_velocity, timeout_ms, this);
   }else if(distance < 0.0){
-    PID_backward.base_move_loop(setpoint, max_velocity, timeout_ms, drive_spin, drive_brake);
+    PID_backward.base_move_loop(setpoint, max_velocity, timeout_ms, this);
   }
 }
 void Base::pid_turn_for(double angle, double timeout_ms){
   pid_turn_for(angle, _default_speed, timeout_ms);
 }
 void Base::pid_turn_for(double angle, double max_velocity, double timeout_ms){
-  //TODO: Calculate Setpoint 
+  pid_mode = PID_TURN;
   double setpoint = travel_angle_to_motor_degrees(angle);
   if(angle > 0.0){
-    PID_right.base_move_loop(setpoint, max_velocity, timeout_ms, turn_spin, drive_brake);
+    PID_right.base_move_loop(setpoint, max_velocity, timeout_ms, this);
   }else if(angle < 0.0){
-    PID_left.base_move_loop(setpoint, max_velocity, timeout_ms,turn_spin, drive_brake);
+    PID_left.base_move_loop(setpoint, max_velocity, timeout_ms, this);
   }
 }
 
@@ -120,11 +147,11 @@ void Base::right_spin(double velocity, vex::breakType break_type){
 }
 /*---Full-Drive-Spin---*/
 void Base::drive_spin(double velocity){ drive_spin(velocity); }
+void Base::turn_spin(double velocity){ drive_spin(velocity, -velocity); }
 void Base::drive_spin(double left_velocity, double right_velocity){
   left_spin(left_velocity);
   right_spin(right_velocity);
 }
-void Base::turn_spin(double velocity){ drive_spin(velocity, -velocity); }
 void Base::drive_stop(vex::breakType break_type = DEFAULT_STOP_TYPE){
   LeftDrive.stop(break_type);
   RightDrive.stop(break_type);

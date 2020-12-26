@@ -16,7 +16,9 @@
 #define FAILURE 1
 #endif
 
-enum direction_t {FORWARDS, BACKWARDS};
+
+
+enum PID_BASE_MODE {PID_DRIVE, PID_TURN};
 enum turn_t {RIGHT, LEFT};
 
 
