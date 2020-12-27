@@ -23,10 +23,17 @@ int Robot::refresh_position(MAP_RECORD *local_map){
   return SUCCESS;
 }
 
-int Robot::change_position(double new_x, double new_y){
+int Robot::change_position(double new_x, double new_y, double velocity){
+  double diff[] = {new_x - position[0], new_y - position[1]};
+  double distance = sqrt(pow(diff[0],2) + pow(diff[1],2) * 1.0);
+  double heading = (atan2(diff[1], diff[0])*180.0/3.14159265);
+  change_heading(heading, velocity);
+  base.drive_for(distance, velocity, true);
   return SUCCESS;
 }
-int Robot::change_heading(double new_heading){
+int Robot::change_heading(double new_heading, double velocity){
+  double rotate_amount = (new_heading - heading)*180.0/3.14159265;
+  base.turn_for(rotate_amount, velocity, true);
   return SUCCESS;
 }
 

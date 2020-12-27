@@ -6,8 +6,6 @@
 /*----------------------------------------------------------------------------*/
 #include "vex.h"
 
-#include "AI/AI_Jetson.h"
-
 // Create high priority task to handle incomming data
 AI::Jetson::Jetson() {
   state = jetson_state::kStateSyncWait1;

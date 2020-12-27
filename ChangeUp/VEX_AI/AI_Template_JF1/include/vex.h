@@ -24,6 +24,9 @@
 #include "Configuration/control-definitions.h"
 #include "Configuration/general-definitions.h"
 
+#include "AI/AI_Jetson.h"
+#include "AI/AI_Robot_Link.h"
+
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -36,9 +39,15 @@ extern "C" {
 #define repeat(iterations) \
   for (int iterator = 0; iterator < iterations; iterator++)
 
+extern AI::Jetson      jetson_comm;
+extern AI::Robot_Link  robot_link;
 
-// extern int dashboardTask( void );
+extern int dashboardTask( void );
 // extern int UsercontrolTask( void );
+
+
+
+
 #ifdef __cplusplus
 }
 #endif

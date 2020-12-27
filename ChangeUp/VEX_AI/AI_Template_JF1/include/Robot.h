@@ -8,8 +8,6 @@
 /*----------------------------------------------------------------------------*/
 #include "vex.h"
 #include "Subsystems/Base.h"
-#include "AI/AI_Jetson.h"
-#include "AI/AI_Robot_Link.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -38,8 +36,8 @@ class Robot{
 
     int refresh_position(MAP_RECORD *local_map);
 
-    int change_position(double new_x, double new_y);
-    int change_heading(double new_heading);
+    int change_position(double new_x, double new_y, double velocity);
+    int change_heading(double new_heading, double velocity);
 };
 
 #endif 

@@ -31,11 +31,12 @@ class Base : public Subsystem{
     //void user_control_h_drive();  //H Drive User Control
     //TODO: ADD OTHER USER CONTROL TYPES AS NEEDED HERE!
     /*---Absolute-Field-Position-Movement---*/
-    //void turnToPoint(double x, double y);
-    virtual int encoder_reset();
-    virtual double get_encoder_rotation();
+
+    //void TurPoint(double x, double y);
 
     /*---PID-Drive-Movement---*/
+    virtual int encoder_reset();
+    virtual double get_encoder_rotation();
     virtual int pid_move_func(double velocity);
     virtual int pid_stop_func();
 

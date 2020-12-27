@@ -6,8 +6,6 @@
 /*----------------------------------------------------------------------------*/
 #include "vex.h"
 
-#include "AI/AI_Robot_Link.h"
-
 AI::Robot_Link::Robot_Link(int32_t index, const char *name, vex::linkType type) : vex::serial_link( index, name, type ) {
   // create threads as tx_task and rx_task are static class members, we pass
   // the class instance as an argument to the thread. A new thread is, however, created for each instance

@@ -10,7 +10,7 @@
 /*-------User-Includes-------*/
 #include "Robot.h"
 
-AI::Jetson      jetson_comm;
+AI::Jetson jetson_comm;
 
 #define MANAGER_ROBOT
 #ifdef MANAGER_ROBOT
@@ -23,12 +23,11 @@ static MAP_RECORD local_map;
 
 int32_t loop_time = 66; //Run at about 15Hz
 
-Robot myRobot;
-
+Robot thisRobot;
 
 int rc_auto_loop_task() {
   while (FOREVER){
-    myRobot.base.user_control_tank_drive();
+    thisRobot.base.user_control_tank_drive();
   }
   return 0;
 }
@@ -50,8 +49,8 @@ int main(){
   Competition.autonomous(autonomous);
   Competition.drivercontrol(usercontrol);
   pre_auton();
-  // start the status update display
-  //thread t1(dashboardTask);
+  //start the status update display
+  vex::thread t1(dashboardTask);
   //thread t2(UsercontrolTask);
   /* 
     Print through the controller to the terminal (vexos 1.0.12 is needed)
@@ -63,6 +62,7 @@ int main(){
   while(FOREVER){
     jetson_comm.get_data( &local_map );//Get last map data
     robot_link.set_remote_location( local_map.pos.x, local_map.pos.y, local_map.pos.az );//Set our location to be sent to partner robot
+    thisRobot.refresh_position( &local_map );
     //fprintf(fp, "%.2f %.2f %.2f\n", local_map.pos.x, local_map.pos.y, local_map.pos.az  );
     jetson_comm.request_map(); //Request new data   
     vex::this_thread::sleep_for(loop_time); //Allow other tasks to run
