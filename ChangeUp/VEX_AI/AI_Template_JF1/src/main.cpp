@@ -12,24 +12,26 @@
 
 AI::Jetson      jetson_comm;
 
-#define  MANAGER_ROBOT
-
-#ifdef MANAGER_ROBOT 
-#pragma message("Building for the manager")
-AI::Robot_Link  robot_link( vex::PORT11, "robot_32456_1", vex::linkType::manager );
+#define MANAGER_ROBOT
+#ifdef MANAGER_ROBOT
+AI::Robot_Link robot_link(vex::PORT12, "ai_3303D_manager", vex::linkType::manager);
 #else
-#pragma message("Building for the worker")
-AI::Robot_Link  robot_link( vex::PORT11, "robot_32456_1", vex::linkType::worker );
+AI::Robot_Link robot_link(vex::PORT12, "ai_3303D_worker", vex::linkType::worker);
 #endif
+
+static MAP_RECORD local_map;
+
+int32_t loop_time = 66; //Run at about 15Hz
 
 Robot myRobot;
 
-// int rc_auto_loop_task() {
-//   while (FOREVER){
-//     myRobot.base.user_control_tank_drive();
-//   }
-//   return 0;
-// }
+
+int rc_auto_loop_task() {
+  while (FOREVER){
+    myRobot.base.user_control_tank_drive();
+  }
+  return 0;
+}
 
 vex::competition Competition;
 
@@ -48,81 +50,22 @@ int main(){
   Competition.autonomous(autonomous);
   Competition.drivercontrol(usercontrol);
   pre_auton();
+  // start the status update display
+  //thread t1(dashboardTask);
+  //thread t2(UsercontrolTask);
+  /* 
+    Print through the controller to the terminal (vexos 1.0.12 is needed)
+    As USB is tied up with Jetson communications we cannot use printf for debug.  
+    If the controller is connected then this can be used as a direct connection 
+    to USB on the controller when using VEXcode.
+  */
+  //FILE *fp = fopen("/dev/serial2","wb");
   while(FOREVER){
-    //Use this loop for printf testing. EX: printf("Sensor Name: %d\n", sensor.value());
-    vex::task::sleep(100);
+    jetson_comm.get_data( &local_map );//Get last map data
+    robot_link.set_remote_location( local_map.pos.x, local_map.pos.y, local_map.pos.az );//Set our location to be sent to partner robot
+    //fprintf(fp, "%.2f %.2f %.2f\n", local_map.pos.x, local_map.pos.y, local_map.pos.az  );
+    jetson_comm.request_map(); //Request new data   
+    vex::this_thread::sleep_for(loop_time); //Allow other tasks to run
   }
 }
-
 /*---MAIN_CPP---*/
-
-
-
-// #include "vex.h"
-
-// using namespace vex;
-
-// create instance of jetson class to receive location and other
-// data from the Jetson nano
-// //
-// ai::jetson  jetson_comms;
-
-/*----------------------------------------------------------------------------*/
-// Create a robot_link on PORT1 using the unique name robot_32456_1
-// The unique name should probably incorporate the team number
-// and be at least 12 characters so as to generate a good hash
-//
-// The Demo is symetrical, we send the same data and display the same status on both
-// manager and worker robots
-// Comment out the following definition to build for the worker robot
-// #define  MANAGER_ROBOT    1
-
-// #if defined(MANAGER_ROBOT)
-// #pragma message("building for the manager")
-// ai::robot_link       link( PORT11, "robot_32456_1", linkType::manager );
-// #else
-// #pragma message("building for the worker")
-// ai::robot_link       link( PORT11, "robot_32456_1", linkType::worker );
-// #endif
-
-
-/*----------------------------------------------------------------------------*/
-
-// int main() {
-//     // Initializing Robot Configuration. DO NOT REMOVE!
-//     vexcodeInit();
-
-//     // local storage for latest data from the Jetson Nano
-//     static MAP_RECORD       local_map;
-
-//     // RUn at about 15Hz
-//     int32_t loop_time = 66;
-
-//     // start the status update display
-
-
-//     thread t1(dashboardTask);
-//     thread t2(UsercontrolTask);
-//     // print through the controller to the terminal (vexos 1.0.12 is needed)
-//     // As USB is tied up with Jetson communications we cannot use
-//     // printf for debug.  If the controller is connected
-//     // then this can be used as a direct connection to USB on the controller
-//     // when using VEXcode.
-//     //
-//     //FILE *fp = fopen("/dev/serial2","wb");
-//     while(1) {
-//         // get last map data
-//         jetson_comms.get_data( &local_map );
-
-//         // set our location to be sent to partner robot
-//         link.set_remote_location( local_map.pos.x, local_map.pos.y, local_map.pos.az );
-
-//         //fprintf(fp, "%.2f %.2f %.2f\n", local_map.pos.x, local_map.pos.y, local_map.pos.az  );
-
-//         // request new data        
-//         jetson_comms.request_map();
-
-//         // Allow other tasks to run
-//         this_thread::sleep_for(loop_time);
-//     }
-// }

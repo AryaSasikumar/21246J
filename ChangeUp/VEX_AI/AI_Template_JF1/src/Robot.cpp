@@ -16,11 +16,10 @@ double Robot::get_x(){ return position[0]; };
 double Robot::get_y(){ return position[1]; };
 double Robot::get_heading(){ return heading; };
 
-int Robot::refresh_position(){
-  return SUCCESS;
-}
-
-int Robot::refresh_heading(){
+int Robot::refresh_position(MAP_RECORD *local_map){
+  position[0] = local_map->pos.x;
+  position[1] = local_map->pos.y;
+  heading = local_map->pos.az;
   return SUCCESS;
 }
 
