@@ -9,6 +9,7 @@
 #include "vex.h"
 /*-------User-Includes-------*/
 #include "Robot/Robot.h"
+<<<<<<< HEAD
 
 Robot myRobot;
 
@@ -41,6 +42,8 @@ int rc_auto_loop_task() {
 // #pragma message("building for the worker")
 // AI::Robot_Link link( PORT11, "robot_32456_1", vex::linkType::worker );
 // #endif
+=======
+>>>>>>> parent of edac948... Now Compiling In VEXcode
 
 
 vex::competition Competition;

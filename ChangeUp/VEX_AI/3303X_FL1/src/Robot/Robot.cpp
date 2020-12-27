@@ -8,12 +8,17 @@
 
 Robot::Robot(){}
 
+<<<<<<< HEAD
+=======
+Robot::Robot(){}
+>>>>>>> parent of edac948... Now Compiling In VEXcode
 Robot::~Robot(){}
 
 double Robot::get_x(){ return position[0]; };
 double Robot::get_y(){ return position[1]; };
 double Robot::get_heading(){ return heading; };
 
+<<<<<<< HEAD
 int Robot::refresh_position(){
   return SUCCESS;
 }
@@ -27,6 +32,13 @@ int Robot::set_position(double new_x, double new_y){
 }
 int Robot::set_heading(double new_heading){
   return SUCCESS;
+=======
+int rc_auto_loop_task() {
+  while (FOREVER){
+    myBase.userControl();
+  }
+  return 0;
+>>>>>>> parent of edac948... Now Compiling In VEXcode
 }
 
 /*---ROBOT_CPP---*/
