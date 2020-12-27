@@ -36,10 +36,13 @@ class Base : public Subsystem{
     /*---Absolute-Field-Position-Movement---*/
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
     //void turnToPoint(double x, double y);
     virtual int encoder_reset();
     virtual double get_encoder_rotation();
 =======
+=======
+>>>>>>> parent of edac948... Now Compiling In VEXcode
 =======
 >>>>>>> parent of edac948... Now Compiling In VEXcode
     void turnToPoint(double x, double y);

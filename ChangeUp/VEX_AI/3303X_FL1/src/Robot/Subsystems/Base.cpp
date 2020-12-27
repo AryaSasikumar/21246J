@@ -8,7 +8,10 @@
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
+=======
+>>>>>>> parent of edac948... Now Compiling In VEXcode
 =======
 >>>>>>> parent of edac948... Now Compiling In VEXcode
 #include "vex.h"
@@ -36,6 +39,7 @@ Base::~Base(){}
 void Base::user_control_tank_drive(){ 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
   if(abs(Y_RIGHT_JOY) > Y_RIGHT_JOY_BUFFER){ 
     right_spin(Y_RIGHT_JOY/_velocity_divider); 
   }else{ 
@@ -50,11 +54,16 @@ void Base::user_control_tank_drive(){
 =======
 =======
 >>>>>>> parent of edac948... Now Compiling In VEXcode
+=======
+>>>>>>> parent of edac948... Now Compiling In VEXcode
   if(abs(Y_RIGHT_JOY) > Y_RIGHT_JOY_BUFFER){ right_spin(Y_RIGHT_JOY/_velocity_divider); }
   else{ right_spin(0); } 
   if(abs(Y_LEFT_JOY) > Y_LEFT_JOY_BUFFER){ left_spin(Y_LEFT_JOY/_velocity_divider); }
   else{ left_spin(0); } 
 <<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> parent of edac948... Now Compiling In VEXcode
+=======
 >>>>>>> parent of edac948... Now Compiling In VEXcode
 =======
 >>>>>>> parent of edac948... Now Compiling In VEXcode
@@ -95,6 +104,9 @@ int Base::pid_move_func(double velocity){
     turn_spin(velocity);
   }
 <<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> parent of edac948... Now Compiling In VEXcode
+=======
 >>>>>>> parent of edac948... Now Compiling In VEXcode
 =======
 >>>>>>> parent of edac948... Now Compiling In VEXcode

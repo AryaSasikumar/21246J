@@ -10,14 +10,26 @@
 /*-------User-Includes-------*/
 #include "Robot.h"
 
+AI::Jetson      jetson_comm;
+
+#define  MANAGER_ROBOT
+
+#ifdef MANAGER_ROBOT 
+#pragma message("Building for the manager")
+AI::Robot_Link  robot_link( vex::PORT11, "robot_32456_1", vex::linkType::manager );
+#else
+#pragma message("Building for the worker")
+AI::Robot_Link  robot_link( vex::PORT11, "robot_32456_1", vex::linkType::worker );
+#endif
+
 Robot myRobot;
 
-int rc_auto_loop_task() {
-  while (FOREVER){
-    myRobot.base.user_control_tank_drive();
-  }
-  return 0;
-}
+// int rc_auto_loop_task() {
+//   while (FOREVER){
+//     myRobot.base.user_control_tank_drive();
+//   }
+//   return 0;
+// }
 
 vex::competition Competition;
 

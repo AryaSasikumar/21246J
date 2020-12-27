@@ -24,10 +24,10 @@ int Robot::refresh_heading(){
   return SUCCESS;
 }
 
-int Robot::set_position(double new_x, double new_y){
+int Robot::change_position(double new_x, double new_y){
   return SUCCESS;
 }
-int Robot::set_heading(double new_heading){
+int Robot::change_heading(double new_heading){
   return SUCCESS;
 }
 
