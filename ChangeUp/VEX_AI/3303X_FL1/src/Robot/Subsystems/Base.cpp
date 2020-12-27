@@ -3,13 +3,10 @@
 /*    Module:       Base.cpp                                                  */
 /*    Author:       Jeffrey Fisher II                                         */
 /*    Created:      23 Dec 2020                                               */
-/*    Description:  This class is meant to be a flexible way to control any   */
-/*                  robot base with maximum ease.                             */
 /*----------------------------------------------------------------------------*/
 #include "vex.h"
 
 #include "Robot/Subsystems/Base.h"
-
 
 Base::Base(){ 
   _wheel_diameter = WHEEL_DIAMETER;
@@ -33,15 +30,15 @@ Base::~Base(){}
 /*---User-Control-Loop---*/
 void Base::user_control_tank_drive(){ 
   if(abs(Y_RIGHT_JOY) > Y_RIGHT_JOY_BUFFER){ 
-    right_spin(Y_RIGHT_JOY/_velocity_divider, DEFAULT_DRIVE_STOP_TYPE); 
+    right_spin(Y_RIGHT_JOY/_velocity_divider); 
   }else{ 
-    right_spin(0, DEFAULT_DRIVE_STOP_TYPE); 
+    right_spin(0); 
   } 
   if(abs(Y_LEFT_JOY) > Y_LEFT_JOY_BUFFER){ 
-    left_spin(Y_LEFT_JOY/_velocity_divider, DEFAULT_DRIVE_STOP_TYPE); 
+    left_spin(Y_LEFT_JOY/_velocity_divider); 
   }
   else{ 
-    left_spin(0.0, DEFAULT_DRIVE_STOP_TYPE); 
+    left_spin(0.0); 
   } 
 }
 //TODO: ADD OTHER USER CONTROL TYPES AS NEEDED HERE!
@@ -67,11 +64,8 @@ void Base::user_control_tank_drive(){
 //↓↓↓↓↓------------SMART-DRIVE-CONTROL-FUNCTIONS------------↓↓↓↓↓//
 
 int Base::pid_move_func(double velocity){
-  if(pid_mode == PID_TURN){
-    drive_spin(velocity);
-  }else{
-    turn_spin(velocity);
-  }
+  if(pid_mode == PID_TURN){ drive_spin(velocity); }
+  else{ turn_spin(velocity); }
   return SUCCESS;
 }
 

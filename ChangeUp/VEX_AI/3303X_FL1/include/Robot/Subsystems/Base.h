@@ -5,11 +5,9 @@
 /*    Module:       Base.h                                                    */
 /*    Author:       Jeffrey Fisher II                                         */
 /*    Created:      23 Dec 2020                                               */
-/*    Description:  This class is meant to be a flexible way to control any   */
-/*                  robot base with maximum ease.                             */
 /*----------------------------------------------------------------------------*/
 
-#include "../../Configuration/general-definitions.h"
+#include "vex.h"
 
 #include "Subsystem.h"
 #include "../Subcontrollers/PID-controller.h"
@@ -37,14 +35,12 @@ class Base : public Subsystem{
     //TODO: ADD OTHER USER CONTROL TYPES AS NEEDED HERE!
     /*---Absolute-Field-Position-Movement---*/
     //void turnToPoint(double x, double y);
-
-
+    virtual int encoder_reset();
+    virtual double get_encoder_rotation();
 
     /*---PID-Drive-Movement---*/
     virtual int pid_move_func(double velocity);
     virtual int pid_stop_func();
-    virtual int encoder_reset();
-    virtual double get_encoder_rotation();
 
     void pid_drive_for(double distance, double timeout_ms);
     void pid_drive_for(double distance, double max_velocity, double timeout_ms);

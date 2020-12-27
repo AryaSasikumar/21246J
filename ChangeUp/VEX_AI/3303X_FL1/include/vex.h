@@ -25,6 +25,7 @@
 #include "Configuration/control-definitions.h"
 #include "Configuration/general-definitions.h"
 
+
 bool ENABLE_AUTON_TEST_BUTTON = false;
 
 #define waitUntil(condition) \
@@ -34,6 +35,10 @@ bool ENABLE_AUTON_TEST_BUTTON = false;
 
 #define repeat(iterations) \
   for (int iterator = 0; iterator < iterations; iterator++)
+
+
+// extern int dashboardTask( void );
+// extern int UsercontrolTask( void );
 
 #endif
 /*---VEX_H---*/
