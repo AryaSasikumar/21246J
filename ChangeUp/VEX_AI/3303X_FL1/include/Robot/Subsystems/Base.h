@@ -35,10 +35,13 @@ class Base : public Subsystem{
     //TODO: ADD OTHER USER CONTROL TYPES AS NEEDED HERE!
     /*---Absolute-Field-Position-Movement---*/
 <<<<<<< HEAD
+<<<<<<< HEAD
     //void turnToPoint(double x, double y);
     virtual int encoder_reset();
     virtual double get_encoder_rotation();
 =======
+=======
+>>>>>>> parent of edac948... Now Compiling In VEXcode
     void turnToPoint(double x, double y);
 
 

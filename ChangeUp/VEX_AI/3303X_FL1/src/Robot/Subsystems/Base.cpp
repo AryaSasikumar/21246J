@@ -7,7 +7,10 @@
 #include "Robot/Subsystems/Base.h"
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
+=======
+>>>>>>> parent of edac948... Now Compiling In VEXcode
 #include "vex.h"
 
 >>>>>>> parent of edac948... Now Compiling In VEXcode
@@ -32,6 +35,7 @@ Base::~Base(){}
 /*---User-Control-Loop---*/
 void Base::user_control_tank_drive(){ 
 <<<<<<< HEAD
+<<<<<<< HEAD
   if(abs(Y_RIGHT_JOY) > Y_RIGHT_JOY_BUFFER){ 
     right_spin(Y_RIGHT_JOY/_velocity_divider); 
   }else{ 
@@ -44,10 +48,15 @@ void Base::user_control_tank_drive(){
     left_spin(0.0); 
   } 
 =======
+=======
+>>>>>>> parent of edac948... Now Compiling In VEXcode
   if(abs(Y_RIGHT_JOY) > Y_RIGHT_JOY_BUFFER){ right_spin(Y_RIGHT_JOY/_velocity_divider); }
   else{ right_spin(0); } 
   if(abs(Y_LEFT_JOY) > Y_LEFT_JOY_BUFFER){ left_spin(Y_LEFT_JOY/_velocity_divider); }
   else{ left_spin(0); } 
+<<<<<<< HEAD
+>>>>>>> parent of edac948... Now Compiling In VEXcode
+=======
 >>>>>>> parent of edac948... Now Compiling In VEXcode
 }
 //TODO: ADD OTHER USER CONTROL TYPES AS NEEDED HERE!
@@ -85,6 +94,9 @@ int Base::pid_move_func(double velocity){
   }else{
     turn_spin(velocity);
   }
+<<<<<<< HEAD
+>>>>>>> parent of edac948... Now Compiling In VEXcode
+=======
 >>>>>>> parent of edac948... Now Compiling In VEXcode
 }
 
