@@ -28,7 +28,7 @@ Base::~Base(){}
 
 /*---User-Control-Loop---*/
 void Base::user_control_tank_drive(){ 
-  if(abs(Y_RIGHT_JOY) < Y_RIGHT_JOY_BUFFER){ 
+  if(abs(Y_RIGHT_JOY) > Y_RIGHT_JOY_BUFFER){ 
     right_spin(Y_RIGHT_JOY/_velocity_divider); 
   }else{ 
     right_spin(0.0); 

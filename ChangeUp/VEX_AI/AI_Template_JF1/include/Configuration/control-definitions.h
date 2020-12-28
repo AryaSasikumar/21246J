@@ -48,14 +48,14 @@
 #define shootBtn Controller.ButtonR1.pressing()          /*  R1  */
 #define allUpBtn Controller.ButtonR2.pressing()          /*  R2  */
 
-#define filterOutBtn Controller.ButtonUp.pressing()      /*  ↑  */
-#define autonTestButton Controller.ButtonDown.pressing() /*  ↓  */
-#define macroDriveBtn Controller.ButtonLeft.pressing()   /*  ←  */
-#define angleSlowBtn Controller.ButtonRight.pressing()   /*  →  */
+#define UP_BUTTON Controller.ButtonUp.pressing()         /*  ↑  */
+#define DOWN_BUTTON Controller.ButtonDown.pressing()     /*  ↓  */
+#define LEFT_BUTTON Controller.ButtonLeft.pressing()     /*  ←  */
+#define RIGHT_BUTTON Controller.ButtonRight.pressing()   /*  →  */
 
 #define intakeMacro Controller.ButtonX.pressing()        /*  X  */
-//#define NOT_ASSIGNED Controller.ButtonB.pressing()     /*  B  */
-#define slowDriveBackBtn Controller.ButtonY.pressing()   /*  Y  */
+#define TESTING_BUTTON1 Controller.ButtonB.pressing()    /*  B  */
+#define TESTING_BUTTON2 Controller.ButtonY.pressing()    /*  Y  */
 #define driveToggleBtn Controller.ButtonA.pressing()     /*  A  */
 
 //---Sensor Definitions---//
